@@ -1,4 +1,4 @@
-export interface Layout {
+export interface Layout { // The actual json file
     version: 1, // Layout file format version
     id: string, // ID of the layout
     name?: string, // Display name
