@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PIDS Layout Editor</title>
+    <link rel="preload" href="font.css" as="style" />
+    <link rel="stylesheet" type="text/css" href="font.css" preload>
+    <style>
+        html {
+            color: #ffffff;
+            font-family: 'Consolas','Courier New',monospace
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            image-rendering: pixelated;
+        }
+        #exportMenu {
+            background-color: #333333;
+            border: solid 2px #444444;
+            padding: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        #exportMenu h1 {
+            margin: 0;
+            padding: 10px;
+            text-align: center;
+        }
+        #exportMenu .inputContainer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        #exportMenu label {
+            margin: 5px 0;
+            padding: 5px;
+        }
+        #exportMenu input {
+            flex-grow: 1;
+            padding: 5px;
+            margin: 5px 0;
+            width: unset;
+            border: solid 1px #444444;
+            background-color: #444444;
+            color: #ffffff;
+        }
+        #exportMenu textarea {
+            padding: 5px;
+            margin: 5px 0;
+            width: 30em;
+            height: 8em;
+            resize: none;
+            border: solid 1px #444444;  
+            background-color: #444444;
+            color: #ffffff;
+        }
+        #exportMenu button {
+            width: 150px;
+            padding: 5px;
+            margin: 5px 0;
+            border: solid 1px #444444;
+            background-color: #444444;
+            color: #ffffff;
+        }
+        #exportMenu #exportButton {
+            background-color: #006600;
+        }
+        #exportMenu #cancelButton:hover {
+            background-color: #666666;
+        }
+        #exportMenu #exportButton:hover {
+            background-color: #009900;
+        }
+    </style>
+</head>
+
+<body oncontextmenu="return false;">
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <div id="exportMenu">
+        <h1>Save / Export</h1>
+        <div class="inputContainer"><label>ID*: </label> <input type="text" id="exportID" placeholder="example_id" maxlength="48" /><br></div>
+        <div class="inputContainer"><label>Name: </label> <input type="text" id="exportName" placeholder="Example PIDS" maxlength="64" /><br></div>
+        <div class="inputContainer"><label>Author: </label> <input type="text" id="exportAuthor" placeholder="You" maxlength="64" /><br></div>
+        <label>Desription: </label><br>
+        <textarea id="exportDescription"></textarea><br>
+        <div class="inputContainer"><button id="cancelButton">Cancel</button><button id="exportButton">Export</button></div>
+    </div>
+    <script src="index.js"></script>
+</body>
+
+</html>
