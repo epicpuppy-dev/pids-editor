@@ -11,7 +11,7 @@ overlay.height = height;
 const image = new Image();
 image.src = "sprites.png";
 
-const VERSION = "0.2.1";
+const VERSION = "0.2.2";
 
 /*
 Some scale stuff
