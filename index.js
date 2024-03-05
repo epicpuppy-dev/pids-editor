@@ -11,6 +11,8 @@ overlay.height = height;
 const image = new Image();
 image.src = "sprites.png";
 
+const VERSION = "0.2.0";
+
 /*
 Some scale stuff
 1 block = 16 in-game pixels
@@ -315,6 +317,10 @@ class Module {
             }
         }
     }
+
+    duplicate () {
+        return new Module(this.name, this.x, this.y, this.width, this.height);
+    }
 }
 
 class DestinationModule extends Module {
@@ -371,10 +377,14 @@ class DestinationModule extends Module {
         }
     }
 
-    load (data) {
+    import (data) {
         if (data.align) this.options.align = data.align;
         if (data.color) this.options.color = "#" + data.color.toString(16);
-        if (data.arrival) this.arrival = data.arrival;
+        if (data.arrival) this.arrival = data.arrival, this.options.arrival = data.arrival;
+    }
+
+    duplicate () {
+        return new DestinationModule(this.x, this.y, this.width, this.height, structuredClone(this.options));
     }
 }
 
@@ -419,6 +429,12 @@ class ArrivalTimeModule extends Module {
         super.render(timeText, align, color, selected);
     }
 
+    import (data) {
+        if (data.align) this.options.align = data.align;
+        if (data.color) this.options.color = "#" + data.color.toString(16);
+        if (data.arrival) this.arrival = data.arrival, this.options.arrival = data.arrival;
+    }
+
     export () {
         return {
             type: "ArrivalTimeModule",
@@ -432,6 +448,10 @@ class ArrivalTimeModule extends Module {
             color: parseInt(this.options.color.slice(1), 16),
             arrival: this.arrival
         }
+    }
+
+    duplicate () {
+        return new ArrivalTimeModule(this.x, this.y, this.width, this.height, structuredClone(structuredClone(this.options)));
     }
 }
 
@@ -475,6 +495,12 @@ class TrainLengthModule extends Module {
         super.render(carText, align, color, selected);
     }
 
+    import (data) {
+        if (data.align) this.options.align = data.align;
+        if (data.color) this.options.color = "#" + data.color.toString(16);
+        if (data.arrival) this.arrival = data.arrival, this.options.arrival = data.arrival;
+    }
+
     export () {
         return {
             type: "TrainLengthModule",
@@ -488,6 +514,10 @@ class TrainLengthModule extends Module {
             color: parseInt(this.options.color.slice(1), 16),
             arrival: this.arrival
         }
+    }
+
+    duplicate () {
+        return new TrainLengthModule(this.x, this.y, this.width, this.height, structuredClone(structuredClone(this.options)));
     }
 }
 
@@ -530,6 +560,12 @@ class PlatformNumberModule extends Module {
         super.render(platform, align, color, selected);
     }
 
+    import (data) {
+        if (data.align) this.options.align = data.align;
+        if (data.color) this.options.color = "#" + data.color.toString(16);
+        if (data.arrival) this.arrival = data.arrival, this.options.arrival = data.arrival;
+    }
+
     export () {
         return {
             type: "PlatformNumberModule",
@@ -543,6 +579,10 @@ class PlatformNumberModule extends Module {
             color: parseInt(this.options.color.slice(1), 16),
             arrival: this.arrival
         }
+    }
+
+    duplicate () {
+        return new PlatformNumberModule(this.x, this.y, this.width, this.height, structuredClone(structuredClone(this.options)));
     }
 }
 
@@ -882,7 +922,7 @@ function draw () {
     ctx.fillStyle = "#ffffff";
     ctx.font = "12px Consolas,'Courier New',monospace";
     ctx.textAlign = "left";
-    ctx.fillText("v0.2.0", 5, height - 15);
+    ctx.fillText(VERSION, 5, height - 15);
     //ctx.fillText("Mouse X: " + mouse.x, 10, 10);
     //ctx.fillText("Mouse Y: " + mouse.y, 10, 20);
 }
@@ -981,6 +1021,7 @@ function loadJSON (json) {
             if (module.type == "ArrivalTimeModule") modules.push(new ArrivalTimeModule(x, y, w, h, {align: module.align, color: "#" + module.color.toString(16).padStart(6, "0"), arrival: module.arrival}));
             if (module.type == "TrainLengthModule") modules.push(new TrainLengthModule(x, y, w, h, {align: module.align, color: "#" + module.color.toString(16).padStart(6, "0"), arrival: module.arrival}));
             if (module.type == "PlatformNumberModule") modules.push(new PlatformNumberModule(x, y, w, h, {align: module.align, color: "#" + module.color.toString(16).padStart(6, "0"), arrival: module.arrival}));
+            modules[modules.length - 1].import(module);
         }
     } catch (e) {
         alert("Invalid Layout Format!");
@@ -1016,7 +1057,7 @@ document.addEventListener("keydown", (e) => {
         //duplicate key
         if (e.code === "KeyD") {
             let newModule = -1;
-            newModule += modules.push(Object.assign(Object.create(Object.getPrototypeOf(modules[selected])), modules[selected]));
+            newModule += modules.push(modules[selected].duplicate());
             selected = newModule;
         }
 
