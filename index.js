@@ -63,42 +63,49 @@ const sizes = {
         width: 32,
         height: 11,
         edge: 0.5,
+        pixel: 24,
         file: "base_horizontal_a.json"
     },
     hb: {
         width: 32,
         height: 9,
         edge: 1,
+        pixel: 24,
         file: "base_horizontal_b.json"
     },
     hc: {
         width: 32,
         height: 10,
         edge: 0.75,
+        pixel: 24,
         file: "base_horizontal_c.json"
     },
     va: {
         width: 16,
         height: 32,
         edge: 1,
+        pixel: 24,
         file: "base_vertical_a.json"
     },
     ps: {
         width: 16,
         height: 16,
         edge: 0,
+        pixel: 24,
         file: "base_projector_small.json"
     },
     pm: {
         width: 48,
         height: 32,
         edge: 0,
+        pixel: 24,
         file: "base_projector_medium.json"
     },
     pl: {
         width: 48,
         height: 48,
         edge: 0,
+        pixel: 24,
         file: "base_projector_large.json"
     }
 }
@@ -1178,6 +1185,7 @@ document.getElementById("canvas").addEventListener("mousedown", (e) => {
                 pidsWidth = sizes[size].width;
                 pidsHeight = sizes[size].height;
                 edgeWidth = sizes[size].edge;
+                pixelSize = sizes[size].pixel;
                 pids = {
                     width: pidsWidth * pixelSize,
                     height: pidsHeight * pixelSize,
