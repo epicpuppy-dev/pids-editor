@@ -8,13 +8,16 @@
     <style>
         html {
             color: #ffffff;
-            font-family: 'Consolas','Courier New',monospace
+            font-family: 'Consolas','Courier New',monospace;
         }
         canvas {
             position: absolute;
             top: 0;
             left: 0;
             image-rendering: pixelated;
+        }
+        #overlay {
+            pointer-events: none;
         }
         #exportMenu {
             background-color: #333333;
@@ -48,6 +51,7 @@
             border: solid 1px #444444;
             background-color: #444444;
             color: #ffffff;
+            font-family: 'Consolas','Courier New',monospace;
         }
         #exportMenu textarea {
             padding: 5px;
@@ -55,9 +59,11 @@
             width: 30em;
             height: 8em;
             resize: none;
+            font-size: 12px;
             border: solid 1px #444444;  
             background-color: #444444;
             color: #ffffff;
+            font-family: 'Consolas','Courier New',monospace;
         }
         #exportMenu button {
             width: 150px;
@@ -66,6 +72,7 @@
             border: solid 1px #444444;
             background-color: #444444;
             color: #ffffff;
+            font-family: 'Consolas','Courier New',monospace;
         }
         #exportMenu #exportButton {
             background-color: #006600;
@@ -75,6 +82,20 @@
         }
         #exportMenu #exportButton:hover {
             background-color: #009900;
+        }
+        #dropdownMenu {
+            position: absolute;
+            right: 166px;
+            top: 5px;
+            height: 16px;
+        }
+        #dropdownMenu select {
+            width: 250px;
+            height: 32px;
+            border: solid 1px #ffffff;
+            background-color: #333333;
+            color: #ffffff;
+            font-family: 'Consolas','Courier New',monospace;
         }
     </style>
 </head>
@@ -90,6 +111,18 @@
         <textarea id="exportDescription"></textarea><br>
         <div class="inputContainer"><button id="cancelButton">Cancel</button><button id="exportButton">Export</button></div>
     </div>
+    <div id="dropdownMenu">
+        <select id="size">
+            <option value="ha">Horizontal A (32x11)</option>
+            <option value="hb">Horizontal B (32x9)</option>
+            <option value="hc">Horizontal C (32x10)</option>
+            <option value="va">Vertical (16x32)</option>
+            <option value="ps">Small Projector (16x16)</option>
+            <option value="pm">Medium Projector (48x32)</option>
+            <option value="pl">Large Projector (48x48)</option>
+        </select>
+    </div>
+    <canvas id="overlay" width="800" height="600"></canvas>
     <script src="index.js"></script>
 </body>
 

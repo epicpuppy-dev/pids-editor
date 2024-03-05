@@ -1,8 +1,13 @@
 const canvas = document.getElementById('canvas');
+const overlay = document.getElementById('overlay');
 /** @type {CanvasRenderingContext2D} */
 const ctx = canvas.getContext('2d');
+/** @type {CanvasRenderingContext2D} */
+const octx = overlay.getContext('2d');
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
+overlay.width = width;
+overlay.height = height;
 const image = new Image();
 image.src = "sprites.png";
 
@@ -17,17 +22,21 @@ ctx.fillRect(0, 0, width, height);
 ctx.fillStyle = "#ffffff";
 ctx.textBaseline = "top";
 
-const PIDS_WIDTH = 32;
-const PIDS_HEIGHT = 9;
+let pidsWidth = 32;
+let pidsHeight = 11;
 
-const PIXEL_SIZE = 24;
-const BORDER_WIDTH = 4;
-const PIDS = {
-    WIDTH: PIDS_WIDTH * PIXEL_SIZE,
-    HEIGHT: PIDS_HEIGHT * PIXEL_SIZE,
-    X: Math.floor(width / 2 - PIDS_WIDTH * PIXEL_SIZE / 2),
-    Y: Math.floor(height / 2 - PIDS_HEIGHT * PIXEL_SIZE / 2)
+let pixelSize = 24;
+let borderWidth = 2;
+let edgeWidth = 0.5;
+let pids = {
+    width: pidsWidth * pixelSize,
+    height: pidsHeight * pixelSize,
+    x: Math.floor(width / 2 - pidsWidth * pixelSize / 2),
+    y: Math.floor(height / 2 - pidsHeight * pixelSize / 2)
 }
+
+let size = "ha";
+
 const mouse = {
     x: 0,
     y: 0,
@@ -49,6 +58,72 @@ const move = {
     startHeight: 0
 }
 
+const sizes = {
+    ha: {
+        width: 32,
+        height: 11,
+        edge: 0.5,
+        file: "base_horizontal_a.json"
+    },
+    hb: {
+        width: 32,
+        height: 9,
+        edge: 1,
+        file: "base_horizontal_b.json"
+    },
+    hc: {
+        width: 32,
+        height: 10,
+        edge: 0.75,
+        file: "base_horizontal_c.json"
+    },
+    va: {
+        width: 16,
+        height: 32,
+        edge: 1,
+        file: "base_vertical_a.json"
+    },
+    ps: {
+        width: 16,
+        height: 16,
+        edge: 0,
+        file: "base_projector_small.json"
+    },
+    pm: {
+        width: 48,
+        height: 32,
+        edge: 0,
+        file: "base_projector_medium.json"
+    },
+    pl: {
+        width: 48,
+        height: 48,
+        edge: 0,
+        file: "base_projector_large.json"
+    }
+}
+
+async function loadDefaults () {
+    try {
+        for (const size of Object.keys(sizes)) {
+            if (!sizes[size].file) continue;
+            const response = await fetch(`default/${sizes[size].file}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            const data = await response.json();
+            sizes[size].default = data;
+        }
+        loadJSON(sizes.ha.default);
+    } catch (e) {
+        alert(e);
+    }
+}
+
+loadDefaults();
+
 let buttons = {
     //module placement
     destination: {
@@ -65,6 +140,18 @@ let buttons = {
     },
     trainLength: {
         x: 85,
+        y: 5,
+        width: 32,
+        height: 32
+    },
+    platformNumber: {
+        x: 125,
+        y: 5,
+        width: 32,
+        height: 32
+    },
+    stopsAt: {
+        x: 165,
         y: 5,
         width: 32,
         height: 32
@@ -87,6 +174,12 @@ let buttons = {
         y: 5,
         width: 32,
         height: 32
+    },
+    new: {
+        x: width - 157,
+        y: 5,
+        width: 32,
+        height: 32,
     },
     //properties
     align: {
@@ -148,16 +241,11 @@ let offsetX = 0;
 let offsetY = 0;
 let exportMenu = false;
 let info = {
-    id: "",
-    name: "",
-    author: "",
-    description: ""
+    id: "base_horizontal_a",
+    name: "Base Horizontal Type A",
+    author: "EpicPuppy613",
+    description: "MTR Built-in layout.\n\nSize: 32 x 11\nArrivals: 1"
 }
-let typing = 3;
-let cursorBlink = 0;
-let cursorLine = 0;
-let cursorPos = 0;
-
 class Module {
     constructor (name, x, y, width, height) {
         this.name = name;
@@ -168,14 +256,14 @@ class Module {
     }
 
     render (text, align, color, selected) {
-        let textMaxWidth = this.width - PIXEL_SIZE * 0.5;
-        let textMaxHeight = this.height - PIXEL_SIZE * 0;
-        let textX = this.x + PIXEL_SIZE * 0.25;
+        let textMaxWidth = this.width - pixelSize * 0.5;
+        let textMaxHeight = this.height - pixelSize * 0;
+        let textX = this.x + pixelSize * 0.25;
         ctx.textAlign = align;
         ctx.fillStyle = color;
         textX = Math.floor(textX);
         if (align === "center") textX = Math.floor(this.x + this.width / 2);
-        else if (align === "right") textX = Math.floor(this.x + this.width - PIXEL_SIZE * 0.25);
+        else if (align === "right") textX = Math.floor(this.x + this.width - pixelSize * 0.25);
         ctx.font = Math.floor(textMaxHeight) + "px 'Minecraft',Consolas,'Courier New',monospace";
         ctx.save();
         ctx.translate(textX + offsetX, this.y + offsetY);
@@ -213,10 +301,10 @@ class Module {
         return {
             type: this.name,
             pos: {
-                x: (this.x - PIDS.X) / PIXEL_SIZE,
-                y: (this.y - PIDS.Y) / PIXEL_SIZE,
-                w: this.width / PIXEL_SIZE,
-                h: this.height / PIXEL_SIZE
+                x: (this.x - pids.x) / pixelSize,
+                y: (this.y - pids.y) / pixelSize,
+                w: this.width / pixelSize,
+                h: this.height / pixelSize
             }
         }
     }
@@ -265,10 +353,10 @@ class DestinationModule extends Module {
         return {
             type: "DestinationModule",
             pos: {
-                x: (this.x - PIDS.X) / PIXEL_SIZE,
-                y: (this.y - PIDS.Y) / PIXEL_SIZE,
-                w: this.width / PIXEL_SIZE,
-                h: this.height / PIXEL_SIZE
+                x: (this.x - pids.x) / pixelSize,
+                y: (this.y - pids.y) / pixelSize,
+                w: this.width / pixelSize,
+                h: this.height / pixelSize
             },
             align: this.options.align,
             color: parseInt(this.options.color.slice(1), 16),
@@ -328,10 +416,10 @@ class ArrivalTimeModule extends Module {
         return {
             type: "ArrivalTimeModule",
             pos: {
-                x: (this.x - PIDS.X) / PIXEL_SIZE,
-                y: (this.y - PIDS.Y) / PIXEL_SIZE,
-                w: this.width / PIXEL_SIZE,
-                h: this.height / PIXEL_SIZE
+                x: (this.x - pids.x) / pixelSize,
+                y: (this.y - pids.y) / pixelSize,
+                w: this.width / pixelSize,
+                h: this.height / pixelSize
             },
             align: this.options.align,
             color: parseInt(this.options.color.slice(1), 16),
@@ -384,10 +472,10 @@ class TrainLengthModule extends Module {
         return {
             type: "TrainLengthModule",
             pos: {
-                x: (this.x - PIDS.X) / PIXEL_SIZE,
-                y: (this.y - PIDS.Y) / PIXEL_SIZE,
-                w: this.width / PIXEL_SIZE,
-                h: this.height / PIXEL_SIZE
+                x: (this.x - pids.x) / pixelSize,
+                y: (this.y - pids.y) / pixelSize,
+                w: this.width / pixelSize,
+                h: this.height / pixelSize
             },
             align: this.options.align,
             color: parseInt(this.options.color.slice(1), 16),
@@ -396,48 +484,87 @@ class TrainLengthModule extends Module {
     }
 }
 
-//let modules = [];
+class PlatformNumberModule extends Module {
+    /**
+     * 
+     * @param {{align?: "left"|"right"|"center", color: string, arrival: number}} options 
+     */
+    constructor (x, y, width, height, options) {
+        super("PlatformNumberModule", x, y, width, height);
+        this.options = options;
+        if (options.arrival) {
+            this.arrival = options.arrival;
+        } else {
+            this.arrival = 0;
+        }
+    }
 
-// 1x2 8 Arrivals
-/*
-let y = 1.5;
-for (let i = 0; i < 8; i++) {
-    modules.push(new DestinationModule(PIDS.X + PIXEL_SIZE * 1.5, PIDS.Y + PIXEL_SIZE * y, PIDS.WIDTH - PIXEL_SIZE * 3, PIDS.HEIGHT - PIXEL_SIZE * 30.5, {align: "left", color: "#ffa500", arrival: i}));
-    modules.push(new TrainLengthModule(PIDS.X + PIXEL_SIZE * 1.5, PIDS.Y + PIXEL_SIZE * (y + 1.75), PIDS.WIDTH - PIXEL_SIZE * 10, PIDS.HEIGHT - PIXEL_SIZE * 30.5, {align: "left", color: "#ff0000", arrival: i}));
-    modules.push(new ArrivalTimeModule(PIDS.X + PIXEL_SIZE * 8.5, PIDS.Y + PIXEL_SIZE * (y + 1.75), PIDS.WIDTH - PIXEL_SIZE * 10, PIDS.HEIGHT - PIXEL_SIZE * 30.5, {align: "right", color: "#ffa500", arrival: i}));
-    y += 3.625;
+    render (selected) {
+        if (!trains[this.arrival]) {
+            super.render("", "left", "#ffffff", selected);
+            return;
+        };
+        let platform = trains[this.arrival].platform;
+        let align = "left";
+        let color = "#ffffff";
+        if (this.options) {
+            switch (this.options.align) {
+                case "right":
+                    align = "right";
+                    break;
+                case "center":
+                    align = "center";
+                    break;
+            }
+            if (this.options.color) {
+                color = this.options.color;
+            }
+        }
+        super.render(platform, align, color, selected);
+    }
+
+    export () {
+        return {
+            type: "PlatformNumberModule",
+            pos: {
+                x: (this.x - pids.x) / pixelSize,
+                y: (this.y - pids.y) / pixelSize,
+                w: this.width / pixelSize,
+                h: this.height / pixelSize
+            },
+            align: this.options.align,
+            color: parseInt(this.options.color.slice(1), 16),
+            arrival: this.arrival
+        }
+    }
 }
-*/
 
-// 2x1 3 Arrivals
-
-let modules = [
-    new DestinationModule(PIDS.X + PIXEL_SIZE * 1.5, PIDS.Y + PIXEL_SIZE * 1.5, PIDS.WIDTH - PIXEL_SIZE * 9.5, PIDS.HEIGHT - PIXEL_SIZE * 7.25, {align: "left", color: "#ffffff", arrival: 0}),
-    new DestinationModule(PIDS.X + PIXEL_SIZE * 1.5, PIDS.Y + PIXEL_SIZE * 3.625, PIDS.WIDTH - PIXEL_SIZE * 9.5, PIDS.HEIGHT - PIXEL_SIZE * 7.25, {align: "left", color: "#ffffff", arrival: 1}),
-    new DestinationModule(PIDS.X + PIXEL_SIZE * 1.5, PIDS.Y + PIXEL_SIZE * 5.75, PIDS.WIDTH - PIXEL_SIZE * 9.5, PIDS.HEIGHT - PIXEL_SIZE * 7.25, {align: "left", color: "#ffffff", arrival: 2}),
-    new ArrivalTimeModule(PIDS.X + PIXEL_SIZE * 24.5, PIDS.Y + PIXEL_SIZE * 1.5, PIDS.WIDTH - PIXEL_SIZE * 26, PIDS.HEIGHT - PIXEL_SIZE * 7.25, {align: "right", color: "#00ff00", arrival: 0}),
-    new ArrivalTimeModule(PIDS.X + PIXEL_SIZE * 24.5, PIDS.Y + PIXEL_SIZE * 3.625, PIDS.WIDTH - PIXEL_SIZE * 26, PIDS.HEIGHT - PIXEL_SIZE * 7.25, {align: "right", color: "#ffffff", arrival: 1}),
-    new ArrivalTimeModule(PIDS.X + PIXEL_SIZE * 24.5, PIDS.Y + PIXEL_SIZE * 5.75, PIDS.WIDTH - PIXEL_SIZE * 26, PIDS.HEIGHT - PIXEL_SIZE * 7.25, {align: "right", color: "#ffa500", arrival: 2})
-]
+let modules = [];
 
 /** @type {{destination: string, time: number, platform: string, delay: number, lineColor: string, stops: string[], cars: number}[]} */
 let trains = [];
 
 const stations = [
     "Desert Grand Central",
-    "Geneva Junction",
     "Reston Intermodal",
     "Northview Central",
-    "Fairlantis",
-    "Sutton",
-    "Fairview Junction",
-    "Marble Arch",
     "Fairview Docks",
-    "Fairview Oasis",
-    "Fairview Oasis North",
-    "Northview Island South",
-    "Northview Island",
-    "Northview Island North",
+    "Fairview Junction",
+    "Temple of Time",
+    "Lake City",
+    "Chong Shu Chau",
+    "Spawn",
+    "Cyan Heights",
+    "Inage Kaigan",
+    "Hobb's End",
+    "Market Quarter",
+    "New Victoria",
+    "Rosewood",
+    "Llanmara Saint Ann's",
+    "Yunlong",
+    "Sakuradori",
+    "Bethel Road",
+    "Minami Yunlong"
 ];
 
 let time = Date.now();
@@ -478,21 +605,47 @@ function draw () {
     }
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, width, height);
+    octx.clearRect(0, 0, width, height);
 
     //draw outline
     ctx.fillStyle = "#ffffff";
-    ctx.fillRect(PIDS.X - BORDER_WIDTH + offsetX, PIDS.Y - BORDER_WIDTH + offsetY, PIDS.WIDTH + BORDER_WIDTH * 2, BORDER_WIDTH);
-    ctx.fillRect(PIDS.X - BORDER_WIDTH + offsetX, PIDS.Y - BORDER_WIDTH + offsetY, BORDER_WIDTH, PIDS.HEIGHT + BORDER_WIDTH * 2);
-    ctx.fillRect(PIDS.X + PIDS.WIDTH + offsetX, PIDS.Y - BORDER_WIDTH + offsetY, BORDER_WIDTH, PIDS.HEIGHT + BORDER_WIDTH * 2);
-    ctx.fillRect(PIDS.X - BORDER_WIDTH + offsetX, PIDS.Y + PIDS.HEIGHT + offsetY, PIDS.WIDTH + BORDER_WIDTH * 2, BORDER_WIDTH);
+    ctx.fillRect(pids.x - borderWidth + offsetX, pids.y - borderWidth + offsetY, pids.width + borderWidth * 2, borderWidth);
+    ctx.fillRect(pids.x - borderWidth + offsetX, pids.y - borderWidth + offsetY, borderWidth, pids.height + borderWidth * 2);
+    ctx.fillRect(pids.x + pids.width + offsetX, pids.y - borderWidth + offsetY, borderWidth, pids.height + borderWidth * 2);
+    ctx.fillRect(pids.x - borderWidth + offsetX, pids.y + pids.height + offsetY, pids.width + borderWidth * 2, borderWidth);
     
-    //draw gray border
+    //draw gray edge
     ctx.fillStyle = "gray";
-    ctx.fillRect(PIDS.X + offsetX, PIDS.Y + offsetY, PIDS.WIDTH, PIXEL_SIZE);
-    ctx.fillRect(PIDS.X + offsetX, PIDS.Y + offsetY + PIDS.HEIGHT - PIXEL_SIZE, PIDS.WIDTH, PIXEL_SIZE);
-    ctx.fillRect(PIDS.X + offsetX, PIDS.Y + offsetY, PIXEL_SIZE, PIDS.HEIGHT);
-    ctx.fillRect(PIDS.X + offsetX + PIDS.WIDTH - PIXEL_SIZE, PIDS.Y + offsetY, PIXEL_SIZE, PIDS.HEIGHT);
+    ctx.fillRect(pids.x + offsetX, pids.y + offsetY, pids.width, edgeWidth * pixelSize);
+    ctx.fillRect(pids.x + offsetX, pids.y + offsetY + pids.height - edgeWidth * pixelSize, pids.width, edgeWidth * pixelSize);
+    ctx.fillRect(pids.x + offsetX, pids.y + offsetY, edgeWidth * pixelSize, pids.height);
+    ctx.fillRect(pids.x + offsetX + pids.width - edgeWidth * pixelSize, pids.y + offsetY, edgeWidth * pixelSize, pids.height);
 
+    //draw block grid
+    if (drawBorder) {
+        ctx.fillStyle = "#444444";
+        for (let x = 1; x < pidsWidth / 16; x++) {
+            ctx.fillRect(pids.x + x * 16 * pixelSize + offsetX, pids.y + offsetY, 1, pids.height);
+        }
+        for (let y = 1; y < pidsHeight / 16; y++) {
+            ctx.fillRect(pids.x + offsetX, pids.y + y * 16 * pixelSize + offsetY, pids.width, 1);
+        }
+    }
+
+    ctx.fillStyle = "gray";
+    //draw special parts
+    if (size == "ha") {
+        drawOccupiedBorder(pids.x + offsetX + pixelSize, pids.y + offsetY + pixelSize, pixelSize * 30, pixelSize * 6, 2, "orange");
+    } else if (size == "ps") {
+        ctx.fillRect(pids.x + offsetX + pixelSize * 6, pids.y + offsetY, pixelSize * 4, pixelSize * 1);
+        drawOccupiedBorder(pids.x + offsetX + pixelSize * 6, pids.y + offsetY, pixelSize * 4, pixelSize * 1, 2, "orange");
+    } else if (size == "pm") {
+        ctx.fillRect(pids.x + offsetX + pixelSize * 21, pids.y + offsetY, pixelSize * 6, pixelSize * 1);
+        drawOccupiedBorder(pids.x + offsetX + pixelSize * 21, pids.y + offsetY, pixelSize * 6, pixelSize * 1, 2, "orange");
+    } else if (size == "pl") {
+        ctx.fillRect(pids.x + offsetX + pixelSize * 20, pids.y + offsetY, pixelSize * 8, pixelSize * 1);
+        drawOccupiedBorder(pids.x + offsetX + pixelSize * 20, pids.y + offsetY, pixelSize * 8, pixelSize * 1, 2, "orange");
+    }
 
     //show some guidelines when moving
     if (move.moveT || move.moveA) {
@@ -519,8 +672,8 @@ function draw () {
 
     //module placing preview
     if (move.placing) {
-        let startCoords = snapToGrid(move.startX, move.startY, PIXEL_SIZE, 8, PIDS.X + offsetX, PIDS.Y + offsetY);
-        let dimCoords = snapToGrid(mouse.x - move.startX, mouse.y - move.startY, PIXEL_SIZE, 8);
+        let startCoords = snapToGrid(move.startX, move.startY, pixelSize, 8, pids.x + offsetX, pids.y + offsetY);
+        let dimCoords = snapToGrid(mouse.x - move.startX, mouse.y - move.startY, pixelSize, 8);
         drawModuleBorder("", startCoords[0], startCoords[1], dimCoords[0], dimCoords[1], 1, "#ffffff");
     }
 
@@ -533,21 +686,29 @@ function draw () {
     if (image.complete) {
         //Destination
         let button = buttons.destination;
-        ctx.drawImage(image, 64, 0, 32, 32, button.x, button.y, button.width, button.height);
+        ctx.drawImage(image, 160, 0, 32, 32, button.x, button.y, button.width, button.height);
         //Arrival Time
         button = buttons.arrivalTime;
-        ctx.drawImage(image, 96, 0, 32, 32, button.x, button.y, button.width, button.height);
+        ctx.drawImage(image, 192, 0, 32, 32, button.x, button.y, button.width, button.height);
         //Train Length
         button = buttons.trainLength;
-        ctx.drawImage(image, 128, 0, 32, 32, button.x, button.y, button.width, button.height);
+        ctx.drawImage(image, 224, 0, 32, 32, button.x, button.y, button.width, button.height);
+        //Platform Number
+        button = buttons.platformNumber;
+        ctx.drawImage(image, 0, 32, 32, 32, button.x, button.y, button.width, button.height);
+        //Stops At
+        button = buttons.stopsAt;
+        //ctx.drawImage(image, 32, 32, 32, 32, button.x, button.y, button.width, button.height);
 
         //Export
         ctx.drawImage(image, 32, 0, 32, 32, width - 37, 5, 32, 32);
         //Import
         ctx.drawImage(image, 0, 0, 32, 32, width - 77, 5, 32, 32);
         //Border
-        if (drawBorder) ctx.drawImage(image, 160, 0, 32, 32, width - 117, 5, 32, 32);
-        else ctx.drawImage(image, 192, 0, 32, 32, width - 117, 5, 32, 32);
+        if (drawBorder) ctx.drawImage(image, 64, 0, 32, 32, width - 117, 5, 32, 32);
+        else ctx.drawImage(image, 96, 0, 32, 32, width - 117, 5, 32, 32);
+        //New
+        ctx.drawImage(image, 128, 0, 32, 32, width - 157, 5, 32, 32);
     }
 
     //draw properties editor
@@ -556,126 +717,129 @@ function draw () {
         ctx.fillRect(width - 300, 44, 300, height);
         ctx.fillStyle = "#444444";
         ctx.fillRect(width - 302, 44, 2, height);
+        //module name
         ctx.fillStyle = "#ffffff";
         ctx.font = "16px Consolas,'Courier New',monospace";
         ctx.textAlign = "center";
         ctx.fillText(modules[selected].name, Math.floor(width - 150), 54);
+        //close button
+        ctx.fillStyle = "#444444";
+        ctx.fillRect(width - 26, 50, 20, 20);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText("X", width - 16, 54);
+        //module position
         ctx.font = "12px Consolas,'Courier New',monospace";
         ctx.textAlign = "left";
-        ctx.fillText("X: " + (modules[selected].x - PIDS.X) / PIXEL_SIZE, width - 290, 84);
-        ctx.fillText("Y: " + (modules[selected].y - PIDS.Y) / PIXEL_SIZE, width - 160, 84);
-        ctx.fillText("W: " + modules[selected].width / PIXEL_SIZE, width - 290, 104);
-        ctx.fillText("H: " + modules[selected].height / PIXEL_SIZE, width - 160, 104);
+        ctx.fillText("X: " + (modules[selected].x - pids.x) / pixelSize, width - 290, 84);
+        ctx.fillText("Y: " + (modules[selected].y - pids.y) / pixelSize, width - 160, 84);
+        ctx.fillText("W: " + modules[selected].width / pixelSize, width - 290, 104);
+        ctx.fillText("H: " + modules[selected].height / pixelSize, width - 160, 104);
+        //properties
         let y = 124;
         for (const option of Object.keys(modules[selected].options)) {
-            switch (option) {
-                case "align":
-                    let align = modules[selected].options[option];
-                    ctx.fillText("Align:", width - 290, y + 5);
-                    ctx.fillStyle = align == "left" ? "#777777" : "#444444";
-                    ctx.fillRect(width - 200, y - 5, 30, 30);
-                    ctx.fillStyle = align == "center" ? "#777777" : "#444444";
-                    ctx.fillRect(width - 160, y - 5, 30, 30);
-                    ctx.fillStyle = align == "right" ? "#777777" : "#444444";
-                    ctx.fillRect(width - 120, y - 5, 30, 30);
-                    ctx.fillStyle = "#ffffff";
-                    buttons.align.left = {
-                        x: width - 200,
-                        y: y - 5,
-                        width: 30,
-                        height: 30
-                    };
-                    buttons.align.center = {
-                        x: width - 160,
-                        y: y - 5,
-                        width: 30,
-                        height: 30
-                    };
-                    buttons.align.right = {
-                        x: width - 120,
-                        y: y - 5,
-                        width: 30,
-                        height: 30
-                    };
-                    //Left
-                    ctx.fillRect(width - 196, y - 1, 2, 22);
-                    ctx.fillRect(width - 196, y + 6, 16, 6);
-                    //Center
-                    ctx.fillRect(width - 146, y - 1, 2, 22);
-                    ctx.fillRect(width - 153, y + 6, 16, 6);
-                    //Right
-                    ctx.fillRect(width - 96, y - 1, 2, 22);
-                    ctx.fillRect(width - 110, y + 6, 16, 6);
-                    y += 36;
-                    break;
-                case "color":
-                    ctx.fillStyle = "#ffffff";
-                    ctx.fillText("Color:", width - 290, y);
-                    ctx.fillStyle = modules[selected].options[option];
-                    ctx.fillRect(width - 200, y - 3, 110, 16);
-                    buttons.color = {
-                        x: width - 200,
-                        y: y - 3,
-                        width: 110,
-                        height: 16
-                    };
-                    ctx.strokeStyle = "gray";
-                    ctx.lineWidth = 2;
-                    ctx.strokeRect(width - 200, y - 3, 110, 16);
-                    y += 24;
-                    break;
-                case "arrival":
-                    ctx.fillStyle = "#ffffff";
-                    ctx.fillText("Arrival #", width - 290, y);
-                    ctx.textAlign = "center";
-                    ctx.fillText(modules[selected].options[option] + 1, width - 146, y);
-                    //plus and minus buttons
-                    ctx.fillStyle = "#444444";
-                    ctx.lineWidth = 2;
-                    ctx.fillRect(width - 130, y - 4, 19, 19);
-                    ctx.fillRect(width - 106, y - 4, 19, 19);
-                    ctx.fillRect(width - 180, y - 4, 19, 19);
-                    ctx.fillRect(width - 206, y - 4, 19, 19);
-                    ctx.fillStyle = "#ffffff";
-                    ctx.fillText("+", width - 121, y);
-                    ctx.fillText("++", width - 96, y);
-                    ctx.fillText("-", width - 171, y);
-                    ctx.fillText("--", width - 196, y);
-                    buttons.arrival.plus = {
-                        x: width - 130,
-                        y: y - 4,
-                        width: 19,
-                        height: 19
-                    };
-                    buttons.arrival.plusPlus = {
-                        x: width - 106,
-                        y: y - 4,
-                        width: 19,
-                        height: 19
-                    };
-                    buttons.arrival.minus = {
-                        x: width - 180,
-                        y: y - 4,
-                        width: 19,
-                        height: 19
-                    };
-                    buttons.arrival.minusMinus = {
-                        x: width - 206,
-                        y: y - 4,
-                        width: 19,
-                        height: 19
-                    };
-                    y += 24;
-                    break;
-                default:
-                    ctx.fillStyle = "#ffffff";
-                    ctx.fillText(option[0].toUpperCase() + option.slice(1) + ": " + modules[selected].options[option], width - 290, y);
-                    y += 20;
-                    break;
+            if (option == "align") {
+                let align = modules[selected].options[option];
+                ctx.fillText("Align:", width - 290, y + 5);
+                ctx.fillStyle = align == "left" ? "#777777" : "#444444";
+                ctx.fillRect(width - 200, y - 5, 30, 30);
+                ctx.fillStyle = align == "center" ? "#777777" : "#444444";
+                ctx.fillRect(width - 160, y - 5, 30, 30);
+                ctx.fillStyle = align == "right" ? "#777777" : "#444444";
+                ctx.fillRect(width - 120, y - 5, 30, 30);
+                ctx.fillStyle = "#ffffff";
+                buttons.align.left = {
+                    x: width - 200,
+                    y: y - 5,
+                    width: 30,
+                    height: 30
+                };
+                buttons.align.center = {
+                    x: width - 160,
+                    y: y - 5,
+                    width: 30,
+                    height: 30
+                };
+                buttons.align.right = {
+                    x: width - 120,
+                    y: y - 5,
+                    width: 30,
+                    height: 30
+                };
+                //Left
+                ctx.fillRect(width - 196, y - 1, 2, 22);
+                ctx.fillRect(width - 196, y + 6, 16, 6);
+                //Center
+                ctx.fillRect(width - 146, y - 1, 2, 22);
+                ctx.fillRect(width - 153, y + 6, 16, 6);
+                //Right
+                ctx.fillRect(width - 96, y - 1, 2, 22);
+                ctx.fillRect(width - 110, y + 6, 16, 6);
+                y += 36;
+            } else if (option == "color") {
+                ctx.fillStyle = "#ffffff";
+                ctx.fillText("Color:", width - 290, y);
+                ctx.fillStyle = modules[selected].options[option];
+                ctx.fillRect(width - 200, y - 3, 110, 16);
+                buttons.color = {
+                    x: width - 200,
+                    y: y - 3,
+                    width: 110,
+                    height: 16
+                };
+                ctx.strokeStyle = "gray";
+                ctx.lineWidth = 2;
+                ctx.strokeRect(width - 200, y - 3, 110, 16);
+                y += 24;
+            } else if (option == "arrival") {
+                ctx.fillStyle = "#ffffff";
+                ctx.fillText("Arrival #", width - 290, y);
+                ctx.textAlign = "center";
+                ctx.fillText(modules[selected].options[option] + 1, width - 146, y);
+                //plus and minus buttons
+                ctx.fillStyle = "#444444";
+                ctx.lineWidth = 2;
+                ctx.fillRect(width - 130, y - 4, 19, 19);
+                ctx.fillRect(width - 106, y - 4, 19, 19);
+                ctx.fillRect(width - 180, y - 4, 19, 19);
+                ctx.fillRect(width - 206, y - 4, 19, 19);
+                ctx.fillStyle = "#ffffff";
+                ctx.fillText("+", width - 121, y);
+                ctx.fillText("++", width - 96, y);
+                ctx.fillText("-", width - 171, y);
+                ctx.fillText("--", width - 196, y);
+                buttons.arrival.plus = {
+                    x: width - 130,
+                    y: y - 4,
+                    width: 19,
+                    height: 19
+                };
+                buttons.arrival.plusPlus = {
+                    x: width - 106,
+                    y: y - 4,
+                    width: 19,
+                    height: 19
+                };
+                buttons.arrival.minus = {
+                    x: width - 180,
+                    y: y - 4,
+                    width: 19,
+                    height: 19
+                };
+                buttons.arrival.minusMinus = {
+                    x: width - 206,
+                    y: y - 4,
+                    width: 19,
+                    height: 19
+                };
+                y += 24;
+            } else {
+                ctx.fillStyle = "#ffffff";
+                ctx.fillText(option[0].toUpperCase() + option.slice(1) + ": " + modules[selected].options[option], width - 290, y);
+                y += 20;
             }
         }
         //delete button
-        ctx.fillStyle = "#770000";
+        ctx.fillStyle = "#550000";
         ctx.fillRect(width - 290, height - 36, 280, 26);
         ctx.fillStyle = "#ff0000";
         ctx.font = "16px Consolas,'Courier New',monospace";
@@ -685,56 +849,33 @@ function draw () {
 
     //draw mouse tooltip
     if (!exportMenu) {
-        ctx.font = "12px Consolas,'Courier New',monospace";
-        ctx.textAlign = "left";
-        ctx.fillStyle = "#00000099";
-        let button = [buttons.destination, buttons.arrivalTime, buttons.trainLength, buttons.export, buttons.import, buttons.border];
+        octx.font = "12px Consolas,'Courier New',monospace";
+        octx.textAlign = "left";
+        octx.fillStyle = "#00000099";
+        octx.textBaseline = "top";
         if (move.placing) {
-            let dimCoords = snapToGrid(mouse.x - move.startX, mouse.y - move.startY, PIXEL_SIZE, 8);
-            ctx.fillRect(mouse.x + 10, mouse.y - 5, Math.max(ctx.measureText("Placing: " + mouse.place).width, ctx.measureText(`Relative Size: ${dimCoords[0] / PIXEL_SIZE}x${dimCoords[1] / PIXEL_SIZE}`).width, ctx.measureText(`Screen Size: ${dimCoords[0]}x${dimCoords[1]}`).width) + 10, 52);
-            ctx.fillStyle = "#ffffff";
-            ctx.fillText("Placing: " + mouse.place, mouse.x + 15, mouse.y);
-            ctx.fillText(`Relative Size: ${dimCoords[0] / PIXEL_SIZE}x${dimCoords[1] / PIXEL_SIZE}`, mouse.x + 15, mouse.y + 15);
-            ctx.fillText(`Screen Size: ${dimCoords[0]}x${dimCoords[1]}`, mouse.x + 15, mouse.y + 30);
-        } else if (mouse.place) {
-            ctx.fillRect(mouse.x + 10, mouse.y - 5, ctx.measureText("Placing: " + mouse.place).width + 10, 22);
-            ctx.fillStyle = "#ffffff";
-            ctx.fillText("Placing: " + mouse.place, mouse.x + 15, mouse.y);
-        } else if (pointInBox(mouse.x, mouse.y, button[0].x, button[0].y, button[0].width, button[0].height)) {
-            ctx.fillRect(mouse.x + 10, mouse.y - 5, ctx.measureText("DestinationModule").width + 10, 22);
-            ctx.fillStyle = "#ffffff";
-            ctx.fillText("DestinationModule", mouse.x + 15, mouse.y);
-        } else if (pointInBox(mouse.x, mouse.y, button[1].x, button[1].y, button[1].width, button[1].height)) {
-            ctx.fillRect(mouse.x + 10, mouse.y - 5, ctx.measureText("ArrivalTimeModule").width + 10, 22);
-            ctx.fillStyle = "#ffffff";
-            ctx.fillText("ArrivalTimeModule", mouse.x + 15, mouse.y);
-        } else if (pointInBox(mouse.x, mouse.y, button[2].x, button[2].y, button[2].width, button[2].height)) {
-            ctx.fillRect(mouse.x + 10, mouse.y - 5, ctx.measureText("TrainLengthModule").width + 10, 22);
-            ctx.fillStyle = "#ffffff";
-            ctx.fillText("TrainLengthModule", mouse.x + 15, mouse.y);
-        } else if (pointInBox(mouse.x, mouse.y, button[3].x, button[3].y, button[3].width, button[3].height)) {
-            ctx.fillRect(mouse.x - 20 - ctx.measureText("Save / Export").width, mouse.y - 5, ctx.measureText("Save / Export").width + 10, 22);
-            ctx.fillStyle = "#ffffff";
-            ctx.textAlign = "right";
-            ctx.fillText("Save / Export", mouse.x - 15, mouse.y);
-        } else if (pointInBox(mouse.x, mouse.y, button[4].x, button[4].y, button[4].width, button[4].height)) {
-            ctx.fillRect(mouse.x - 20 - ctx.measureText("Load / Import").width, mouse.y - 5, ctx.measureText("Load / Import").width + 10, 22);
-            ctx.fillStyle = "#ffffff";
-            ctx.textAlign = "right";
-            ctx.fillText("Load / Import", mouse.x - 15, mouse.y);
-        } else if (pointInBox(mouse.x, mouse.y, button[5].x, button[5].y, button[5].width, button[5].height)) {
-            ctx.fillRect(mouse.x - 20 - ctx.measureText("Toggle Border").width, mouse.y - 5, ctx.measureText("Toggle Border").width + 10, 22);
-            ctx.fillStyle = "#ffffff";
-            ctx.textAlign = "right";
-            ctx.fillText("Toggle Border", mouse.x - 15, mouse.y);
-        }
+            let dimCoords = snapToGrid(mouse.x - move.startX, mouse.y - move.startY, pixelSize, 8);
+            octx.fillRect(mouse.x + 10, mouse.y - 5, Math.max(octx.measureText("Placing: " + mouse.place).width, octx.measureText(`Relative Size: ${Math.abs(dimCoords[0] / pixelSize)}x${Math.abs(dimCoords[1] / pixelSize)}`).width, octx.measureText(`Screen Size: ${Math.abs(dimCoords[0])}x${Math.abs(dimCoords[1])}`).width) + 10, 52);
+            octx.fillStyle = "#ffffff";
+            octx.fillText("Placing: " + mouse.place, mouse.x + 15, mouse.y);
+            octx.fillText(`Relative Size: ${Math.abs(dimCoords[0] / pixelSize)}x${Math.abs(dimCoords[1] / pixelSize)}`, mouse.x + 15, mouse.y + 15);
+            octx.fillText(`Screen Size: ${Math.abs(dimCoords[0])}x${Math.abs(dimCoords[1])}`, mouse.x + 15, mouse.y + 30);
+        } else if (mouse.place) displayTooltip("Placing: " + mouse.place);
+        else if (pointInBoxObject(mouse.x, mouse.y, buttons.destination)) displayTooltip("DestinationModule");
+        else if (pointInBoxObject(mouse.x, mouse.y, buttons.arrivalTime)) displayTooltip("ArrivalTimeModule");
+        else if (pointInBoxObject(mouse.x, mouse.y, buttons.trainLength)) displayTooltip("TrainLengthModule");
+        else if (pointInBoxObject(mouse.x, mouse.y, buttons.platformNumber)) displayTooltip("PlatformNumberModule");
+        else if (pointInBoxObject(mouse.x, mouse.y, buttons.export)) displayTooltip("Save / Export", true);
+        else if (pointInBoxObject(mouse.x, mouse.y, buttons.import)) displayTooltip("Load / Import", true);
+        else if (pointInBoxObject(mouse.x, mouse.y, buttons.border)) displayTooltip("Toggle Border", true);
+        else if (pointInBoxObject(mouse.x, mouse.y, buttons.new)) displayTooltip("Create New", true);
     }
 
     //debug stuff
     ctx.fillStyle = "#ffffff";
     ctx.font = "12px Consolas,'Courier New',monospace";
     ctx.textAlign = "left";
-    ctx.fillText("v0.1.0", 5, height - 15);
+    ctx.fillText("v0.2.0", 5, height - 15);
     //ctx.fillText("Mouse X: " + mouse.x, 10, 10);
     //ctx.fillText("Mouse Y: " + mouse.y, 10, 20);
 }
@@ -754,8 +895,24 @@ function drawModuleBorder (name, x, y, width, height, weight, color) {
     ctx.fillRect(x, y + height - weight, width, weight);
 }
 
+function drawOccupiedBorder (x, y, width, height, weight, color) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = weight;
+    ctx.beginPath();
+    ctx.rect(x + weight / 2, y + weight / 2, width - weight, height - weight);
+    ctx.moveTo(x + weight / 2, y + weight / 2);
+    ctx.lineTo(x + width - weight / 2, y + height - weight / 2);
+    ctx.moveTo(x + width - weight / 2, y + weight / 2);
+    ctx.lineTo(x + weight / 2, y + height - weight / 2);
+    ctx.stroke();
+}
+
 function pointInBox (x, y, bx, by, bw, bh) {
     return x > bx && x < bx + bw && y > by && y < by + bh;
+}
+
+function pointInBoxObject (x, y, box) {
+    return x > box.x && x < box.x + box.width && y > box.y && y < box.y + box.height;
 }
 
 function snapToGrid (x, y, size, subdiv = 1, offsetX = 0, offsetY = 0) {
@@ -763,6 +920,64 @@ function snapToGrid (x, y, size, subdiv = 1, offsetX = 0, offsetY = 0) {
         Math.round((x - offsetX) / size * subdiv) * size / subdiv + offsetX,
         Math.round((y - offsetY) / size * subdiv) * size / subdiv + offsetY
     ]
+}
+
+function displayTooltip (text, right=false) {
+    octx.fillStyle = "#00000099";
+    if (right) {
+        octx.fillRect(mouse.x - 20 - octx.measureText(text).width, mouse.y - 5, octx.measureText(text).width + 10, 22);
+    } else {
+        octx.fillRect(mouse.x + 10, mouse.y - 5, octx.measureText(text).width + 10, 22);
+    }
+    octx.fillStyle = "#ffffff";
+    if (right) {
+        octx.textAlign = "right";
+        octx.fillText(text, mouse.x - 15, mouse.y);
+    } else {
+        octx.textAlign = "left";
+        octx.fillText(text, mouse.x + 15, mouse.y);
+    }
+}
+
+function loadJSON (json) {
+    try {
+        info = {
+            id: "",
+            name: "",
+            author: "",
+            description: ""
+        }
+        if (json._editor_size) {
+            size = json._editor_size;
+            pidsWidth = sizes[size].width;
+            pidsHeight = sizes[size].height;
+            edgeWidth = sizes[size].edge;
+            pids = {
+                width: pidsWidth * pixelSize,
+                height: pidsHeight * pixelSize,
+                x: Math.floor(width / 2 - pidsWidth * pixelSize / 2),
+                y: Math.floor(height / 2 - pidsHeight * pixelSize / 2)
+            }
+        }
+        if (json.id) info.id = json.id;
+        if (json.name) info.name = json.name;
+        if (json.author) info.author = json.author;
+        if (json.description) info.description = json.description;
+        modules = [];
+        selected = -1;
+        for (const module of json.modules) {
+            let x = module.pos.x * pixelSize + pids.x;
+            let y = module.pos.y * pixelSize + pids.y;
+            let w = module.pos.w * pixelSize;
+            let h = module.pos.h * pixelSize;
+            if (module.type == "DestinationModule") modules.push(new DestinationModule(x, y, w, h, {align: module.align, color: "#" + module.color.toString(16).padStart(6, "0"), arrival: module.arrival}));
+            if (module.type == "ArrivalTimeModule") modules.push(new ArrivalTimeModule(x, y, w, h, {align: module.align, color: "#" + module.color.toString(16).padStart(6, "0"), arrival: module.arrival}));
+            if (module.type == "TrainLengthModule") modules.push(new TrainLengthModule(x, y, w, h, {align: module.align, color: "#" + module.color.toString(16).padStart(6, "0"), arrival: module.arrival}));
+            if (module.type == "PlatformNumberModule") modules.push(new PlatformNumberModule(x, y, w, h, {align: module.align, color: "#" + module.color.toString(16).padStart(6, "0"), arrival: module.arrival}));
+        }
+    } catch (e) {
+        alert("Invalid Layout Format!");
+    }
 }
 
 //event listeners
@@ -791,36 +1006,86 @@ document.addEventListener("keydown", (e) => {
             return;
         }
 
-        if (!e.shiftKey) {
+        //duplicate key
+        if (e.code === "KeyD") {
+            let newModule = -1;
+            newModule += modules.push(Object.assign(Object.create(Object.getPrototypeOf(modules[selected])), modules[selected]));
+            selected = newModule;
+        }
+
+        //nudge bottom right point
+        if (e.shiftKey) {
             if (e.code === "ArrowLeft") {
-                modules[selected].width -= PIXEL_SIZE * 0.125;
+                modules[selected].x -= pixelSize * 0.125;
+                modules[selected].width += pixelSize * 0.125;
             }
             if (e.code === "ArrowRight") {
-                modules[selected].width += PIXEL_SIZE * 0.125;
+                modules[selected].x += pixelSize * 0.125;
+                modules[selected].width -= pixelSize * 0.125;
             }
             if (e.code === "ArrowUp") {
-                modules[selected].height -= PIXEL_SIZE * 0.125;
+                modules[selected].y -= pixelSize * 0.125;
+                modules[selected].height += pixelSize * 0.125;
             }
             if (e.code === "ArrowDown") {
-                modules[selected].height += PIXEL_SIZE * 0.125;
+                modules[selected].y += pixelSize * 0.125;
+                modules[selected].height -= pixelSize * 0.125;
             }
+
+        //nudge top left point
+        } else if (e.ctrlKey) {
+            if (e.code === "ArrowLeft") {
+                modules[selected].width -= pixelSize * 0.125;
+            }
+            if (e.code === "ArrowRight") {
+                modules[selected].width += pixelSize * 0.125;
+            }
+            if (e.code === "ArrowUp") {
+                modules[selected].height -= pixelSize * 0.125;
+            }
+            if (e.code === "ArrowDown") {
+                modules[selected].height += pixelSize * 0.125;
+            }
+
+        //nudge whole module
         } else {
             if (e.code === "ArrowLeft") {
-                modules[selected].x -= PIXEL_SIZE * 0.125;
-                modules[selected].width += PIXEL_SIZE * 0.125;
+                modules[selected].x -= pixelSize * 0.125;
             }
             if (e.code === "ArrowRight") {
-                modules[selected].x += PIXEL_SIZE * 0.125;
-                modules[selected].width -= PIXEL_SIZE * 0.125;
+                modules[selected].x += pixelSize * 0.125;
             }
             if (e.code === "ArrowUp") {
-                modules[selected].y -= PIXEL_SIZE * 0.125;
-                modules[selected].height += PIXEL_SIZE * 0.125;
+                modules[selected].y -= pixelSize * 0.125;
             }
             if (e.code === "ArrowDown") {
-                modules[selected].y += PIXEL_SIZE * 0.125;
-                modules[selected].height -= PIXEL_SIZE * 0.125;
+                modules[selected].y += pixelSize * 0.125;
             }
+        }
+
+        //add to arrival
+        if (e.code === "Equal") {
+            //shift for 4
+            if (e.shiftKey) {
+                modules[selected].options.arrival += 3;
+                modules[selected].arrival += 3;
+            }
+            modules[selected].options.arrival++;
+            modules[selected].arrival++;
+        }
+
+        //subtract from arrival
+        if (e.code === "Minus") {
+            //shift for 4
+            if (e.shiftKey) {
+                modules[selected].options.arrival -= 3;
+                modules[selected].arrival -= 3;
+            }
+            modules[selected].options.arrival--;
+            modules[selected].arrival--;
+            //minimum 0
+            if (modules[selected].options.arrival < 0) modules[selected].options.arrival = 0;
+            if (modules[selected].arrival < 0) modules[selected].arrival = 0;
         }
     }
 });
@@ -830,11 +1095,11 @@ document.addEventListener("keyup", (e) => {
     document.getElementById("exportID").value = document.getElementById("exportID").value.replace(/[^a-zA-Z0-9_]/g, "");
 });
 
-document.addEventListener("mousemove", (e) => {
+document.getElementById("canvas").addEventListener("mousemove", (e) => {
     mouse.x = e.offsetX;
     mouse.y = e.offsetY;
-    let xMoveConstant = Math.round((mouse.x - offsetX - mouse.startX) / PIXEL_SIZE * 8) * PIXEL_SIZE / 8;
-    let yMoveConstant = Math.round((mouse.y - offsetY -  mouse.startY) / PIXEL_SIZE * 8) * PIXEL_SIZE / 8;
+    let xMoveConstant = Math.round((mouse.x - offsetX - mouse.startX) / pixelSize * 8) * pixelSize / 8;
+    let yMoveConstant = Math.round((mouse.y - offsetY -  mouse.startY) / pixelSize * 8) * pixelSize / 8;
     if (move.moveT) {
         modules[selected].y = move.startY + yMoveConstant;
         modules[selected].height = move.startHeight - yMoveConstant;
@@ -859,7 +1124,7 @@ document.addEventListener("mousemove", (e) => {
     }
 });
 
-document.addEventListener("mousedown", (e) => {
+document.getElementById("canvas").addEventListener("mousedown", (e) => {
     mouse.startX = e.offsetX;
     mouse.startY = e.offsetY;
     if (e.button === 0 && !exportMenu) {
@@ -871,23 +1136,19 @@ document.addEventListener("mousedown", (e) => {
             return;
         }
         //toolbar button logic
-        let button = [buttons.destination, buttons.arrivalTime, buttons.trainLength, buttons.export, buttons.import, buttons.border];
         if (mouse.startY < 40) {
-            if (pointInBox(mouse.startX, mouse.startY, button[0].x, button[0].y, button[0].width, button[0].height)) {
-                mouse.place = "DestinationModule";
-            } else if (pointInBox(mouse.startX, mouse.startY, button[1].x, button[1].y, button[1].width, button[1].height)) {
-                mouse.place = "ArrivalTimeModule";
-            } else if (pointInBox(mouse.startX, mouse.startY, button[2].x, button[2].y, button[2].width, button[2].height)) {
-                mouse.place = "TrainLengthModule";
-            } else if (pointInBox(mouse.startX, mouse.startY, button[3].x, button[3].y, button[3].width, button[3].height)) {
+            if (pointInBoxObject(mouse.startX, mouse.startY, buttons.destination)) mouse.place = "DestinationModule";
+            else if (pointInBoxObject(mouse.startX, mouse.startY, buttons.arrivalTime)) mouse.place = "ArrivalTimeModule";
+            else if (pointInBoxObject(mouse.startX, mouse.startY, buttons.trainLength)) mouse.place = "TrainLengthModule";
+            else if (pointInBoxObject(mouse.startX, mouse.startY, buttons.platformNumber)) mouse.place = "PlatformNumberModule";
+            else if (pointInBoxObject(mouse.startX, mouse.startY, buttons.export)) {
                 exportMenu = true;
                 document.getElementById("exportID").value = info.id;
                 document.getElementById("exportName").value = info.name;
                 document.getElementById("exportAuthor").value = info.author;
                 document.getElementById("exportDescription").value = info.description;
-
                 document.getElementById("exportMenu").style.display = "block";
-            } else if (pointInBox(mouse.startX, mouse.startY, button[4].x, button[4].y, button[4].width, button[4].height)) {
+            } else if (pointInBoxObject(mouse.startX, mouse.startY, buttons.import)) {
                 //create a new file input element
                 try {
                 let fileInput = document.createElement("input");
@@ -899,36 +1160,33 @@ document.addEventListener("mousedown", (e) => {
                     let reader = new FileReader();
                     reader.readAsText(file, "UTF-8");
                     reader.onload = (e) => {
-                        let data = JSON.parse(e.target.result);
-                        if (data.id) info.id = data.id;
-                        if (data.name) info.name = data.name;
-                        if (data.author) info.author = data.author;
-                        if (data.description) info.description = data.description;
-                        modules = [];
-                        for (const module of data.modules) {
-                            let x = module.pos.x * PIXEL_SIZE + PIDS.X;
-                            let y = module.pos.y * PIXEL_SIZE + PIDS.Y;
-                            let w = module.pos.w * PIXEL_SIZE;
-                            let h = module.pos.h * PIXEL_SIZE;
-                            switch (module.type) {
-                                case "DestinationModule":
-                                    modules.push(new DestinationModule(x, y, w, h, {align: module.align, color: "#" + module.color.toString(16).padStart(6, "0"), arrival: module.arrival}));
-                                    break;
-                                case "ArrivalTimeModule":
-                                    modules.push(new ArrivalTimeModule(x, y, w, h, {align: module.align, color: "#" + module.color.toString(16).padStart(6, "0"), arrival: module.arrival}));
-                                    break;
-                                case "TrainLengthModule":
-                                    modules.push(new TrainLengthModule(x, y, w, h, {align: module.align, color: "#" + module.color.toString(16).padStart(6, "0"), arrival: module.arrival}));
-                                    break;
-                            }
+                        try {
+                            loadJSON(JSON.parse(e.target.result));
+                        } catch (e) {
+                            alert("Invalid JSON!");
                         }
                     }
                 });
                 document.body.appendChild(fileInput);
                 fileInput.click();
                 } catch (e) {alert(e.stack);}
-            } else if (pointInBox(mouse.startX, mouse.startY, button[5].x, button[5].y, button[5].width, button[5].height)) {
-                drawBorder = !drawBorder;
+            } else if (pointInBoxObject(mouse.startX, mouse.startY, buttons.border)) drawBorder = !drawBorder;
+            else if (pointInBoxObject(mouse.startX, mouse.startY, buttons.new)) {
+                modules = [];
+                selected = -1
+                size = document.getElementById("size").value;
+                pidsWidth = sizes[size].width;
+                pidsHeight = sizes[size].height;
+                edgeWidth = sizes[size].edge;
+                pids = {
+                    width: pidsWidth * pixelSize,
+                    height: pidsHeight * pixelSize,
+                    x: Math.floor(width / 2 - pidsWidth * pixelSize / 2),
+                    y: Math.floor(height / 2 - pidsHeight * pixelSize / 2)
+                }
+                if (sizes[size].default) {
+                    loadJSON(sizes[size].default);
+                }
             }
             return;
         }
@@ -1070,7 +1328,7 @@ document.addEventListener("mousedown", (e) => {
     }
 });
 
-document.addEventListener("mouseup", (e) => {
+document.getElementById("canvas").addEventListener("mouseup", (e) => {
     move.moveT = false;
     move.moveB = false;
     move.moveL = false;
@@ -1079,8 +1337,8 @@ document.addEventListener("mouseup", (e) => {
     mouse.pan = false;
     if (move.placing) {
         move.placing = false;
-        let startCoords = snapToGrid(move.startX, move.startY, PIXEL_SIZE, 8, PIDS.X + offsetX, PIDS.Y + offsetY);
-        let dimCoords = snapToGrid(mouse.x - move.startX, mouse.y - move.startY, PIXEL_SIZE, 8);
+        let startCoords = snapToGrid(move.startX, move.startY, pixelSize, 8, pids.x + offsetX, pids.y + offsetY);
+        let dimCoords = snapToGrid(mouse.x - move.startX, mouse.y - move.startY, pixelSize, 8);
         //abort if any dimension is 0
         if (dimCoords[0] === 0 || dimCoords[1] === 0) return;
         //fix negative width or height
@@ -1094,17 +1352,10 @@ document.addEventListener("mouseup", (e) => {
         }
         //place module
         let newModule = -1;
-        switch (mouse.place) {
-            case "DestinationModule":
-                newModule += modules.push(new DestinationModule(startCoords[0] - offsetX, startCoords[1] - offsetY, dimCoords[0], dimCoords[1], {align: "left", color: "#ffffff", arrival: 0}));
-                break;
-            case "ArrivalTimeModule":
-                newModule += modules.push(new ArrivalTimeModule(startCoords[0] - offsetX, startCoords[1] - offsetY, dimCoords[0], dimCoords[1], {align: "left", color: "#ffffff", arrival: 0}));
-                break;
-            case "TrainLengthModule":
-                newModule += modules.push(new TrainLengthModule(startCoords[0] - offsetX, startCoords[1] - offsetY, dimCoords[0], dimCoords[1], {align: "left", color: "#ffffff", arrival: 0}));
-                break;
-        }
+        if (mouse.place == "DestinationModule") newModule += modules.push(new DestinationModule(startCoords[0] - offsetX, startCoords[1] - offsetY, dimCoords[0], dimCoords[1], {align: "left", color: "#ffffff", arrival: 0}));
+        else if (mouse.place == "ArrivalTimeModule") newModule += modules.push(new ArrivalTimeModule(startCoords[0] - offsetX, startCoords[1] - offsetY, dimCoords[0], dimCoords[1], {align: "left", color: "#ffffff", arrival: 0}));
+        else if (mouse.place == "TrainLengthModule") newModule += modules.push(new TrainLengthModule(startCoords[0] - offsetX, startCoords[1] - offsetY, dimCoords[0], dimCoords[1], {align: "left", color: "#ffffff", arrival: 0}));
+        else if (mouse.place == "PlatformNumberModule") newModule += modules.push(new PlatformNumberModule(startCoords[0] - offsetX, startCoords[1] - offsetY, dimCoords[0], dimCoords[1], {align: "left", color: "#ffffff", arrival: 0}));
         mouse.place = null;
         selected = newModule;
     }
@@ -1129,6 +1380,7 @@ document.getElementById("cancelButton").addEventListener("click", () => {
 
 document.getElementById("exportButton").addEventListener("click", () => {
     let data = {
+        _editor_size: size,
         id: document.getElementById("exportID").value,
         modules: modules.map(m => m.export())
     }
