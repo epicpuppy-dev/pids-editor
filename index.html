@@ -5,6 +5,11 @@
     <title>PIDS Layout Editor</title>
     <link rel="preload" href="font.css" as="style" />
     <link rel="stylesheet" type="text/css" href="font.css" preload>
+    <meta name="og:title" content="PIDS Layout Editor">
+    <meta name="og:description" content="An all-in-one tool for creating PIDS layouts for the MTR mod">
+    <meta name="og:image" content="icon.png">
+    <meta name="og:url" content="https://pids.epicpuppy.dev/">
+    <meta name="og:type" content="website">
     <style>
         html {
             color: #ffffff;
@@ -109,7 +114,8 @@
         <div class="inputContainer"><label>Author: </label> <input type="text" id="exportAuthor" placeholder="You" maxlength="64" /><br></div>
         <label>Desription: </label><br>
         <textarea id="exportDescription"></textarea><br>
-        <div class="inputContainer"><button id="cancelButton">Cancel</button><button id="exportButton">Export</button></div>
+        <div class="inputContainer"><button id="cancelButton" onclick="exportCancel()">Cancel</button><button id="exportButton" onclick="exportClick()">Export</button></div>
+        <link href="icon.png" rel="icon" type="image/png">
     </div>
     <div id="dropdownMenu">
         <select id="size">
@@ -123,9 +129,16 @@
         </select>
     </div>
     <canvas id="overlay" width="800" height="600"></canvas>
+    <script src="js/init.js"></script>
     <script src="js/modules.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/index.js" defer></script>
+    <script src="js/draw.js"></script>
+    <script src="js/events.js"></script>
+    <script>
+        // start the draw loop
+        draw();
+        setInterval(draw, 1000 / 60);
+    </script>
 </body>
 
 </html>
