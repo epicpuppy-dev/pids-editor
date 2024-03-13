@@ -1,7 +1,21 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const devMode = process.env.NODE_ENV !== "production";
+
+const plugins = [
+  new HtmlWebpackPlugin({
+    template: 'src/index.html',
+    filename: 'index.html'
+  })
+]
+
+if (!devMode) {
+  plugins.push(new MiniCssExtractPlugin());
+}
 
 const config = {
+  devtool: 'eval-source-map',
   entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -39,6 +53,25 @@ const config = {
         generator: {
           filename: 'assets/[hash][ext][query]'
         }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader'
+        ]
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/'
+            }
+          }
+        ]
       }
     ]
   },
@@ -49,13 +82,8 @@ const config = {
       '.js'
     ]
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: 'src/index.html',
-      filename: 'index.html',
-      title: 'PIDS Editor'
-    })
-  ]
+
+  plugins: plugins
 };
 
 module.exports = config;

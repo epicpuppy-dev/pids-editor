@@ -1,5 +1,5 @@
 export interface Layout {
-    version: 2, // Layout file format version
+    version: 1, // Layout file format version
     id: string, // ID of the layout
     name?: string, // Display name
     description?: string, // Description
@@ -10,7 +10,7 @@ export interface Layout {
 export type AnyModule = DestinationModule | ArrivalTimeModule | TrainLengthModule | PlatformNumberModule; // Accepted module types
 
 export interface Module {
-    typeID: string, // Type of module
+    type: string, // Type of module
     pos: {
         x: number, // Block pixel-scoped x position
         y: number, // Block pixel-scoped y position
@@ -26,17 +26,17 @@ export interface TextModule extends Module {
 }
 
 export interface DestinationModule extends TextModule {
-    typeID: "destination",
+    type: "DestinationModule",
 }
 
 export interface ArrivalTimeModule extends TextModule {
-    typeID: "arrivalTime",
+    type: "ArrivalTimeModule",
 }
 
 export interface TrainLengthModule extends Module {
-    typeID: "trainLength"
+    type: "TrainLengthModule"
 }
 
 export interface PlatformNumberModule extends Module {
-    typeID: "platformNumber"
+    type: "PlatformNumberModule"
 }

@@ -1,6 +1,6 @@
 {
   "name": "pids-overhaul",
-  "version": "0.3.0",
+  "version": "0.2.3",
   "description": "",
   "main": "js/index.js",
   "scripts": {
@@ -26,7 +26,13 @@
   },
   "devDependencies": {
     "babel-loader": "^9.1.2",
+    "css-loader": "^6.10.0",
+    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.1",
+    "mini-css-extract-plugin": "^2.8.1",
+    "postcss-loader": "^8.1.1",
+    "sass-loader": "^14.1.1",
+    "style-loader": "^3.3.4",
     "ts-loader": "^9.4.3",
     "typescript": "^5.0.4",
     "url-loader": "^4.1.1",
