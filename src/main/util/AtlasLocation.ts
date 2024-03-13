@@ -1,0 +1,1 @@
+export type AtlasLocation = [number, number, number, number];
