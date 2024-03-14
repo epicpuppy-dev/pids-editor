@@ -10,13 +10,6 @@ import { DestinationModule } from "./modules/module/DestinationModule";
 import { ModuleData } from "./util/ModuleData";
 import { RenderUtil } from "./util/RenderUtil";
 import sprites from "../resources/sprites.png";
-import layoutHA from "../resources/layout/base_horizontal_a.json";
-import layoutHB from "../resources/layout/base_horizontal_b.json";
-import layoutHC from "../resources/layout/base_horizontal_c.json";
-import layoutVA from "../resources/layout/base_vertical_a.json";
-import layoutPS from "../resources/layout/base_projector_small.json";
-import layoutPM from "../resources/layout/base_projector_medium.json";
-import layoutPL from "../resources/layout/base_projector_large.json";
 
 export class PIDSEditor {
     public mouse: MouseController = new MouseController();
@@ -52,13 +45,13 @@ export class PIDSEditor {
         this.assets.loadImage("sprites", sprites);
 
         let layouts = {
-            "ha": layoutHA,
-            "hb": layoutHB,
-            "hc": layoutHC,
-            "va": layoutVA,
-            "ps": layoutPS,
-            "pm": layoutPM,
-            "pl": layoutPL
+            "ha": "https://cdn.epicpuppy.dev/assets/pids/base_horizontal_a.json",
+            "hb": "https://cdn.epicpuppy.dev/assets/pids/base_horizontal_b.json",
+            "hc": "https://cdn.epicpuppy.dev/assets/pids/base_horizontal_c.json",
+            "va": "https://cdn.epicpuppy.dev/assets/pids/base_vertical_a.json",
+            "ps": "https://cdn.epicpuppy.dev/assets/pids/base_projector_small.json",
+            "pm": "https://cdn.epicpuppy.dev/assets/pids/base_projector_medium.json",
+            "pl": "https://cdn.epicpuppy.dev/assets/pids/base_projector_large.json"
         }
 
         for (let layout of Object.keys(layouts)) {
@@ -123,7 +116,7 @@ export class PIDSEditor {
         let assetsLoaded = this.assets.getLoaded();
         let assetsTotal = this.assets.getTotal();
         if (assetsLoaded < assetsTotal) {
-            this.ctx.fillText("Loading: " + assetsLoaded + "/" + assetsTotal, 5, this.height - 32);
+            this.ctx.fillText("Loading: " + assetsLoaded + "/" + assetsTotal + " - " + this.assets.loading, 5, this.height - 32);
         }
         //version
         this.ctx.fillText(version, 5, this.height - 16);

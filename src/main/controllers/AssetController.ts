@@ -3,6 +3,7 @@ import { FileAsset } from "../util/FileAsset";
 export class AssetController {
     public images: {[key: string]: HTMLImageElement} = {};
     public files: {[key: string]: FileAsset} = {};
+    public loading: string = "";
 
     public loadImage (id: string, src: string) {
         let image = new Image();
@@ -18,7 +19,10 @@ export class AssetController {
     public async loadFiles () {
         //introduce some "natural" loading time
         for (let file of Object.keys(this.files)) {
+            let url = this.files[file].src.split("/");
+            this.loading = url[url.length - 1];
             await this.files[file].load();
+            this.loading = "";
         }
     }
 
