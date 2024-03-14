@@ -1,3 +1,4 @@
+import { PIDSEditor } from "../../PIDSEditor";
 import { LayoutController } from "../../controllers/LayoutController";
 import { Arrival } from "../../editor/Arrival";
 import { RenderUtil } from "../../util/RenderUtil";
@@ -17,7 +18,11 @@ export abstract class TextModule extends Module {
 
     protected abstract getText (arrivals: Arrival[]): string;
 
-    public render(ctx: CanvasRenderingContext2D, arrivals: Arrival[], util: RenderUtil, layout: LayoutController): void {
+    public render(ctx: CanvasRenderingContext2D, editor: PIDSEditor): void {
+        let arrivals = editor.arrivals.arrivals;
+        let util = editor.renderUtil;
+        let layout = editor.layout;
+
         let text = this.getText(arrivals);
         text = this.template.replace("%s", text);
 
@@ -46,6 +51,6 @@ export abstract class TextModule extends Module {
 
         ctx.fillText(text, 0, 0);
         ctx.restore();
-        super.render(ctx, arrivals, util, layout);
+        super.render(ctx, editor);
     }
 }

@@ -1,9 +1,9 @@
-import { OperationCanceledException } from "typescript";
 import { Module } from "../modules/Module";
 import { ModuleType } from "../modules/ModuleType";
 import { RenderUtil } from "../util/RenderUtil";
 import { Arrival } from "../editor/Arrival";
 import { LayoutController } from "./LayoutController";
+import { PIDSEditor } from "../PIDSEditor";
 
 export class ModuleController {
     public modules: Module[] = [];
@@ -16,9 +16,9 @@ export class ModuleController {
         this.moduleTypes[moduleType.id] = moduleType;
     }
 
-    public render (ctx: CanvasRenderingContext2D, arrivals: Arrival[], util: RenderUtil, layout: LayoutController) {
+    public render (ctx: CanvasRenderingContext2D, editor: PIDSEditor) {
         for (let module of this.modules) {
-            module.render(ctx, arrivals, util, layout);
+            module.render(ctx, editor);
         }
     }
 
