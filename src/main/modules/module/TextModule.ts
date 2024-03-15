@@ -1,7 +1,7 @@
 import { PIDSEditor } from "../../PIDSEditor";
 import { LayoutController } from "../../controllers/LayoutController";
 import { Arrival } from "../../editor/Arrival";
-import { RenderUtil } from "../../util/RenderUtil";
+import { Util } from "../../util/Util";
 import { Module } from "../Module";
 
 export abstract class TextModule extends Module {
@@ -20,7 +20,7 @@ export abstract class TextModule extends Module {
 
     public render(ctx: CanvasRenderingContext2D, editor: PIDSEditor): void {
         let arrivals = editor.arrivals.arrivals;
-        let util = editor.renderUtil;
+        let util = editor.util;
         let layout = editor.layout;
 
         let text = this.getText(arrivals);

@@ -1,7 +1,7 @@
 import { PIDSEditor } from "../PIDSEditor";
 import { LayoutController } from "../controllers/LayoutController";
 import { Arrival } from "../editor/Arrival";
-import { RenderUtil } from "../util/RenderUtil";
+import { Util } from "../util/Util";
 
 export abstract class Module {
     public x: number;
@@ -21,7 +21,7 @@ export abstract class Module {
     public abstract load (data: {[key: string]: any}): void;
 
     public render (ctx: CanvasRenderingContext2D, editor: PIDSEditor) {
-        let util = editor.renderUtil;
+        let util = editor.util;
         let layout = editor.layout;
         if (util.showBorder) {
             let scaledX = this.x * layout.pixelSize + layout.x;

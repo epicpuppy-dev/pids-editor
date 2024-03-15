@@ -8,18 +8,17 @@ import { MouseController } from "./controllers/MouseController";
 import { ArrivalTimeModule } from "./modules/module/ArrivalTimeModule";
 import { DestinationModule } from "./modules/module/DestinationModule";
 import { ModuleData } from "./util/ModuleData";
-import { RenderUtil } from "./util/RenderUtil";
-import sprites from "../resources/sprites.png";
+import { Util } from "./util/Util";
 
 export class PIDSEditor {
-    public mouse: MouseController = new MouseController();
+    public mouse: MouseController = new MouseController(this);
     public arrivals: ArrivalController = new ArrivalController();
     public modules: ModuleController = new ModuleController();
     public layout: LayoutController = new LayoutController(32, 9, 1, window.innerWidth, window.innerHeight);
     public edit: EditorController = new EditorController();
     public assets: AssetController = new AssetController();
 
-    public renderUtil: RenderUtil = new RenderUtil();
+    public util: Util = new Util();
 
     public width: number;
     public height: number;
@@ -42,7 +41,7 @@ export class PIDSEditor {
         this.height = this.canvas.height = this.overlay.height = window.innerHeight;
 
         ModuleData.registerModules(this.modules);
-        this.assets.loadImage("sprites", sprites);
+        this.assets.loadImage("sprites", "https://cdn.epicpuppy.dev/assets/pids/sprites.png");
 
         let layouts = {
             "ha": "https://cdn.epicpuppy.dev/assets/pids/base_horizontal_a.json",
@@ -120,5 +119,13 @@ export class PIDSEditor {
         }
         //version
         this.ctx.fillText(version, 5, this.height - 16);
+    }
+
+    public mousedown (x: number, y: number) {
+        this.edit.mousedown(x, y, this);
+    }
+
+    public mouseup (x: number, y: number, startX: number, startY: number) {
+        this.edit.mouseup(x, y, startX, startY, this);
     }
 }
