@@ -1,6 +1,6 @@
 import { Module } from "../modules/Module";
 import { ModuleType } from "../modules/ModuleType";
-import { RenderUtil } from "../util/RenderUtil";
+import { Util } from "../util/Util";
 import { Arrival } from "../editor/Arrival";
 import { LayoutController } from "./LayoutController";
 import { PIDSEditor } from "../PIDSEditor";
