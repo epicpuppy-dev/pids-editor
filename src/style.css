@@ -27,6 +27,12 @@ canvas {
 .property {
     display: none;
 }
+#propertyTable {
+    width: 100%;
+}
+#timeTypeInput {
+    width: 100%;
+}
 #alignIcons {
     flex-grow: 1;
     text-align: center;
@@ -37,7 +43,7 @@ canvas {
 #colorInput {
     flex-grow: 1;
     padding: 2px;
-    width: 8em;
+    width: 100%;
     height: 2em;
 }
 #arrivalInput {
@@ -56,7 +62,8 @@ canvas {
     border-width: 2px 0 2px 2px;
     border-radius: 6px 0 0 6px;
     flex-direction: column;
-    min-width: 20%;
+    max-height: 75%;
+    overflow-y: auto;
     text-align: center;
 }
 #propertyEditor h3 {
@@ -77,6 +84,7 @@ canvas {
     color: #ffffff;
     margin-bottom: 8px;
     border-radius: 6px;
+    font-family: 'Consolas','Courier New',monospace;
 }
 #deleteButton:hover {
     background-color: #660000;
