@@ -30,9 +30,9 @@
                 <th>Text Align:</th>
                 <td>
                     <div id="alignIcons">
-                        <img src="https://cdn.epicpuppy.dev/assets/pids/sprite-align-left.png" width="32" height="32" />
-                        <img src="https://cdn.epicpuppy.dev/assets/pids/sprite-align-center.png" width="32" height="32" />
-                        <img src="https://cdn.epicpuppy.dev/assets/pids/sprite-align-right.png" width="32" height="32" />
+                        <img id="alignLeft" src="https://cdn.epicpuppy.dev/assets/pids/sprite-align-left.png" width="32" height="32" />
+                        <img id="alignCenter" src="https://cdn.epicpuppy.dev/assets/pids/sprite-align-center.png" width="32" height="32" />
+                        <img id="alignRight" src="https://cdn.epicpuppy.dev/assets/pids/sprite-align-right.png" width="32" height="32" />
                     </div>
                 </td>
             </tr>
@@ -68,6 +68,26 @@
         </table>
         <button id="deleteButton">Delete</button>
     </div>
+    <div id="toolbar">
+        <div id="moduleTypes">
+            
+        </div>
+        <div id="management">
+            <select id="sizeInput">
+                <option value="ha">Horizontal A (32x11)</option>
+                <option value="hb">Horizontal B (32x9)</option>
+                <option value="hc">Horizontal C (32x10)</option>
+                <option value="va">Vertical (16x32)</option>
+                <option value="ps">Small Projector (16x16)</option>
+                <option value="pm">Medium Projector (48x32)</option>
+                <option value="pl">Large Projector (48x48)</option>
+            </select>
+            <img src="https://cdn.epicpuppy.dev/assets/pids/sprite-new.png" width="32" height="32" title="Create New" class="managementIcon" />
+            <img src="https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png" width="32" height="32" title="Toggle Border" class="managementIcon" />
+            <img src="https://cdn.epicpuppy.dev/assets/pids/sprite-import.png" width="32" height="32" title="Load / Import" class="managementIcon" />
+            <img src="https://cdn.epicpuppy.dev/assets/pids/sprite-export.png" width="32" height="32" title="Save / Export" class="managementIcon" />
+        </div>
+    </div>
     <div id="exportMenu">
         <h1>Save / Export</h1>
         <div class="inputContainer"><label>ID*: </label> <input type="text" id="exportID" placeholder="example_id" maxlength="48" /><br></div>
@@ -76,17 +96,6 @@
         <label>Desription: </label><br>
         <textarea id="exportDescription"></textarea><br>
         <div class="inputContainer"><button id="cancelButton" onclick="exportCancel()">Cancel</button><button id="exportButton" onclick="exportClick()">Export</button></div>
-    </div>
-    <div id="dropdownMenu">
-        <select id="size">
-            <option value="ha">Horizontal A (32x11)</option>
-            <option value="hb">Horizontal B (32x9)</option>
-            <option value="hc">Horizontal C (32x10)</option>
-            <option value="va">Vertical (16x32)</option>
-            <option value="ps">Small Projector (16x16)</option>
-            <option value="pm">Medium Projector (48x32)</option>
-            <option value="pl">Large Projector (48x48)</option>
-        </select>
     </div>
     <canvas id="overlay" width="800" height="600"></canvas>
 </body>

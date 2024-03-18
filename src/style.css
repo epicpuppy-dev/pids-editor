@@ -89,6 +89,37 @@ canvas {
 #deleteButton:hover {
     background-color: #660000;
 }
+
+.managementIcon {
+    margin-left: 8px;
+}
+#sizeInput {
+    margin: 0;
+    border: 1px solid white;
+    background-color: #333333;
+    height: 32px;
+    color: white;
+    position: relative;
+    top: -11px;
+}
+#toolbar {
+    display: flex;
+    width: calc(100% - 8px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #333333;
+    border: solid #444444;
+    border-width: 0 0 2px 0;
+    padding: 4px;
+    height: 32px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#management {
+    font-size: 0;
+}
+
 #exportMenu {
     background-color: #333333;
     border: solid 2px #444444;
@@ -152,19 +183,4 @@ canvas {
 }
 #exportMenu #exportButton:hover {
     background-color: #009900;
-}
-#dropdownMenu {
-    position: absolute;
-    right: 166px;
-    top: 5px;
-    height: 16px;
-    display: none;
-}
-#dropdownMenu select {
-    width: 250px;
-    height: 32px;
-    border: solid 1px #ffffff;
-    background-color: #333333;
-    color: #ffffff;
-    font-family: 'Consolas','Courier New',monospace;
 }

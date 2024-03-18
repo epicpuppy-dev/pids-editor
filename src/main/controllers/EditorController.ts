@@ -163,14 +163,33 @@ export class EditorController {
 
         //loop through properties
         for (let property of document.getElementsByClassName("property")) {
-            //overrides
             let element = property as HTMLElement;
-            if (element.id == "alignContainer") {
-                continue;
-            }
             let input = document.getElementById(element.id.replace("Container", "Input"))! as HTMLInputElement;
             if (element.id.replace("Container", "") in properties) {
                 element.style.display = "table-row";
+                //overrides
+                if (element.id == "alignContainer") {
+                    if (!("align" in this.selected)) return;
+                    let left = document.getElementById("alignLeft")!;
+                    let center = document.getElementById("alignCenter")!;
+                    let right = document.getElementById("alignRight")!;
+                    left.style.backgroundColor = this.selected.align == "left" ? "#666666ff" : "#00000000";
+                    center.style.backgroundColor = this.selected.align == "center" ? "#666666ff" : "#00000000";
+                    right.style.backgroundColor = this.selected.align == "right" ? "#666666ff" : "#00000000";
+                    left.onclick = () => {
+                        if ("align" in properties) properties.align[0]("left", editor);
+                        this.showProperties(editor);
+                    }
+                    center.onclick = () => {
+                        if ("align" in properties) properties.align[0]("center", editor);
+                        this.showProperties(editor);
+                    }
+                    right.onclick = () => {
+                        if ("align" in properties) properties.align[0]("right", editor);
+                        this.showProperties(editor);
+                    }
+                    continue;
+                }
                 input.value = properties[element.id.replace("Container", "")][1];
                 input.oninput = (e) => {
                     let value = input.value;
@@ -180,7 +199,6 @@ export class EditorController {
                 }
             } else {
                 element.style.display = "none";
-                input.oninput = null;
             }
         }
     }
