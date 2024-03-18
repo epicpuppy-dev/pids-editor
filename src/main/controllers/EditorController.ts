@@ -170,7 +170,7 @@ export class EditorController {
             }
             let input = document.getElementById(element.id.replace("Container", "Input"))! as HTMLInputElement;
             if (element.id.replace("Container", "") in properties) {
-                element.style.display = "block";
+                element.style.display = "table-row";
                 input.value = properties[element.id.replace("Container", "")][1];
                 input.oninput = (e) => {
                     let value = input.value;
