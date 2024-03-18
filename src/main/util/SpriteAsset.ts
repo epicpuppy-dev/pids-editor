@@ -5,7 +5,7 @@ export class SpriteAsset {
 
     constructor(src: string) {
         this.src = src;
-        this.img = new HTMLImageElement();
+        this.img = new Image();
     }
 
     public async load() {
@@ -13,5 +13,6 @@ export class SpriteAsset {
         await new Promise<void>(resolve => {
             window.setInterval(() => {if (this.img.complete) resolve()}, 20);
         });
+        this.complete = true;
     }
 }

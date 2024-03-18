@@ -21,7 +21,7 @@ export class AssetData {
         }
 
         for (let sprite of Object.keys(sprites)) {
-            assets.loadFile(sprite, sprites[sprite]);
+            assets.loadSprite(sprite, sprites[sprite]);
         }
 
         let layouts: {[key: string]: string} = {

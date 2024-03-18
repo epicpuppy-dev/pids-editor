@@ -50,9 +50,10 @@ export class PIDSEditor {
         this.assets = new AssetController();
 
         AssetData.registerAssets(this.assets);
-        ModuleData.registerModules(this.modules, this.assets);
-
         this.assets.loadAll();
+
+        ModuleData.registerModules(this);
+
 
         //temporary modules
         let destinationModules = [

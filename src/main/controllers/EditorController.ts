@@ -1,8 +1,10 @@
 import { PIDSEditor } from "../PIDSEditor";
 import { Module } from "../modules/Module";
+import { ModuleType } from "../modules/ModuleType";
 
 export class EditorController {
     public selected: Module | null = null;
+    public placing: ModuleType | null = null;
     public offsetX = 0;
     public offsetY = 0;
     public moving: {[key in "l" | "r" | "t" | "b" | "a"]: boolean} = {
