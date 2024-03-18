@@ -1,7 +1,5 @@
 import { PIDSEditor } from "../../PIDSEditor";
-import { LayoutController } from "../../controllers/LayoutController";
 import { Arrival } from "../../editor/Arrival";
-import { Util } from "../../util/Util";
 import { Module } from "../Module";
 
 export abstract class TextModule extends Module {
@@ -52,5 +50,40 @@ export abstract class TextModule extends Module {
         ctx.fillText(text, 0, 0);
         ctx.restore();
         super.render(ctx, editor);
+    }
+
+    public getProperties(): { [key: string]: [(value: any, editor: PIDSEditor) => void, any] } {
+        return {
+            arrival: [(value: any) => this.setArrival(value), this.arrival + 1],
+            align: [(value: any) => this.setAlign(value), this.align],
+            color: [(value: any) => this.setColor(value), this.color],
+            text: [(value: any) => this.setTemplate(value), this.template]
+        }
+    }
+
+    public setArrival (v: any): void {
+        //check for number
+        if (typeof v != "number" && typeof v != "string") return;
+        let num;
+        if (typeof v == "string") {
+            num = parseInt(v);
+        } else {
+            num = v;
+        }
+        if (isNaN(num)) return;
+        if (num < 1) num = 1;
+        this.arrival = num - 1;
+    }
+
+    public setAlign (v: any): void {
+        if (["left", "right", "center"].includes(v)) this.align = v;
+    }
+
+    public setColor (v: any): void {
+        if (typeof v == "string") this.color = v;
+    }
+
+    public setTemplate (v: any): void {
+        if (typeof v == "string") this.template = v;
     }
 }

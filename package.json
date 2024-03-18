@@ -6,8 +6,8 @@
   "scripts": {
     "clean": "rm dist -R&&mkdir dist",
     "start": "webpack serve --mode development --open",
-    "build-dev": "webpack --mode development",
-    "build-prod": "webpack --mode production",
+    "build-dev": "npm run clean&&webpack --mode development",
+    "build-prod": "npm run clean&&webpack --mode production",
     "preversion": "npm run build-prod",
     "version": "echo \"export const version = '$npm_package_version';\" > src/version.ts&&git stage src/version.ts"
   },
@@ -21,9 +21,6 @@
     "url": "https://github.com/epicpuppy613/pids-overhaul/issues"
   },
   "homepage": "https://github.com/epicpuppy613/pids-overhaul#readme",
-  "dependencies": {
-    "typescript": "^5.4.2"
-  },
   "devDependencies": {
     "babel-loader": "^9.1.2",
     "css-loader": "^6.10.0",
@@ -34,7 +31,7 @@
     "sass-loader": "^14.1.1",
     "style-loader": "^3.3.4",
     "ts-loader": "^9.4.3",
-    "typescript": "^5.0.4",
+    "typescript": "^5.4.2",
     "url-loader": "^4.1.1",
     "webpack": "^5.84.1",
     "webpack-cli": "^5.1.1",

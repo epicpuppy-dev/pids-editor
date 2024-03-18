@@ -16,8 +16,70 @@ canvas {
     left: 0;
     image-rendering: pixelated;
 }
+.propertyContainer {
+    margin-bottom: 8px;
+    width: 100%;
+    display: flex;
+    direction: horizontal;
+    align-items: center;
+    justify-content: space-between;
+}
+.property {
+    display: none;
+}
+#alignIcons {
+    flex-grow: 1;
+    text-align: center;
+}
 #overlay {
     pointer-events: none;
+}
+#colorInput {
+    flex-grow: 1;
+    padding: 2px;
+    width: 8em;
+    height: 2em;
+}
+#arrivalInput {
+    flex-grow: 1;
+    padding: 2px;
+}
+#propertyEditor {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(0, -50%);
+    padding: 10px 10px 0;
+    display: none;
+    background-color: #333333;
+    border: solid 2px #444444;
+    border-width: 2px 0 2px 2px;
+    border-radius: 6px 0 0 6px;
+    flex-direction: column;
+    min-width: 20%;
+    text-align: center;
+}
+#propertyEditor h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+#posContainer {
+    columns: 2;
+    text-align: left;
+    margin-bottom: 8px;
+    width: 100%;
+}
+#deleteButton {
+    text-align: center;
+    padding: 5px;
+    border: solid 1px #444444;
+    background-color: #440000;
+    color: #ffffff;
+    margin-bottom: 8px;
+    border-radius: 6px;
+}
+#deleteButton:hover {
+    background-color: #660000;
 }
 #exportMenu {
     background-color: #333333;

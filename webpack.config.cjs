@@ -15,7 +15,7 @@ if (!devMode) {
 }
 
 const config = {
-  devtool: 'eval-source-map',
+  //devtool: 'eval-source-map',
   entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),

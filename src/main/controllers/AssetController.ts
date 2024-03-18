@@ -1,14 +1,14 @@
 import { FileAsset } from "../util/FileAsset";
+import { SpriteAsset } from "../util/SpriteAsset";
 
 export class AssetController {
-    public images: {[key: string]: HTMLImageElement} = {};
+    public sprites: {[key: string]: SpriteAsset} = {};
     public files: {[key: string]: FileAsset} = {};
     public loading: string = "";
 
-    public loadImage (id: string, src: string) {
-        let image = new Image();
-        image.src = src;
-        this.images[id] = image;
+    public loadSprite (id: string, src: string) {
+        let sprite = new SpriteAsset(src);
+        this.sprites[id] = sprite;
     }
 
     public loadFile (id: string, src: string) {
@@ -16,20 +16,23 @@ export class AssetController {
         this.files[id] = file;
     }
 
-    public async loadFiles () {
-        //introduce some "natural" loading time
+    public async loadAll () {
+        //load sprites
+        for (let sprite of Object.keys(this.sprites)) {
+            let url = new URL(this.sprites[sprite].src);
+            this.sprites[sprite].load();
+        }
+        //load files
         for (let file of Object.keys(this.files)) {
-            let url = this.files[file].src.split("/");
-            this.loading = url[url.length - 1];
-            await this.files[file].load();
-            this.loading = "";
+            let url = new URL(this.files[file].src);
+            this.files[file].load();
         }
     }
 
     public getLoaded () {
         let loaded = 0;
-        for (let key in this.images) {
-            if (this.images[key].complete) {
+        for (let key in this.sprites) {
+            if (this.sprites[key].complete) {
                 loaded++;
             }
         }
@@ -42,6 +45,6 @@ export class AssetController {
     }
 
     public getTotal () {
-        return Object.keys(this.images).length + Object.keys(this.files).length;
+        return Object.keys(this.sprites).length + Object.keys(this.files).length;
     }
 }
