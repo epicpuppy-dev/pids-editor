@@ -7,16 +7,17 @@ import { ModuleController } from "./controllers/ModuleController";
 import { MouseController } from "./controllers/MouseController";
 import { ArrivalTimeModule } from "./modules/module/ArrivalTimeModule";
 import { DestinationModule } from "./modules/module/DestinationModule";
+import { AssetData } from "./util/AssetData";
 import { ModuleData } from "./util/ModuleData";
 import { Util } from "./util/Util";
 
 export class PIDSEditor {
-    public mouse: MouseController = new MouseController(this);
-    public arrivals: ArrivalController = new ArrivalController();
-    public modules: ModuleController = new ModuleController();
-    public layout: LayoutController = new LayoutController(32, 9, 1, window.innerWidth, window.innerHeight);
-    public edit: EditorController = new EditorController();
-    public assets: AssetController = new AssetController();
+    public mouse: MouseController;
+    public arrivals: ArrivalController;
+    public modules: ModuleController;
+    public layout: LayoutController;
+    public edit: EditorController;
+    public assets: AssetController;
 
     public util: Util = new Util();
 
@@ -40,25 +41,18 @@ export class PIDSEditor {
         this.width = this.canvas.width = this.overlay.width = window.innerWidth;
         this.height = this.canvas.height = this.overlay.height = window.innerHeight;
 
-        ModuleData.registerModules(this.modules);
-        this.assets.loadImage("sprites", "https://cdn.epicpuppy.dev/assets/pids/sprites.png");
+        //intialize controllers
+        this.mouse = new MouseController(this);
+        this.arrivals = new ArrivalController();
+        this.modules = new ModuleController();
+        this.layout = new LayoutController(32, 9, 1, this.width, this.height);
+        this.edit = new EditorController();
+        this.assets = new AssetController();
 
-        let layouts = {
-            "ha": "https://cdn.epicpuppy.dev/assets/pids/base_horizontal_a.json",
-            "hb": "https://cdn.epicpuppy.dev/assets/pids/base_horizontal_b.json",
-            "hc": "https://cdn.epicpuppy.dev/assets/pids/base_horizontal_c.json",
-            "va": "https://cdn.epicpuppy.dev/assets/pids/base_vertical_a.json",
-            "ps": "https://cdn.epicpuppy.dev/assets/pids/base_projector_small.json",
-            "pm": "https://cdn.epicpuppy.dev/assets/pids/base_projector_medium.json",
-            "pl": "https://cdn.epicpuppy.dev/assets/pids/base_projector_large.json"
-        }
+        AssetData.registerAssets(this.assets);
+        ModuleData.registerModules(this.modules, this.assets);
 
-        for (let layout of Object.keys(layouts)) {
-            //@ts-expect-error
-            this.assets.loadFile("layout" + layout.toUpperCase(), layouts[layout]);
-        }
-
-        this.assets.loadFiles();
+        this.assets.loadAll();
 
         //temporary modules
         let destinationModules = [
@@ -81,8 +75,6 @@ export class PIDSEditor {
         arrivalModules[0].align = "right";
         arrivalModules[1].align = "right";
         arrivalModules[2].align = "right";
-
-        this.edit.selected = destinationModules[0];
 
         window.setInterval(() => this.render(), 1000 / 60); 
     }
@@ -115,7 +107,7 @@ export class PIDSEditor {
         let assetsLoaded = this.assets.getLoaded();
         let assetsTotal = this.assets.getTotal();
         if (assetsLoaded < assetsTotal) {
-            this.ctx.fillText("Loading: " + assetsLoaded + "/" + assetsTotal + " - " + this.assets.loading, 5, this.height - 32);
+            this.ctx.fillText("Loading: " + assetsLoaded + "/" + assetsTotal, 5, this.height - 32);
         }
         //version
         this.ctx.fillText(version, 5, this.height - 16);
@@ -123,6 +115,10 @@ export class PIDSEditor {
 
     public mousedown (x: number, y: number) {
         this.edit.mousedown(x, y, this);
+    }
+
+    public mousemove (x: number, y: number, startX: number, startY: number) {
+        this.edit.mousemove(x, y, startX, startY, this);
     }
 
     public mouseup (x: number, y: number, startX: number, startY: number) {

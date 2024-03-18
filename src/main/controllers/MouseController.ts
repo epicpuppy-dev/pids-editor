@@ -10,15 +10,16 @@ export class MouseController {
         document.addEventListener("mousemove", (e) => {
             this.x = e.clientX;
             this.y = e.clientY;
+            editor.mousemove(this.x, this.y, this.startX, this.startY);
         });
 
-        document.addEventListener("mousedown", (e) => {
+        editor.canvas.addEventListener("mousedown", (e) => {
             this.startX = this.x;
             this.startY = this.y
             editor.mousedown(this.x, this.y);
         });
 
-        document.addEventListener("mouseup", (e) => {
+        editor.canvas.addEventListener("mouseup", (e) => {
             editor.mouseup(this.x, this.y, this.startX, this.startY);
         });
     }

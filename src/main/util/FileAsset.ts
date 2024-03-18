@@ -11,12 +11,8 @@ export class FileAsset {
         let response = await fetch(this.src);
         this.data = await response.text();
         this.complete = true;
-        await new Promise((resolveOuter) => {
-            resolveOuter(
-                new Promise((resolveInner) => {
-                    setTimeout(resolveInner, Math.floor(Math.random() * 100));
-                }),
-            );
+        await new Promise<void>((resolve) => {
+            window.setTimeout(resolve, Math.floor(Math.random() * 50));
         });
 
     }

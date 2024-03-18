@@ -1,8 +1,5 @@
 import { Module } from "../modules/Module";
-import { ModuleType } from "../modules/ModuleType";
-import { Util } from "../util/Util";
-import { Arrival } from "../editor/Arrival";
-import { LayoutController } from "./LayoutController";
+import { ModuleType } from "../modules/ModuleType"
 import { PIDSEditor } from "../PIDSEditor";
 
 export class ModuleController {
@@ -17,6 +14,26 @@ export class ModuleController {
     }
 
     public render (ctx: CanvasRenderingContext2D, editor: PIDSEditor) {
+        //guidelines
+        if (editor.edit.selected) {
+            ctx.fillStyle = "#ff00ff";
+            let scaledX = editor.edit.selected.x * editor.layout.pixelSize + editor.layout.x;
+            let scaledY = editor.edit.selected.y * editor.layout.pixelSize + editor.layout.y;
+            let scaledWidth = editor.edit.selected.width * editor.layout.pixelSize;
+            let scaledHeight = editor.edit.selected.height * editor.layout.pixelSize;
+            if (editor.edit.moving.l || editor.edit.moving.a) {
+                ctx.fillRect(scaledX, 0, 1, editor.height);
+            }
+            if (editor.edit.moving.r || editor.edit.moving.a) {
+                ctx.fillRect(scaledX + scaledWidth - 1, 0, 1, editor.height);
+            }
+            if (editor.edit.moving.t || editor.edit.moving.a) {
+                ctx.fillRect(0, scaledY, editor.width, 1);
+            }
+            if (editor.edit.moving.b || editor.edit.moving.a) {
+                ctx.fillRect(0, scaledY + scaledHeight - 1, editor.width, 1);
+            }
+        }
         for (let module of this.modules) {
             module.render(ctx, editor);
         }
