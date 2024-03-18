@@ -6,11 +6,23 @@ export class ModuleController {
     public modules: Module[] = [];
     public moduleTypes: {[key: string]: ModuleType} = {};
 
-    public registerModuleType (moduleType: ModuleType) {
+    public registerModuleType (moduleType: ModuleType, editor: PIDSEditor) {
         if (this.moduleTypes[moduleType.id]) {
             throw new Error("module id \"" + moduleType.id + "\" is registered twice");
         }
         this.moduleTypes[moduleType.id] = moduleType;
+
+        //create button
+
+        let button = moduleType.sprite.img;
+        document.getElementById("moduleTypes")!.appendChild(button);
+        button.width = 32;
+        button.height = 32;
+        button.classList.add("moduleIcon");
+        button.title = moduleType.name;
+        button.onclick = () => {
+            editor.edit.placing = moduleType;
+        }
     }
 
     public render (ctx: CanvasRenderingContext2D, editor: PIDSEditor) {
