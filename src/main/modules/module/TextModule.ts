@@ -8,12 +8,6 @@ export abstract class TextModule extends Module {
     public arrival: number = 0;
     public abstract template: string;
 
-    public load(data: { [key: string]: any; }): void {
-        if (["left", "right", "center"].includes(data.align)) this.align = data.align;
-        if (typeof data.color == "string") this.color = data.color;
-        if (typeof data.arrival == "number") this.arrival = data.arrival;
-    }
-
     protected abstract getText (arrivals: Arrival[]): string;
 
     public render(ctx: CanvasRenderingContext2D, editor: PIDSEditor): void {
@@ -85,5 +79,48 @@ export abstract class TextModule extends Module {
 
     public setTemplate (v: any): void {
         if (typeof v == "string") this.template = v;
+    }
+
+    public export (): {
+        typeID: string,
+        pos: {
+            x: number,
+            y: number,
+            w: number,
+            h: number
+        },
+        data: {[key: string]: any}
+    } {
+        return {
+            typeID: this.id,
+            pos: {
+                x: this.x,
+                y: this.y,
+                w: this.width,
+                h: this.height
+            },
+            data: {
+                align: this.align,
+                color: this.color,
+                arrival: this.arrival,
+                template: this.template
+            }
+        };
+    }
+
+    public import(data: { [key: string]: any; }): void {
+        if (["left", "right", "center"].includes(data.align)) this.align = data.align;
+        if (typeof data.color == "string") this.color = data.color;
+        if (typeof data.arrival == "number") this.arrival = data.arrival;
+        if (typeof data.template == "string") this.template = data.template;
+    }
+
+    public duplicate (): TextModule {
+        let module = new (this.constructor as any)(this.x, this.y, this.width, this.height);
+        module.align = this.align;
+        module.color = this.color;
+        module.arrival = this.arrival;
+        module.template = this.template;
+        return module;
     }
 }
