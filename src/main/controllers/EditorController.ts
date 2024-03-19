@@ -231,6 +231,15 @@ export class EditorController {
         document.getElementById("posW")!.innerText = this.selected.width.toFixed(3);
         document.getElementById("posH")!.innerText = this.selected.height.toFixed(3);
 
+        //delete button
+        document.getElementById("deleteButton")!.onclick = () => {
+            if (confirm("Confirm?")) {
+                editor.modules.modules.splice(editor.modules.modules.indexOf(this.selected!), 1);
+                this.selected = null;
+                document.getElementById("propertyEditor")!.style.display = "none";
+            }
+        }
+
         //get properties
         let properties = this.selected.getProperties();
 
