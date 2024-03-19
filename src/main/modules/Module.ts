@@ -6,6 +6,7 @@ export abstract class Module {
     public width: number;
     public height: number;
     public name: string;
+    public abstract id: string;
 
     constructor (x: number, y: number, width: number, height: number, name: string) {
         this.x = x;
@@ -16,8 +17,6 @@ export abstract class Module {
     }
 
     public abstract getProperties (): {[key: string]: [(value: any, edtior: PIDSEditor) => void, any]};
-
-    public abstract load (data: {[key: string]: any}): void;
 
     public render (ctx: CanvasRenderingContext2D, editor: PIDSEditor) {
         let util = editor.util;
@@ -61,4 +60,17 @@ export abstract class Module {
             ctx.fillText(this.name, scaledX + 2, scaledY + 2);
         }
     };
+
+    public abstract export (): {
+        typeID: string,
+        pos: {
+            x: number,
+            y: number,
+            w: number,
+            h: number
+        },
+        data: {[key: string]: any}
+    };
+    public abstract import (data: {[key: string]: any}): void;
+    public abstract duplicate (): Module;
 }

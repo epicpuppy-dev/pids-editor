@@ -9,6 +9,7 @@ export class ArrivalTimeModule extends TextModule {
     public arriveTemplate: string = "%s";
     public mixedTemplate: string = "%s:%s";
     public mode: "b" | "i" = "i";
+    public id = "arrivalTime";
 
     protected getText(arrivals: Arrival[]): string {
         let arrival = arrivals[this.arrival];
@@ -69,5 +70,48 @@ export class ArrivalTimeModule extends TextModule {
 
     public setMixText(text: any): void {
         if (typeof text == "string") this.mixedTemplate = text;
+    }
+
+    public export () {
+        return {
+            typeID: this.id,
+            pos: {
+                x: this.x,
+                y: this.y,
+                w: this.width,
+                h: this.height
+            },
+            data: {
+                align: this.align,
+                color: this.color,
+                arrival: this.arrival,
+                mode: this.mode,
+                secText: this.secondTemplate,
+                minText: this.minuteTemplate,
+                mixText: this.mixedTemplate
+            }
+        };
+    }
+
+    public import(data: { [key: string]: any; }): void {
+        if (["left", "right", "center"].includes(data.align)) this.align = data.align;
+        if (typeof data.color == "string") this.color = data.color;
+        if (typeof data.arrival == "number") this.arrival = data.arrival;
+        if (["b", "i"].includes(data.mode)) this.mode = data.mode;
+        if (typeof data.secText == "string") this.secondTemplate = data.secText;
+        if (typeof data.minText == "string") this.minuteTemplate = data.minText;
+        if (typeof data.mixText == "string") this.mixedTemplate = data.mixText;
+    }
+
+    public duplicate (): TextModule {
+        let module = new (this.constructor as any)(this.x, this.y, this.width, this.height);
+        module.align = this.align;
+        module.color = this.color;
+        module.arrival = this.arrival;
+        module.mode = this.mode;
+        module.secondTemplate = this.secondTemplate;
+        module.minuteTemplate = this.minuteTemplate;
+        module.mixedTemplate = this.mixedTemplate;
+        return module;
     }
 }

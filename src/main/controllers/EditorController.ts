@@ -5,14 +5,16 @@ import { ModuleType } from "../modules/ModuleType";
 export class EditorController {
     public selected: Module | null = null;
     public placing: ModuleType | null = null;
+    public exportMenu: boolean = false;
     public offsetX = 0;
     public offsetY = 0;
-    public moving: {[key in "l" | "r" | "t" | "b" | "a"]: boolean} = {
+    public moving: {[key in "l" | "r" | "t" | "b" | "a" | "pan"]: boolean} = {
         l: false,
         r: false,
         t: false,
         b: false,
         a: false,
+        pan: false
     };
     private start: {[key in "x" | "y" | "w" | "h"]: number} = {
         x: 0,
@@ -20,9 +22,73 @@ export class EditorController {
         w: 0,
         h: 0,
     };
+    public info = {
+        id: "base_horizontal_a",
+        name: "Base Horizontal Type A",
+        author: "EpicPuppy613",
+        description: "MTR Built-in layout.\n\nSize: 32 x 11\nArrivals: 1"
+    }
 
-    public mousedown (x: number, y: number, editor: PIDSEditor) {
-        if (this.selected) {
+    constructor (editor: PIDSEditor) {
+        // toolbar buttons
+        document.getElementById("exportIcon")!.onclick = () => {
+            editor.edit.exportMenu = true;
+            (document.getElementById("exportID")! as HTMLInputElement).value = editor.edit.info.id;
+            (document.getElementById("exportName")! as HTMLInputElement).value = editor.edit.info.name;
+            (document.getElementById("exportAuthor")! as HTMLInputElement).value = editor.edit.info.author;
+            (document.getElementById("exportDescription")! as HTMLInputElement).value = editor.edit.info.description;
+            document.getElementById("exportMenu")!.style.display = "block";
+        }
+        document.getElementById("importIcon")!.onclick = () => {
+            //create a new file input element
+            let fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.accept = ".json";
+            fileInput.style.display = "none";
+            fileInput.addEventListener("change", (e: any) => {
+                let file = e.target.files[0];
+                let reader = new FileReader();
+                reader.readAsText(file, "UTF-8");
+                reader.onload = (e) => {
+                    editor.json.import(e.target!.result as string, editor);
+                }
+            });
+            document.body.appendChild(fileInput);
+            fileInput.click();
+        }
+        document.getElementById("borderIcon")!.onclick = () => {
+            editor.layout.showModuleBorders = !editor.layout.showModuleBorders;
+            (document.getElementById("borderIcon")! as HTMLImageElement).src = editor.layout.showModuleBorders ? 
+            "https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png" : "https://cdn.epicpuppy.dev/assets/pids/sprite-border-off.png"; 
+        }
+        document.getElementById("newIcon")!.onclick = () => {
+            if (!confirm("Confirm?")) return;
+            let type = (document.getElementById("sizeInput")! as HTMLSelectElement).value;
+            editor.layout.changeType(type, editor);
+            //load layout
+            if (editor.assets.files["layout" + type.toUpperCase()].complete) {
+                console.log(editor.assets.files["layout" + type.toUpperCase()].data);
+                editor.json.import(editor.assets.files["layout" + type.toUpperCase()].data!, editor);
+            }
+        }
+
+        // export menu buttons
+        document.getElementById("cancelButton")!.onclick = () => {
+            editor.edit.exportMenu = false;
+            document.getElementById("exportMenu")!.style.display = "none";
+        };
+        document.getElementById("exportButton")!.onclick = () => {
+            editor.edit.exportMenu = false;
+            editor.json.export(editor);
+        };
+    }
+
+    public mousedown (x: number, y: number, e: MouseEvent, editor: PIDSEditor) {
+        if (e.button == 2) {
+            this.moving.pan = true;
+            this.start.x = this.offsetX;
+            this.start.y = this.offsetY;
+        } else if (this.selected) {
             let scaledX = this.selected.x * editor.layout.pixelSize + editor.layout.x;
             let scaledY = this.selected.y * editor.layout.pixelSize + editor.layout.y;
             let scaledWidth = this.selected.width * editor.layout.pixelSize;
@@ -89,6 +155,10 @@ export class EditorController {
     }
 
     public mousemove (x: number, y: number, startX: number, startY: number, editor: PIDSEditor) {
+        if (this.moving.pan) {
+            this.offsetX = this.start.x + (x - startX);
+            this.offsetY = this.start.y + (y - startY);
+        }
         if (this.selected) {
             let xMoveConstant = Math.round((x - startX) / editor.layout.pixelSize * 8) / 8;
             let yMoveConstant = Math.round((y - startY) / editor.layout.pixelSize * 8) / 8;
@@ -126,6 +196,7 @@ export class EditorController {
         this.moving.t = false;
         this.moving.b = false;
         this.moving.a = false;
+        this.moving.pan = false;
         //only select module if mouse didn't move more than 5 pixels
         if (Math.abs(x - startX) < 5 && Math.abs(y - startY) < 5) {
             let modules = editor.modules.modules;

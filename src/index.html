@@ -82,10 +82,10 @@
                 <option value="pm">Medium Projector (48x32)</option>
                 <option value="pl">Large Projector (48x48)</option>
             </select>
-            <img src="https://cdn.epicpuppy.dev/assets/pids/sprite-new.png" width="32" height="32" title="Create New" class="managementIcon" />
-            <img src="https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png" width="32" height="32" title="Toggle Border" class="managementIcon" />
-            <img src="https://cdn.epicpuppy.dev/assets/pids/sprite-import.png" width="32" height="32" title="Load / Import" class="managementIcon" />
-            <img src="https://cdn.epicpuppy.dev/assets/pids/sprite-export.png" width="32" height="32" title="Save / Export" class="managementIcon" />
+            <img id="newIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-new.png" width="32" height="32" title="Create New" class="managementIcon" />
+            <img id="borderIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png" width="32" height="32" title="Toggle Border" class="managementIcon" />
+            <img id="importIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-import.png" width="32" height="32" title="Load / Import" class="managementIcon" />
+            <img id="exportIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-export.png" width="32" height="32" title="Save / Export" class="managementIcon" />
         </div>
     </div>
     <div id="exportMenu">
@@ -95,7 +95,7 @@
         <div class="inputContainer"><label>Author: </label> <input type="text" id="exportAuthor" placeholder="You" maxlength="64" /><br></div>
         <label>Desription: </label><br>
         <textarea id="exportDescription"></textarea><br>
-        <div class="inputContainer"><button id="cancelButton" onclick="exportCancel()">Cancel</button><button id="exportButton" onclick="exportClick()">Export</button></div>
+        <div class="inputContainer"><button id="cancelButton">Cancel</button><button id="exportButton">Export</button></div>
     </div>
     <canvas id="overlay" width="800" height="600"></canvas>
 </body>

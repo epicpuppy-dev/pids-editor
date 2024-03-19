@@ -2,6 +2,7 @@ import { version } from "../version";
 import { ArrivalController } from "./controllers/ArrivalController";
 import { AssetController } from "./controllers/AssetController";
 import { EditorController } from "./controllers/EditorController";
+import { JSONController } from "./controllers/JSONController";
 import { LayoutController } from "./controllers/LayoutController";
 import { ModuleController } from "./controllers/ModuleController";
 import { MouseController } from "./controllers/MouseController";
@@ -18,6 +19,7 @@ export class PIDSEditor {
     public layout: LayoutController;
     public edit: EditorController;
     public assets: AssetController;
+    public json: JSONController;
 
     public util: Util = new Util();
 
@@ -46,8 +48,9 @@ export class PIDSEditor {
         this.arrivals = new ArrivalController();
         this.modules = new ModuleController();
         this.layout = new LayoutController(32, 9, 1, this.width, this.height);
-        this.edit = new EditorController();
+        this.edit = new EditorController(this);
         this.assets = new AssetController();
+        this.json = new JSONController();
 
         AssetData.registerAssets(this.assets);
         this.assets.loadAll();
@@ -86,6 +89,10 @@ export class PIDSEditor {
         this.ctx.fillStyle = "#ffffff";
         //check arrivals
         this.arrivals.update();
+
+        //apply offset  
+        this.ctx.save();
+        this.ctx.translate(this.edit.offsetX, this.edit.offsetY);
         //draw base pids
         //border
         this.ctx.strokeStyle = "#ffffff";
@@ -97,8 +104,27 @@ export class PIDSEditor {
         //black background
         this.ctx.fillStyle = "#000000";
         this.ctx.fillRect(this.layout.x + this.layout.borderWidth * this.layout.pixelSize, this.layout.y + this.layout.borderWidth * this.layout.pixelSize, this.layout.width * this.layout.pixelSize - this.layout.borderWidth * 2 * this.layout.pixelSize, this.layout.height * this.layout.pixelSize - this.layout.borderWidth * 2 * this.layout.pixelSize);
+        //special occupied area
+        this.ctx.fillStyle = "#888888";
+        this.ctx.strokeStyle = "#ffaa00";
+        this.ctx.lineWidth = 2;
+        switch (this.layout.type) {
+            case "ha":
+                this.util.drawOccupiedBox(this.ctx, this, 1, 1, 30, 6, false);
+                break;
+            case "ps":
+                this.util.drawOccupiedBox(this.ctx, this, 6, 0, 4, 1, true);
+                break;
+            case "pm":
+                this.util.drawOccupiedBox(this.ctx, this, 21, 0, 6, 1, true);
+                break;
+            case "pl":
+                this.util.drawOccupiedBox(this.ctx, this, 20, 0, 8, 1, true);
+                break;
+        }
 
         this.modules.render(this.ctx, this);
+        this.ctx.restore();
 
         //additional information
         this.ctx.fillStyle = "#ffffff";
@@ -114,8 +140,8 @@ export class PIDSEditor {
         this.ctx.fillText(version, 5, this.height - 16);
     }
 
-    public mousedown (x: number, y: number) {
-        this.edit.mousedown(x, y, this);
+    public mousedown (x: number, y: number, e: MouseEvent) {
+        this.edit.mousedown(x, y, e, this);
     }
 
     public mousemove (x: number, y: number, startX: number, startY: number) {

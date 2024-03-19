@@ -34,16 +34,16 @@ export class ModuleController {
             let scaledWidth = editor.edit.selected.width * editor.layout.pixelSize;
             let scaledHeight = editor.edit.selected.height * editor.layout.pixelSize;
             if (editor.edit.moving.l || editor.edit.moving.a) {
-                ctx.fillRect(scaledX, 0, 1, editor.height);
+                ctx.fillRect(scaledX, -editor.edit.offsetY, 1, editor.height);
             }
             if (editor.edit.moving.r || editor.edit.moving.a) {
-                ctx.fillRect(scaledX + scaledWidth - 1, 0, 1, editor.height);
+                ctx.fillRect(scaledX + scaledWidth - 1, -editor.edit.offsetY, 1, editor.height);
             }
             if (editor.edit.moving.t || editor.edit.moving.a) {
-                ctx.fillRect(0, scaledY, editor.width, 1);
+                ctx.fillRect(-editor.edit.offsetX, scaledY, editor.width, 1);
             }
             if (editor.edit.moving.b || editor.edit.moving.a) {
-                ctx.fillRect(0, scaledY + scaledHeight - 1, editor.width, 1);
+                ctx.fillRect(-editor.edit.offsetX, scaledY + scaledHeight - 1, editor.width, 1);
             }
         }
         for (let module of this.modules) {
