@@ -83,7 +83,7 @@ export class ArrivalTimeModule extends TextModule {
             },
             data: {
                 align: this.align,
-                color: this.color,
+                color: parseInt(this.color.slice(1), 16),
                 arrival: this.arrival,
                 mode: this.mode,
                 secText: this.secondTemplate,
@@ -95,7 +95,7 @@ export class ArrivalTimeModule extends TextModule {
 
     public import(data: { [key: string]: any; }): void {
         if (["left", "right", "center"].includes(data.align)) this.align = data.align;
-        if (typeof data.color == "string") this.color = data.color;
+        if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
         if (typeof data.arrival == "number") this.arrival = data.arrival;
         if (["b", "i"].includes(data.mode)) this.mode = data.mode;
         if (typeof data.secText == "string") this.secondTemplate = data.secText;

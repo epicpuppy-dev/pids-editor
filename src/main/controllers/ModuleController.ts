@@ -22,6 +22,8 @@ export class ModuleController {
         button.title = moduleType.name;
         button.onclick = () => {
             editor.edit.placing = moduleType;
+            editor.edit.selected = null;
+            document.getElementById("propertyEditor")!.style.display = "none";
         }
     }
 

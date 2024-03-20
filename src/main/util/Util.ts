@@ -33,4 +33,33 @@ export class Util {
         ctx.lineTo(px, py + ph);
         ctx.stroke();
     }
+
+    public drawTooltip (ctx: CanvasRenderingContext2D, editor: PIDSEditor, text: string[], fontSize: number = 12) {
+        ctx.font = fontSize + "px monospace";
+        ctx.textBaseline = "top";
+        let lineSpacing = Math.floor(fontSize + 4);
+        let maxwidth = ctx.measureText(text[0]).width;
+        for (let i = 1; i < text.length; i++) {
+            let width = ctx.measureText(text[i]).width;
+            if (width > maxwidth) {
+                maxwidth = width;
+            }
+        }
+        let x = editor.mouse.x + 8;
+        let y = editor.mouse.y + 5;
+        if (x + maxwidth > editor.width) {
+            x = editor.width - maxwidth - 8;
+        }
+        ctx.fillStyle = "#000000aa";
+        ctx.fillRect(x, y, maxwidth + 8, 6 + text.length * lineSpacing);
+
+        ctx.fillStyle = "#ffffff";
+        for (let i = 0; i < text.length; i++) {
+            ctx.fillText(text[i], x + 4, y + 6 + i * lineSpacing);
+        }
+    }
+
+    public snapToGrid (pos: number, size: number, subdiv = 1, offset = 0) {
+        return Math.round((pos - offset) / size * subdiv) * size / subdiv + offset;
+    }
 }
