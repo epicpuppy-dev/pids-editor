@@ -26,7 +26,7 @@ export class JSONController {
             if (json.description) editor.edit.info.description = json.description;
             let modules: Module[] = editor.modules.modules = [];
             editor.edit.selected = null;
-            if (json.version && json.version === 1) {
+            if (json.version == undefined || json.version === 1) {
                 //upgrade to version 2
                 for (const module of json.modules) {
                     if (module.type == "DestinationModule") modules.push(new DestinationModule(module.pos.x, module.pos.y, module.pos.w, module.pos.h, "Destination"));

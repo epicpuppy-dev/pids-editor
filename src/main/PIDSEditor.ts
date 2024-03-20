@@ -6,10 +6,12 @@ import { JSONController } from "./controllers/JSONController";
 import { LayoutController } from "./controllers/LayoutController";
 import { ModuleController } from "./controllers/ModuleController";
 import { MouseController } from "./controllers/MouseController";
+import { ShortcutController } from "./controllers/ShortcutController";
 import { ArrivalTimeModule } from "./modules/module/ArrivalTimeModule";
 import { DestinationModule } from "./modules/module/DestinationModule";
 import { AssetData } from "./util/AssetData";
 import { ModuleData } from "./util/ModuleData";
+import { ShortcutData } from "./util/ShortcutData";
 import { Util } from "./util/Util";
 
 export class PIDSEditor {
@@ -20,6 +22,7 @@ export class PIDSEditor {
     public edit: EditorController;
     public assets: AssetController;
     public json: JSONController;
+    public shortcuts: ShortcutController;
 
     public util: Util = new Util();
 
@@ -51,12 +54,13 @@ export class PIDSEditor {
         this.edit = new EditorController(this);
         this.assets = new AssetController();
         this.json = new JSONController();
+        this.shortcuts = new ShortcutController(this);
 
         AssetData.registerAssets(this.assets);
         this.assets.loadAll();
 
         ModuleData.registerModules(this);
-
+        ShortcutData.registerShortcuts(this.shortcuts);
 
         //temporary modules
         let destinationModules = [
@@ -86,6 +90,7 @@ export class PIDSEditor {
     public render () {
         this.ctx.fillStyle = "#000000";
         this.ctx.fillRect(0, 0, this.width, this.height);
+        this.octx.clearRect(0, 0, this.width, this.height);
         this.ctx.fillStyle = "#ffffff";
         //check arrivals
         this.arrivals.update();
@@ -126,10 +131,13 @@ export class PIDSEditor {
         this.modules.render(this.ctx, this);
         this.ctx.restore();
 
+        this.edit.render(this, this.ctx, this.octx);
+
         //additional information
         this.ctx.fillStyle = "#ffffff";
         this.ctx.textAlign = "left";
         this.ctx.font = "12px monospace";
+        this.ctx.textBaseline = "top";
         //asset loading
         let assetsLoaded = this.assets.getLoaded();
         let assetsTotal = this.assets.getTotal();

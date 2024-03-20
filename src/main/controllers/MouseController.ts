@@ -10,20 +10,12 @@ export class MouseController {
         document.addEventListener("mousemove", (e) => {
             this.x = e.clientX;
             this.y = e.clientY;
-            if (!editor.edit.moving.pan) {
-                this.x -= editor.edit.offsetX;
-                this.y -= editor.edit.offsetY;
-            }
             editor.mousemove(this.x, this.y, this.startX, this.startY);
         });
 
         editor.canvas.addEventListener("mousedown", (e) => {
             this.startX = this.x;
             this.startY = this.y;
-            if (e.button == 2) {
-                this.startX += editor.edit.offsetX;
-                this.startY += editor.edit.offsetY;
-            }
             editor.mousedown(this.x, this.y, e);
         });
 

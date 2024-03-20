@@ -5,9 +5,10 @@ import { ModuleType } from "../modules/ModuleType";
 export class EditorController {
     public selected: Module | null = null;
     public placing: ModuleType | null = null;
-    public exportMenu: boolean = false;
+    public exportMenu = false;
     public offsetX = 0;
     public offsetY = 0;
+    public placeModule = false;
     public moving: {[key in "l" | "r" | "t" | "b" | "a" | "pan"]: boolean} = {
         l: false,
         r: false,
@@ -83,11 +84,33 @@ export class EditorController {
         };
     }
 
+    public render (editor: PIDSEditor, ctx: CanvasRenderingContext2D, octx: CanvasRenderingContext2D) {
+        if (this.placeModule && this.placing) {
+            let x1 = editor.util.snapToGrid(this.start.x, editor.layout.pixelSize, 8, this.offsetX + editor.layout.x);
+            let y1 = editor.util.snapToGrid(this.start.y, editor.layout.pixelSize, 8, this.offsetY + editor.layout.y);
+            let x2 = editor.util.snapToGrid(editor.mouse.x, editor.layout.pixelSize, 8, this.offsetX + editor.layout.x);
+            let y2 = editor.util.snapToGrid(editor.mouse.y, editor.layout.pixelSize, 8, this.offsetY + editor.layout.y);
+            //draw outline
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(x1, y1, x2 - x1, 1);
+            ctx.fillRect(x1, y1, 1, y2 - y1);
+            ctx.fillRect(x1, y2 - 1, x2 - x1, 1);
+            ctx.fillRect(x2 - 1, y1, 1, y2 - y1);
+            editor.util.drawTooltip(octx, editor, ["Placing: " + this.placing.name, "W: " + Math.abs((x2 - x1) / editor.layout.pixelSize).toFixed(3), "H: " + Math.abs((y2 - y1) / editor.layout.pixelSize).toFixed(3)]);
+        } else if (this.placing) {
+            editor.util.drawTooltip(octx, editor, ["Placing: " + this.placing.name]);
+        }
+    }
+
     public mousedown (x: number, y: number, e: MouseEvent, editor: PIDSEditor) {
         if (e.button == 2) {
             this.moving.pan = true;
             this.start.x = this.offsetX;
             this.start.y = this.offsetY;
+        } else if (this.placing) {
+            this.placeModule = true;
+            this.start.x = x;
+            this.start.y = y;
         } else if (this.selected) {
             let scaledX = this.selected.x * editor.layout.pixelSize + editor.layout.x;
             let scaledY = this.selected.y * editor.layout.pixelSize + editor.layout.y;
@@ -97,56 +120,58 @@ export class EditorController {
             let right = scaledX + scaledWidth;
             let top = scaledY;
             let bottom = scaledY + scaledHeight;
+            let mouseX = x - editor.edit.offsetX;
+            let mouseY = y - editor.edit.offsetY;
             if (
                 //top left
-                editor.util.pointInBox(x, y, left - 5, top - 5, 10, 10) ||
+                editor.util.pointInBox(mouseX, mouseY, left - 5, top - 5, 10, 10) ||
                 //left
-                editor.util.pointInBox(x, y, left - 5, top + scaledHeight / 2 - 5, 10, 10) ||
+                editor.util.pointInBox(mouseX, mouseY, left - 5, top + scaledHeight / 2 - 5, 10, 10) ||
                 //bottom left  
-                editor.util.pointInBox(x, y, left - 5, bottom - 5, 10, 10)
+                editor.util.pointInBox(mouseX, mouseY, left - 5, bottom - 5, 10, 10)
             ) {
                 this.moving.l = true;
             } 
 
             if (
                 //top right
-                editor.util.pointInBox(x, y, right - 5, top - 5, 10, 10) ||
+                editor.util.pointInBox(mouseX, mouseY, right - 5, top - 5, 10, 10) ||
                 //right
-                editor.util.pointInBox(x, y, right - 5, top + scaledHeight / 2 - 5, 10, 10) ||
+                editor.util.pointInBox(mouseX, mouseY, right - 5, top + scaledHeight / 2 - 5, 10, 10) ||
                 //bottom right
-                editor.util.pointInBox(x, y, right - 5, bottom - 5, 10, 10)
+                editor.util.pointInBox(mouseX, mouseY, right - 5, bottom - 5, 10, 10)
             ) {
                 this.moving.r = true;
             } 
 
             if (
                 //top left
-                editor.util.pointInBox(x, y, left - 5, top - 5, 10, 10) ||
+                editor.util.pointInBox(mouseX, mouseY, left - 5, top - 5, 10, 10) ||
                 //top
-                editor.util.pointInBox(x, y, left + scaledWidth / 2 - 5, top - 5, 10, 10) ||
+                editor.util.pointInBox(mouseX, mouseY, left + scaledWidth / 2 - 5, top - 5, 10, 10) ||
                 //top right
-                editor.util.pointInBox(x, y, right - 5, top - 5, 10, 10)    
+                editor.util.pointInBox(mouseX, mouseY, right - 5, top - 5, 10, 10)    
             ) {
                 this.moving.t = true;
             } 
 
             if (
                 //bottom left
-                editor.util.pointInBox(x, y, left - 5, bottom - 5, 10, 10) ||
+                editor.util.pointInBox(mouseX, mouseY, left - 5, bottom - 5, 10, 10) ||
                 //bottom
-                editor.util.pointInBox(x, y, left + scaledWidth / 2 - 5, bottom - 5, 10, 10) ||
+                editor.util.pointInBox(mouseX, mouseY, left + scaledWidth / 2 - 5, bottom - 5, 10, 10) ||
                 //bottom right
-                editor.util.pointInBox(x, y, right - 5, bottom - 5, 10, 10)    
+                editor.util.pointInBox(mouseX, mouseY, right - 5, bottom - 5, 10, 10)    
             ) {
                 this.moving.b = true;
             }
 
             if (
-                editor.util.pointInBox(x, y, left, top, scaledWidth, scaledHeight) &&
+                editor.util.pointInBox(mouseX, mouseY, left, top, scaledWidth, scaledHeight) &&
                 !this.moving.l && !this.moving.r && !this.moving.t && !this.moving.b
             ) {
                 this.moving.a = true;
-            }
+            }   
             this.start.x = this.selected.x;
             this.start.y = this.selected.y;
             this.start.w = this.selected.width;
@@ -197,8 +222,43 @@ export class EditorController {
         this.moving.b = false;
         this.moving.a = false;
         this.moving.pan = false;
-        //only select module if mouse didn't move more than 5 pixels
-        if (Math.abs(x - startX) < 5 && Math.abs(y - startY) < 5) {
+        //check for negative width/height
+        if (this.selected) {
+            if (this.selected.width < 0) {
+                this.selected.x += this.selected.width;
+                this.selected.width = -this.selected.width;
+            }
+            if (this.selected.height < 0) {
+                this.selected.y += this.selected.height;
+                this.selected.height = -this.selected.height;
+            }
+        }
+        //finish module placement
+        if (this.placeModule && this.placing) {
+            let x1 = editor.util.snapToGrid(this.start.x, editor.layout.pixelSize, 8, this.offsetX + editor.layout.x) - editor.layout.x;
+            let y1 = editor.util.snapToGrid(this.start.y, editor.layout.pixelSize, 8, this.offsetY + editor.layout.y) - editor.layout.y;
+            let x2 = editor.util.snapToGrid(editor.mouse.x, editor.layout.pixelSize, 8, this.offsetX + editor.layout.x) - editor.layout.x;
+            let y2 = editor.util.snapToGrid(editor.mouse.y, editor.layout.pixelSize, 8, this.offsetY + editor.layout.y) - editor.layout.y;
+            let width = x2 - x1;
+            let height = y2 - y1;
+            //check for negative width/height
+            if (width < 0) {
+                x1 += width;
+                width = -width;
+            }
+            if (height < 0) {
+                y1 += height;
+                height = -height;
+            }
+            if (width > 0.25 && height > 0.25) {
+                let module = this.placing.create(x1 / editor.layout.pixelSize, y1 / editor.layout.pixelSize, width / editor.layout.pixelSize, height / editor.layout.pixelSize);
+                editor.modules.modules.push(module);
+                this.selected = module;
+                this.placing = null;
+                this.showProperties(editor);
+            }
+            this.placeModule = false;
+        } else if (Math.abs(x - startX) < 5 && Math.abs(y - startY) < 5) {
             let modules = editor.modules.modules;
             for (let i = modules.length - 1; i >= 0; i--) {
                 let module = modules[i];
@@ -206,7 +266,9 @@ export class EditorController {
                 let scaledY = module.y * editor.layout.pixelSize + editor.layout.y;
                 let scaledWidth = module.width * editor.layout.pixelSize;
                 let scaledHeight = module.height * editor.layout.pixelSize;
-                if (editor.util.pointInBox(x, y, scaledX, scaledY, scaledWidth, scaledHeight)) {
+                let mouseX = x - editor.edit.offsetX;
+                let mouseY = y - editor.edit.offsetY;
+                if (editor.util.pointInBox(mouseX, mouseY, scaledX, scaledY, scaledWidth, scaledHeight)) {
                     this.selected = module;
                     this.showProperties(editor);
                     return;
@@ -233,11 +295,9 @@ export class EditorController {
 
         //delete button
         document.getElementById("deleteButton")!.onclick = () => {
-            if (confirm("Confirm?")) {
-                editor.modules.modules.splice(editor.modules.modules.indexOf(this.selected!), 1);
-                this.selected = null;
-                document.getElementById("propertyEditor")!.style.display = "none";
-            }
+            editor.modules.modules.splice(editor.modules.modules.indexOf(this.selected!), 1);
+            this.selected = null;
+            document.getElementById("propertyEditor")!.style.display = "none";
         }
 
         //get properties
