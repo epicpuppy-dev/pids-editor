@@ -61,7 +61,6 @@ export class ArrivalTimeModule extends TextModule {
 
     public setMinText(text: any): void {
         if (typeof text == "string") this.minuteTemplate = text;
-        console.log(this.minuteTemplate);
     }
 
     public setSecText(text: any): void {
@@ -104,7 +103,7 @@ export class ArrivalTimeModule extends TextModule {
     }
 
     public duplicate (): TextModule {
-        let module = new (this.constructor as any)(this.x, this.y, this.width, this.height);
+        let module = new (this.constructor as any)(this.x, this.y, this.width, this.height, this.name);
         module.align = this.align;
         module.color = this.color;
         module.arrival = this.arrival;

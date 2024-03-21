@@ -55,7 +55,6 @@ export abstract class Module {
                 //left
                 ctx.fillRect(scaledX - 3, scaledY + scaledHeight / 2 - 3, 7, 7);
             }
-            ctx.fillStyle = "#ffffff";
             util.fontMono(ctx, "10px");
             ctx.fillText(this.name, scaledX + 2, scaledY + 2);
         }

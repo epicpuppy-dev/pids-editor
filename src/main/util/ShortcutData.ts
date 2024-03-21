@@ -20,7 +20,7 @@ export class ShortcutData {
         ));
 
         controller.register(new Shortcut(
-            "delete", ["Delete", "Backspace"], false, false, false,
+            "delete", ["Delete"], false, false, false,
             (editor) => {
                 editor.modules.modules.splice(editor.modules.modules.indexOf(editor.edit.selected!), 1);
                 editor.edit.selected = null;
@@ -29,7 +29,7 @@ export class ShortcutData {
         ));
 
         controller.register(new Shortcut(
-            "toggleBorder", ["KeyB"], false, false, false,
+            "toggleBorder", ["KeyB"], true, false, false,
             (editor) => {
                 editor.layout.showModuleBorders = !editor.layout.showModuleBorders;
                 (document.getElementById("borderIcon")! as HTMLImageElement).src = editor.layout.showModuleBorders ? 
@@ -38,7 +38,7 @@ export class ShortcutData {
         ));
 
         controller.register(new Shortcut(
-            "duplicate", ["KeyD"], false, false, false,
+            "duplicate", ["KeyD"], true, false, false,
             (editor) => {
                 if (editor.edit.selected) {
                     let module = editor.edit.selected;

@@ -8,6 +8,9 @@ export class AssetData {
             "trainLength": "https://cdn.epicpuppy.dev/assets/pids/sprite-train-length.png",
             "platformNumber": "https://cdn.epicpuppy.dev/assets/pids/sprite-platform-number.png",
             "stopsAt": "https://cdn.epicpuppy.dev/assets/pids/sprite-stops-at.png",
+            "time": "https://cdn.epicpuppy.dev/assets/pids/sprite-time.png",
+            "text": "https://cdn.epicpuppy.dev/assets/pids/sprite-text.png",
+            "block": "https://cdn.epicpuppy.dev/assets/pids/sprite-block.png",
 
             "import": "https://cdn.epicpuppy.dev/assets/pids/sprite-import.png",
             "export": "https://cdn.epicpuppy.dev/assets/pids/sprite-export.png",

@@ -2,13 +2,14 @@ import { PIDSEditor } from "../../PIDSEditor";
 import { Arrival } from "../../editor/Arrival";
 import { Module } from "../Module";
 
-export abstract class TextModule extends Module {
+export class TextModule extends Module {
+    public id: string = "text";
     public align: ("left" | "right" | "center") = "left";
     public color: string = "#ffffff";
     public arrival: number = 0;
-    public abstract template: string;
+    public template: string = "Text";
 
-    protected abstract getText (arrivals: Arrival[]): string;
+    protected getText (arrivals: Arrival[]): string {return ""};
 
     public render(ctx: CanvasRenderingContext2D, editor: PIDSEditor): void {
         let arrivals = editor.arrivals.arrivals;
@@ -116,7 +117,7 @@ export abstract class TextModule extends Module {
     }
 
     public duplicate (): TextModule {
-        let module = new (this.constructor as any)(this.x, this.y, this.width, this.height);
+        let module = new (this.constructor as any)(this.x, this.y, this.width, this.height, this.name);
         module.align = this.align;
         module.color = this.color;
         module.arrival = this.arrival;

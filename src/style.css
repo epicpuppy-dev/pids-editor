@@ -89,6 +89,19 @@ canvas {
 #deleteButton:hover {
     background-color: #660000;
 }
+#duplicateButton {
+    text-align: center;
+    padding: 5px;
+    border: solid 1px #444444;
+    background-color: #000044;
+    color: #ffffff;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    font-family: 'Consolas','Courier New',monospace;
+}
+#duplicateButton:hover {
+    background-color: #000066;
+}
 
 .managementIcon {
     margin-left: 6px;
