@@ -4,7 +4,7 @@
   "description": "",
   "main": "js/index.js",
   "scripts": {
-    "clean": "rm dist -R&&mkdir dist",
+    "clean": "rm dist -f -R&&mkdir dist",
     "start": "webpack serve --mode development --open",
     "build-dev": "npm run clean&&webpack --mode development",
     "build-prod": "npm run clean&&webpack --mode production",
