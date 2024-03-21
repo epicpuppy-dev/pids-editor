@@ -65,7 +65,41 @@
                 <th>Text: </th>
                 <td><input id="mixTextInput" type="text" value="%s:%s" /></td>
             </tr>
+            <tr id="timeLocContainer" class="property">
+                <th>Time Display: </th>
+                <td>
+                    <select id="timeLocInput">
+                        <option value="g">In-Game</option>
+                        <option value="s">Real Life</option>
+                    </select>
+                </td>
+            </tr>
+            <tr id="show24HourContainer" class="property">
+                <th>24-Hour Time: </th>
+                <td>
+                    <input id="show24HourInput" type="checkbox" />
+                </td>
+            </tr>
+            <tr id="showHoursContainer" class="property">
+                <th>Show Hours: </th>
+                <td>
+                    <input id="showHoursInput" type="checkbox" />
+                </td>
+            </tr>
+            <tr id="showMinutesContainer" class="property">
+                <th>Show Minutes: </th>
+                <td>
+                    <input id="showMinutesInput" type="checkbox" />
+                </td>
+            </tr>
+            <tr id="showSecondsContainer" class="property">
+                <th>Show Seconds: </th>
+                <td>
+                    <input id="showSecondsInput" type="checkbox" />
+                </td>
+            </tr>
         </table>
+        <button id="duplicateButton">Duplicate</button>
         <button id="deleteButton">Delete</button>
     </div>
     <div id="toolbar">

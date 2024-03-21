@@ -9,6 +9,7 @@ export class EditorController {
     public offsetX = 0;
     public offsetY = 0;
     public placeModule = false;
+    public time = 0;
     public moving: {[key in "l" | "r" | "t" | "b" | "a" | "pan"]: boolean} = {
         l: false,
         r: false,
@@ -68,7 +69,6 @@ export class EditorController {
             editor.layout.changeType(type, editor);
             //load layout
             if (editor.assets.files["layout" + type.toUpperCase()].complete) {
-                console.log(editor.assets.files["layout" + type.toUpperCase()].data);
                 editor.json.import(editor.assets.files["layout" + type.toUpperCase()].data!, editor);
             }
         }
@@ -299,6 +299,16 @@ export class EditorController {
             this.selected = null;
             document.getElementById("propertyEditor")!.style.display = "none";
         }
+        //duplicate button
+        document.getElementById("duplicateButton")!.onclick = () => {
+            let module = editor.edit.selected!;
+            let copy = module.duplicate();
+            copy.x += 0.25;
+            copy.y += 0.25;
+            editor.modules.modules.push(copy);
+            editor.edit.selected = copy;
+            editor.edit.showProperties(editor);
+        }
 
         //get properties
         let properties = this.selected.getProperties();
@@ -332,12 +342,19 @@ export class EditorController {
                     }
                     continue;
                 }
-                input.value = properties[element.id.replace("Container", "")][1];
-                input.oninput = (e) => {
-                    let value = input.value;
-                    console.log(value);
-                    properties[element.id.replace("Container", "")][0](value, editor);
-                    console.log(this.selected);
+                let type = input.type;
+                if (type == "checkbox") {
+                    input.checked = properties[element.id.replace("Container", "")][1];
+                    input.onchange = (e) => {
+                        let value = input.checked;
+                        properties[element.id.replace("Container", "")][0](value, editor);
+                    }
+                } else {
+                    input.value = properties[element.id.replace("Container", "")][1];
+                    input.oninput = (e) => {
+                        let value = input.value;
+                        properties[element.id.replace("Container", "")][0](value, editor);
+                    }
                 }
             } else {
                 element.style.display = "none";

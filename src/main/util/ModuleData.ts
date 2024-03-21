@@ -3,7 +3,10 @@ import { AssetController } from "../controllers/AssetController";
 import { ModuleController } from "../controllers/ModuleController";
 import { ModuleType } from "../modules/ModuleType";
 import { ArrivalTimeModule } from "../modules/module/ArrivalTimeModule";
+import { BlockModule } from "../modules/module/BlockModule";
 import { DestinationModule } from "../modules/module/DestinationModule";
+import { TextModule } from "../modules/module/TextModule";
+import { TimeModule } from "../modules/module/TimeModule";
 import { TrainLengthModule } from "../modules/module/TrainLengthModule";
 
 export class ModuleData {
@@ -42,6 +45,30 @@ export class ModuleData {
                 return new TrainLengthModule(x, y, w, h, "Platform Number");
             },
             assets.sprites.platformNumber
+        ), editor);
+        controller.registerModuleType(new ModuleType(
+            "time",
+            "Time",
+            (x, y, w, h) => {
+                return new TimeModule(x, y, w, h, "Time");
+            },
+            assets.sprites.time
+        ), editor);
+        controller.registerModuleType(new ModuleType(
+            "text",
+            "Text",
+            (x, y, w, h) => {
+                return new TextModule(x, y, w, h, "Text");
+            },
+            assets.sprites.text
+        ), editor);
+        controller.registerModuleType(new ModuleType(
+            "block",
+            "Block",
+            (x, y, w, h) => {
+                return new BlockModule(x, y, w, h, "Block");
+            },
+            assets.sprites.block
         ), editor);
     }
 }
