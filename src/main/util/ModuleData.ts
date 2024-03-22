@@ -5,6 +5,7 @@ import { ModuleType } from "../modules/ModuleType";
 import { ArrivalTimeModule } from "../modules/module/ArrivalTimeModule";
 import { BlockModule } from "../modules/module/BlockModule";
 import { DestinationModule } from "../modules/module/DestinationModule";
+import { PlatformNumberModule } from "../modules/module/PlatformNumberModule";
 import { TextModule } from "../modules/module/TextModule";
 import { TimeModule } from "../modules/module/TimeModule";
 import { TrainLengthModule } from "../modules/module/TrainLengthModule";
@@ -42,7 +43,7 @@ export class ModuleData {
             "platformNumber",
             "Platform Number",
             (x, y, w, h) => {
-                return new TrainLengthModule(x, y, w, h, "Platform Number");
+                return new PlatformNumberModule(x, y, w, h, "Platform Number");
             },
             assets.sprites.platformNumber
         ), editor);
