@@ -1,0 +1,41 @@
+digraph {
+    subgraph clusterServer {
+        label = "Server";
+        layouts [label = "Layout JSON Data", shape = cylinder]
+        entity [label = "PIDS Block Entity", shape = parallelogram]
+        subgraph clusterLoad {
+            label = "Load Block Entity";
+            load [label = "Load Renderer", shape = box]
+            getnbt [label = "Get NBT Data", shape = box]
+            getlayout [label = "Get Layout Data", shape = box]
+            parsedata [label = "Parse JSON Data", shape = box]
+            loadmodules [label = "Load Modules", shape = box]
+            controller [label = "RenderPIDSController"]
+        }
+    }
+
+    subgraph clusterAPI {
+        label = "Transit Core"
+        arrivals [label = "Train Arrivals", shape = cylinder]
+    }
+
+    subgraph clusterRender {
+        label = "Client"
+        render [label = "RenderPIDS render()", shape = box]
+        rendermodules [label = "Render Modules", shape = box]
+    }
+
+    load -> getnbt
+    getnbt -> getlayout
+    getlayout -> parsedata
+    parsedata -> loadmodules
+    loadmodules -> controller
+
+    render -> rendermodules
+
+    //data accesses
+    getnbt -> entity [color = "black:black", arrowhead = none]
+    getlayout -> layouts [color = "black:black", arrowhead = none]
+    controller -> render [color = "orange:orange"]
+    arrivals -> render [color = "orange:orange"]
+}
