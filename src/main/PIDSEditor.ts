@@ -146,6 +146,10 @@ export class PIDSEditor {
         }
         //version
         this.ctx.fillText(version, 5, this.height - 16);
+
+        //tick time
+        this.edit.time++;
+        if (this.edit.time % 3 == 0) this.edit.ticks++;
     }
 
     public mousedown (x: number, y: number, e: MouseEvent) {

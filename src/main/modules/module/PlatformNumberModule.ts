@@ -7,6 +7,7 @@ export class PlatformNumberModule extends TextModule {
 
     protected getText(arrivals: Arrival[]): string {
         let arrival = arrivals[this.arrival];
+        if (!arrival) return "";
         return arrival.platform;
     }
 }

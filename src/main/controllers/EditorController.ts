@@ -10,6 +10,7 @@ export class EditorController {
     public offsetY = 0;
     public placeModule = false;
     public time = 0;
+    public ticks = 0;
     public moving: {[key in "l" | "r" | "t" | "b" | "a" | "pan"]: boolean} = {
         l: false,
         r: false,
@@ -25,10 +26,10 @@ export class EditorController {
         h: 0,
     };
     public info = {
-        id: "base_horizontal_a",
-        name: "Base Horizontal Type A",
+        id: "base_horizontal_b",
+        name: "Base Horizontal Type B",
         author: "EpicPuppy613",
-        description: "MTR Built-in layout.\n\nSize: 32 x 11\nArrivals: 1"
+        description: "MTR Built-in layout.\n\nSize: 32 x 9\nArrivals: 3"
     }
 
     constructor (editor: PIDSEditor) {
@@ -235,10 +236,10 @@ export class EditorController {
         }
         //finish module placement
         if (this.placeModule && this.placing) {
-            let x1 = editor.util.snapToGrid(this.start.x, editor.layout.pixelSize, 8, this.offsetX + editor.layout.x) - editor.layout.x;
-            let y1 = editor.util.snapToGrid(this.start.y, editor.layout.pixelSize, 8, this.offsetY + editor.layout.y) - editor.layout.y;
-            let x2 = editor.util.snapToGrid(editor.mouse.x, editor.layout.pixelSize, 8, this.offsetX + editor.layout.x) - editor.layout.x;
-            let y2 = editor.util.snapToGrid(editor.mouse.y, editor.layout.pixelSize, 8, this.offsetY + editor.layout.y) - editor.layout.y;
+            let x1 = editor.util.snapToGrid(this.start.x, editor.layout.pixelSize, 8, this.offsetX + editor.layout.x) - editor.layout.x - this.offsetX;
+            let y1 = editor.util.snapToGrid(this.start.y, editor.layout.pixelSize, 8, this.offsetY + editor.layout.y) - editor.layout.y - this.offsetY;
+            let x2 = editor.util.snapToGrid(editor.mouse.x, editor.layout.pixelSize, 8, this.offsetX + editor.layout.x) - editor.layout.x - this.offsetX;
+            let y2 = editor.util.snapToGrid(editor.mouse.y, editor.layout.pixelSize, 8, this.offsetY + editor.layout.y) - editor.layout.y - this.offsetY;
             let width = x2 - x1;
             let height = y2 - y1;
             //check for negative width/height

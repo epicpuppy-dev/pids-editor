@@ -98,6 +98,29 @@
                     <input id="showSecondsInput" type="checkbox" />
                 </td>
             </tr>
+            <tr id="stopsTypeContainer" class="property">
+                <th>Display Mode: </th>
+                <td>
+                    <select id="stopsTypeInput">
+                        <option value="l">List</option>
+                        <option value="s">Scrolling</option>
+                    </select>
+                </td>
+            </tr>
+            <tr id="scrollSpeedContainer" class="property">
+                <th>Scroll Speed: </th>
+                <td><input id="scrollSpeedInput" type="number" value="5" /></td>
+            </tr>
+            <tr id="hasPageContainer" class="property">
+                <th>Show Page: </th>
+                <td>
+                    <input id="hasPageInput" type="checkbox" />
+                </td>
+            </tr>
+            <tr id="stopContainer" class="property">
+                <th>Stop Number: </th>
+                <td><input id="stopInput" type="number" value="1" /></td>
+            </tr>
         </table>
         <button id="duplicateButton">Duplicate</button>
         <button id="deleteButton">Delete</button>
@@ -109,9 +132,10 @@
         <div id="management">
             <select id="sizeInput">
                 <option value="ha">Horizontal A (32x11)</option>
-                <option value="hb">Horizontal B (32x9)</option>
+                <option value="hb" selected>Horizontal B (32x9)</option>
                 <option value="hc">Horizontal C (32x10)</option>
                 <option value="va">Vertical (16x32)</option>
+                <option value="vsa">Vertical (Single Arrival, 16x32)</option>
                 <option value="ps">Small Projector (16x16)</option>
                 <option value="pm">Medium Projector (48x32)</option>
                 <option value="pl">Large Projector (48x48)</option>

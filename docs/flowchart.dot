@@ -25,12 +25,7 @@ digraph {
         rendermodules [label = "Render Modules", shape = box]
     }
 
-    load -> getnbt
-    getnbt -> getlayout
-    getlayout -> parsedata
-    parsedata -> loadmodules
-    loadmodules -> controller
-
+    load -> getnbt -> getlayout -> parsedata -> loadmodules -> controller
     render -> rendermodules
 
     //data accesses

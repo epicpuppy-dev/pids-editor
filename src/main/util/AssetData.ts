@@ -32,6 +32,7 @@ export class AssetData {
             "hb": "https://cdn.epicpuppy.dev/assets/pids/base_horizontal_b.json",
             "hc": "https://cdn.epicpuppy.dev/assets/pids/base_horizontal_c.json",
             "va": "https://cdn.epicpuppy.dev/assets/pids/base_vertical_a.json",
+            "vsa": "https://cdn.epicpuppy.dev/assets/pids/base_vertical_single_a.json",
             "ps": "https://cdn.epicpuppy.dev/assets/pids/base_projector_small.json",
             "pm": "https://cdn.epicpuppy.dev/assets/pids/base_projector_medium.json",
             "pl": "https://cdn.epicpuppy.dev/assets/pids/base_projector_large.json"
