@@ -7,7 +7,7 @@ export class ShortcutController {
     constructor (editor: PIDSEditor) {
         window.addEventListener("keydown", (e) => {
             //special move logic
-            if (/Arrow(Left|Right|Up|Down)/.test(e.code)) {
+            if (/Arrow(Left|Right|Up|Down)/.test(e.code) && !editor.edit.exportMenu) {
                 e.preventDefault();
                 if (editor.edit.selected) {
                     let module = editor.edit.selected;
@@ -28,6 +28,7 @@ export class ShortcutController {
                         module.x += dx;
                         module.y += dy;
                     }
+                    editor.edit.showProperties(editor);
                 }
             }
 

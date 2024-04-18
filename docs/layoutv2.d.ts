@@ -13,6 +13,6 @@ export interface Layout {
             w: number, // Block pixel-scoped width
             h: number // Block pixel-scoped height
         },
-        data: { [key: string]: any } // Module-specific data
+        data: { [key: string]: (string | number | boolean) } // Module-specific data
     }[], // Array of modules in the layout
 }

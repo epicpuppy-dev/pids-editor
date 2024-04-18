@@ -13,6 +13,7 @@ export class ArrivalTimeModule extends TextModule {
 
     protected getText(arrivals: Arrival[]): string {
         let arrival = arrivals[this.arrival];
+        if (!arrival) return "";
         let relTime = arrival.time - Date.now();
         let timeText = "";
         // if time until arrival is a minute or above

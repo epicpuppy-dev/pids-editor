@@ -24,7 +24,7 @@ export class TimeModule extends TextModule {
         if (this.showMinutes) this.template = this.template.replace("%s", time.getMinutes().toString().padStart(2, "0"));
         if (this.showSeconds) this.template = this.template.replace("%s", time.getSeconds().toString().padStart(2, "0"));
         if (!this.show24Hour) this.template = this.template.replace("%s", ampm);
-        return "";
+        return " ";
     }
 
     public getProperties(): { [key: string]: [(value: any, editor: PIDSEditor) => void, any] } {

@@ -16,22 +16,27 @@ export class ArrivalController {
         let stops = [];
         this.time += Math.floor((Math.random() + 0.5) * 120 * 1000);
         let trainTime = this.time;
-        for (let j = 0; j < Math.floor(Math.random() * 12) + 2; j++) {
+        for (let j = 0; j < Math.floor(Math.random() * 24) + 8; j++) {
             trainTime += Math.floor((Math.random() + 0.25) * 120 * 1000);
             stops.push({
                 name: STATIONS[Math.floor(Math.random() * STATIONS.length)],
                 time: trainTime
             });
         }
+        let destination = STATIONS[Math.floor(Math.random() * STATIONS.length)];
+        stops.push({
+            name: destination,
+            time: trainTime + Math.floor((Math.random() + 0.25) * 120 * 1000)
+        })
         this.arrivals.push(new Arrival (
-            STATIONS[Math.floor(Math.random() * STATIONS.length)], // destination
+            destination, // destination
             this.time, // arrival time
             (Math.floor(Math.random() * 15) + 1).toString(), // platform (1-16)
             0, // delay
             "test", // line name
             "#ffff00", // line color
             stops, // stops
-            (Math.floor(Math.random() * 10) + 2).toString() // cars (2-12)
+            (Math.floor(Math.random() * 14) + 2).toString() // cars (2-16)
         ));
     }
 
@@ -45,24 +50,42 @@ export class ArrivalController {
 }
 
 const STATIONS = [
+    // EpicPuppy613
     "Desert Grand Central",
     "Reston Intermodal",
     "Northview Central",
     "Fairview Docks",
     "Fairview Junction",
+    "Geneva Junction",
+    "Northview Docks",
+    "Northview Island South",
+    "Oasis North",
+    "Desert Northeast Hills",
+    // Navi
     "Temple of Time",
     "Lake City",
     "Chong Shu Chau",
     "Spawn",
     "Cyan Heights",
+    // Forest
     "Inage Kaigan",
+    "Hana-Koshi Beach",
+    // Lily
     "Hobb's End",
     "Market Quarter",
     "New Victoria",
     "Rosewood",
     "Llanmara Saint Ann's",
+    "Loyalty Hills",
+    "Diamond Creek",
+    "Arbour",
+    "Kowloon",
+    "Exchange Place",
+    // Yunlong
     "Yunlong",
     "Sakuradori",
     "Bethel Road",
-    "Minami Yunlong"
+    "Minami Yunlong",
+    // szandor
+    "Hylkemare Wieringawijk"
 ];

@@ -9,14 +9,22 @@ export class TextModule extends Module {
     public arrival: number = 0;
     public template: string = "Text";
 
-    protected getText (arrivals: Arrival[]): string {return ""};
+    protected getText (arrivals: Arrival[]): string {return " "};
 
-    public render(ctx: CanvasRenderingContext2D, editor: PIDSEditor): void {
+    public render(ctx: CanvasRenderingContext2D, editor: PIDSEditor, render: boolean = true): void {
+        if (!render) {
+            super.render(ctx, editor);
+            return;
+        }
         let arrivals = editor.arrivals.arrivals;
         let util = editor.util;
         let layout = editor.layout;
 
         let text = this.getText(arrivals);
+        if (text.length == 0) {
+            super.render(ctx, editor);
+            return;
+        }
         text = this.template.replace("%s", text);
 
         let scaledX = (this.x + 0.25) * layout.pixelSize + layout.x;

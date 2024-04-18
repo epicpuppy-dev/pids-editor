@@ -3,12 +3,12 @@ import { PIDSEditor } from "../PIDSEditor";
 export class Util {
     public showBorder: boolean = true;
 
-    public fontMono (ctx: CanvasRenderingContext2D, size: string) {
+    public fontMono (ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, size: string) {
         ctx.textBaseline = "top";
         ctx.font = size + " 'Consolas','Courier New',monospace";
     }
 
-    public fontMC (ctx: CanvasRenderingContext2D, size: string) {
+    public fontMC (ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, size: string) {
         ctx.textBaseline = "top";
         ctx.font = size + " 'Minecraft','Consolas','Courier New',monospace"
     }
