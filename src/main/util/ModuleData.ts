@@ -45,6 +45,7 @@ export class ModuleData {
             "Platform Number",
             (x, y, w, h) => {
                 return new PlatformNumberModule(x, y, w, h, "Platform Number");
+                return new PlatformNumberModule(x, y, w, h, "Platform Number");
             },
             assets.sprites.platformNumber
         ), editor);
