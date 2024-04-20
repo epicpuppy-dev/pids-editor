@@ -2,7 +2,7 @@ import { PIDSEditor } from "../../PIDSEditor";
 import { Module } from "../Module";
 
 export class BlockModule extends Module {
-    public id: string = "text";
+    public id: string = "block";
     public color: string = "#ffffff";
 
     public render(ctx: CanvasRenderingContext2D, editor: PIDSEditor): void {
