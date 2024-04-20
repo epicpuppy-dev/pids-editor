@@ -85,6 +85,7 @@ export class EditorController {
             } else {
                 alert("Assets still loading! Please wait...");
             }
+            editor.edit.menuOpen = false;
             document.getElementById("newMenu")!.style.display = "none";
         }
 
