@@ -145,7 +145,8 @@ export class PIDSEditor {
             this.ctx.fillText("Loading: " + assetsLoaded + "/" + assetsTotal, 5, this.height - 32);
         }
         //version
-        this.ctx.fillText(version, 5, this.height - 16);
+        this.ctx.textAlign = "right";
+        this.ctx.fillText(version, this.width - 4, this.height - 16);
 
         //tick time
         this.edit.time++;

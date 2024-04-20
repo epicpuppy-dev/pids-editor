@@ -13,18 +13,25 @@ export class ModuleController {
         this.moduleTypes[moduleType.id] = moduleType;
 
         //create button
+        let item = document.createElement("div");
+        item.classList.add("toolbarItem");
 
         let button = moduleType.sprite.img;
-        document.getElementById("moduleTypes")!.appendChild(button);
+        item.appendChild(button);
         button.width = 32;
         button.height = 32;
         button.classList.add("moduleIcon");
-        button.title = moduleType.name;
         button.onclick = () => {
             editor.edit.placing = moduleType;
             editor.edit.selected = null;
             document.getElementById("propertyEditor")!.style.display = "none";
         }
+
+        let label = document.createElement("label");
+        label.textContent = moduleType.name;
+        item.appendChild(label);
+
+        document.getElementById("moduleTypes")!.appendChild(item);
     }
 
     public render (ctx: CanvasRenderingContext2D, editor: PIDSEditor) {

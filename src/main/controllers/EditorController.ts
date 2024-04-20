@@ -5,7 +5,7 @@ import { ModuleType } from "../modules/ModuleType";
 export class EditorController {
     public selected: Module | null = null;
     public placing: ModuleType | null = null;
-    public exportMenu = false;
+    public menuOpen = false;
     public offsetX = 0;
     public offsetY = 0;
     public placeModule = false;
@@ -35,7 +35,8 @@ export class EditorController {
     constructor (editor: PIDSEditor) {
         // toolbar buttons
         document.getElementById("exportIcon")!.onclick = () => {
-            editor.edit.exportMenu = true;
+            if (editor.edit.menuOpen) return;
+            editor.edit.menuOpen = true;
             (document.getElementById("exportID")! as HTMLInputElement).value = editor.edit.info.id;
             (document.getElementById("exportName")! as HTMLInputElement).value = editor.edit.info.name;
             (document.getElementById("exportAuthor")! as HTMLInputElement).value = editor.edit.info.author;
@@ -43,6 +44,7 @@ export class EditorController {
             document.getElementById("exportMenu")!.style.display = "block";
         }
         document.getElementById("importIcon")!.onclick = () => {
+            if (editor.edit.menuOpen) return;
             //create a new file input element
             let fileInput = document.createElement("input");
             fileInput.type = "file";
@@ -65,23 +67,36 @@ export class EditorController {
             "https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png" : "https://cdn.epicpuppy.dev/assets/pids/sprite-border-off.png"; 
         }
         document.getElementById("newIcon")!.onclick = () => {
-            if (!confirm("Confirm?")) return;
+            if (editor.edit.menuOpen) return;
+            editor.edit.menuOpen = true;
+            document.getElementById("newMenu")!.style.display = "block";
+        }
+
+        // new menu buttons
+        document.getElementById("newCancelButton")!.onclick = () => {
+            editor.edit.menuOpen = false;
+            document.getElementById("newMenu")!.style.display = "none";
+        }
+        document.getElementById("newButton")!.onclick = () => {
             let type = (document.getElementById("sizeInput")! as HTMLSelectElement).value;
-            editor.layout.changeType(type, editor);
             //load layout
             if (editor.assets.files["layout" + type.toUpperCase()].complete) {
                 editor.json.import(editor.assets.files["layout" + type.toUpperCase()].data!, editor);
+            } else {
+                alert("Assets still loading! Please wait...");
             }
+            document.getElementById("newMenu")!.style.display = "none";
         }
 
         // export menu buttons
         document.getElementById("cancelButton")!.onclick = () => {
-            editor.edit.exportMenu = false;
+            editor.edit.menuOpen = false;
             document.getElementById("exportMenu")!.style.display = "none";
         };
         document.getElementById("exportButton")!.onclick = () => {
-            editor.edit.exportMenu = false;
+            editor.edit.menuOpen = false;
             editor.json.export(editor);
+            document.getElementById("exportMenu")!.style.display = "none";
         };
     }
 

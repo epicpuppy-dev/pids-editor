@@ -87,7 +87,6 @@ export class JSONController {
         a.download = data.id + ".json";
         a.click();
         URL.revokeObjectURL(url);
-        editor.edit.exportMenu = false;
-        document.getElementById("exportMenu")!.style.display = "none";
+        editor.edit.menuOpen = false;
     }
 }
