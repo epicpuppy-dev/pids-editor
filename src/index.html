@@ -37,7 +37,7 @@
                 </td>
             </tr>
             <tr id="colorContainer" class="property">
-                <th>Text Color: </th>
+                <th>Color: </th>
                 <td><input id="colorInput" type="color" value="#ffffff" /></td>
             </tr>
             <tr id="textContainer" class="property">
@@ -130,30 +130,63 @@
             
         </div>
         <div id="management">
-            <select id="sizeInput">
-                <option value="ha">Horizontal A (32x11)</option>
-                <option value="hb" selected>Horizontal B (32x9)</option>
-                <option value="hc">Horizontal C (32x10)</option>
-                <option value="va">Vertical (16x32)</option>
-                <option value="vsa">Vertical (Single Arrival, 16x32)</option>
-                <option value="ps">Small Projector (16x16)</option>
-                <option value="pm">Medium Projector (48x32)</option>
-                <option value="pl">Large Projector (48x48)</option>
-            </select>
-            <img id="newIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-new.png" width="32" height="32" title="Create New" class="managementIcon" />
-            <img id="borderIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png" width="32" height="32" title="Toggle Border" class="managementIcon" />
-            <img id="importIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-import.png" width="32" height="32" title="Load / Import" class="managementIcon" />
-            <img id="exportIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-export.png" width="32" height="32" title="Save / Export" class="managementIcon" />
+            <div class="toolbarItem">
+                <img id="newIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-new.png" width="32" height="32" class="managementIcon" />
+                <label>Create New</label>
+            </div>
+            <div class="toolbarItem">
+                <img id="borderIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png" width="32" height="32" class="managementIcon" />
+                <label>Toggle Border</label>
+            </div>
+            <div class="toolbarItem">
+                <img id="importIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-import.png" width="32" height="32" class="managementIcon" />
+                <label>Load / Import</label>
+            </div>
+            <div class="toolbarItem">
+                <img id="exportIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-export.png" width="32" height="32" class="managementIcon" />
+                <label>Save / Export</label>
+            </div>
         </div>
     </div>
-    <div id="exportMenu">
-        <h1>Save / Export</h1>
-        <div class="inputContainer"><label>ID*: </label> <input type="text" id="exportID" placeholder="example_id" maxlength="48" /><br></div>
-        <div class="inputContainer"><label>Name: </label> <input type="text" id="exportName" placeholder="Example PIDS" maxlength="64" /><br></div>
-        <div class="inputContainer"><label>Author: </label> <input type="text" id="exportAuthor" placeholder="You" maxlength="64" /><br></div>
-        <label>Desription: </label><br>
-        <textarea id="exportDescription"></textarea><br>
-        <div class="inputContainer"><button id="cancelButton">Cancel</button><button id="exportButton">Export</button></div>
+    <div id="exportMenu" class="overlayWindow">
+        <div id="exportMenuContent" class="overlayContent">
+            <h1>Save / Export</h1>
+            <div class="inputContainer"><label>ID*: </label> <input type="text" id="exportID" placeholder="example_id" maxlength="48" /><br></div>
+            <div class="inputContainer"><label>Name: </label> <input type="text" id="exportName" placeholder="Example PIDS" maxlength="64" /><br></div>
+            <div class="inputContainer"><label>Author: </label> <input type="text" id="exportAuthor" placeholder="You" maxlength="64" /><br></div>
+            <label>Desription: </label><br>
+            <textarea id="exportDescription"></textarea><br>
+            <div class="inputContainer"><button id="cancelButton">Cancel</button><button id="exportButton">Export</button></div>
+        </div>
+    </div>
+    <div id="newMenu" class="overlayWindow">
+        <div id="newMenuContent" class="overlayContent">
+            <h1>Create New Layout</h1>
+            <div class="inputContainer">
+                <label>Template: </label>
+                <select id="sizeInput">
+                    <optgroup label="Horizontal A (32x11)">
+                        <option value="ha">Default Horizontal A</option>
+                    </optgroup>
+                    <optgroup label="Horizontal B (32x9)">
+                        <option value="hb" selected>Default Horizontal B</option>
+                    </optgroup>
+                    <optgroup label="Horizontal C (32x10)">
+                        <option value="hc">Default Horizontal C</option>
+                    </optgroup>
+                    <optgroup label="Vertical (16x32)">
+                        <option value="va">Default Vertical</option>
+                        <option value="vsa">Single Arrival Vertical</option>
+                    </optgroup>
+                    <optgroup label="Projector">
+                        <option value="ps">Small Projector (16x16)</option>
+                        <option value="pm">Medium Projector (48x32)</option>
+                        <option value="pl">Large Projector (48x48)</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="inputContainer"><button id="newCancelButton">Cancel</button><button id="newButton">Export</button></div>
+        </div>
     </div>
     <canvas id="overlay" width="800" height="600"></canvas>
 </body>

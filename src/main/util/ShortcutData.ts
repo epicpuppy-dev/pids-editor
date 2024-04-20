@@ -6,9 +6,9 @@ export class ShortcutData {
         controller.register(new Shortcut(
             "closeMenu", ["Escape"], false, false, false,
             (editor) => {
-                editor.edit.exportMenu = false;
+                editor.edit.menuOpen = false;
                 document.getElementById("exportMenu")!.style.display = "none";
-            }, (e, editor) => editor.edit.exportMenu
+            }, (e, editor) => editor.edit.menuOpen
         ));
 
         controller.register(new Shortcut(

@@ -67,6 +67,11 @@ const STATIONS = [
     "Chong Shu Chau",
     "Spawn",
     "Cyan Heights",
+    "Aldgate",
+    "Misashima",
+    "Hamura",
+    "Mita-Shiro",
+    "Llanfairpwll",
     // Forest
     "Inage Kaigan",
     "Hana-Koshi Beach",

@@ -8,7 +8,7 @@
 }
 html {
     color: #ffffff;
-    font-family: 'Consolas','Courier New',monospace;
+    font-family: 'Consolas','Courier New', monospace;
 }
 canvas {
     position: absolute;
@@ -43,6 +43,7 @@ canvas {
 #colorInput {
     flex-grow: 1;
     padding: 2px;
+    min-width: 4em;
     width: 100%;
     height: 2em;
 }
@@ -84,7 +85,7 @@ canvas {
     color: #ffffff;
     margin-bottom: 8px;
     border-radius: 6px;
-    font-family: 'Consolas','Courier New',monospace;
+    font-family: 'Consolas','Courier New', monospace;
 }
 #deleteButton:hover {
     background-color: #660000;
@@ -97,46 +98,81 @@ canvas {
     color: #ffffff;
     margin-bottom: 8px;
     border-radius: 6px;
-    font-family: 'Consolas','Courier New',monospace;
+    font-family: 'Consolas','Courier New', monospace;
 }
 #duplicateButton:hover {
     background-color: #000066;
 }
 
 .managementIcon {
-    margin-left: 6px;
+    margin-top: 4px;
+}
+.managementIcon:hover {
+    background-color: #666666;
 }
 .moduleIcon {
-    margin-right: 6px;
+    margin-bottom: 4px;
 }
-#sizeInput {
-    margin: 0;
-    border: 1px solid white;
-    background-color: #333333;
-    height: 32px;
-    color: white;
-    position: relative;
-    top: -11px;
+.moduleIcon:hover {
+    background-color: #666666;
 }
 #toolbar {
     display: flex;
-    width: calc(100% - 8px);
+    height: calc(100% - 8px);
     position: absolute;
     top: 0;
     left: 0;
     background-color: #333333;
     border: solid #444444;
-    border-width: 0 0 2px 0;
+    border-width: 0 2px 0 0;
     padding: 4px;
-    height: 32px;
-    flex-direction: row;
+    width: 32px;
+    flex-direction: column;
     justify-content: space-between;
+    flex-wrap: nowrap;
+    transition: width 0.5s;
+}
+#toolbar:hover {
+    width: fit-content;
+}
+#moduleTypes {
+    font-size: 0;
 }
 #management {
     font-size: 0;
 }
+#toolbar:hover .toolbarItem {
+    width: fit-content;
+}
+.toolbarItem {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    text-wrap: nowrap;
+    width: 32px;
+}
+.toolbarItem label {
+    color: white;
+    font-size: 14px;
+    margin-left: 8px;
+}
+#management .toolbarItem label {
+    margin-top: 12px;
+}
+#moduleTypes .toolbarItem label {
+    margin-top: 8px;
+}
 
-#exportMenu {
+.overlayWindow {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    display: none;
+}
+.overlayContent {
     background-color: #333333;
     border: solid 2px #444444;
     padding: 20px;
@@ -144,33 +180,43 @@ canvas {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    display: none;
+    display: block;
 }
-#exportMenu h1 {
+.overlayContent h1 {
     margin: 0;
     padding: 10px;
     text-align: center;
 }
-#exportMenu .inputContainer {
+.overlayContent .inputContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-#exportMenu label {
+.overlayContent label {
     margin: 5px 0;
     padding: 5px;
 }
-#exportMenu input {
+.overlayContent input {
     flex-grow: 1;
     padding: 5px;
     margin: 5px 0;
     width: unset;
-    border: solid 1px #444444;
+    border: solid 2px #666666;
     background-color: #444444;
     color: #ffffff;
-    font-family: 'Consolas','Courier New',monospace;
+    font-family: 'Consolas','Courier New', monospace;
 }
-#exportMenu textarea {
+.overlayContent select {
+    flex-grow: 1;
+    padding: 5px;
+    margin: 5px 0;
+    width: unset;
+    border: solid 2px #666666;
+    background-color: #444444;
+    color: #ffffff;
+    font-family: 'Consolas','Courier New', monospace;
+}
+.overlayContent textarea {
     padding: 5px;
     margin: 5px 0;
     width: 30em;
@@ -180,23 +226,23 @@ canvas {
     border: solid 1px #444444;  
     background-color: #444444;
     color: #ffffff;
-    font-family: 'Consolas','Courier New',monospace;
+    font-family: 'Consolas','Courier New', monospace;
 }
-#exportMenu button {
+.overlayContent button {
     width: 150px;
     padding: 5px;
     margin: 5px 0;
     border: solid 1px #444444;
     background-color: #444444;
     color: #ffffff;
-    font-family: 'Consolas','Courier New',monospace;
+    font-family: 'Consolas','Courier New', monospace;
 }
-#exportMenu #exportButton {
+.overlayContent #exportButton {
     background-color: #006600;
 }
-#exportMenu #cancelButton:hover {
+.overlayContent #cancelButton:hover {
     background-color: #666666;
 }
-#exportMenu #exportButton:hover {
+.overlayContent #exportButton:hover {
     background-color: #009900;
 }
