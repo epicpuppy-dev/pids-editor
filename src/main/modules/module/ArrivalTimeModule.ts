@@ -1,5 +1,5 @@
 import { PIDSEditor } from "../../PIDSEditor";
-import { Arrival } from "../../editor/Arrival";
+import { Arrival } from "../../util/Arrival";
 import { TextModule } from "./TextModule";
 
 export class ArrivalTimeModule extends TextModule {

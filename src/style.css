@@ -27,6 +27,9 @@ canvas {
 .property {
     display: none;
 }
+.identifiers {
+    display: none;
+}
 #propertyTable {
     width: 100%;
 }
@@ -63,7 +66,7 @@ canvas {
     border-width: 2px 0 2px 2px;
     border-radius: 6px 0 0 6px;
     flex-direction: column;
-    max-height: 75%;
+    max-height: 90%;
     overflow-y: auto;
     text-align: center;
 }
@@ -131,6 +134,7 @@ canvas {
     justify-content: space-between;
     flex-wrap: nowrap;
     transition: width 0.5s;
+    overflow-y: auto;
 }
 #toolbar:hover {
     width: fit-content;

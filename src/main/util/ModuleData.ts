@@ -5,8 +5,10 @@ import { ModuleType } from "../modules/ModuleType";
 import { ArrivalTimeModule } from "../modules/module/ArrivalTimeModule";
 import { BlockModule } from "../modules/module/BlockModule";
 import { DestinationModule } from "../modules/module/DestinationModule";
+import { LineNameModule } from "../modules/module/LineNameModule";
 import { PlatformNumberModule } from "../modules/module/PlatformNumberModule";
 import { StopsAtModule } from "../modules/module/StopsAtModule";
+import { TemplateModule } from "../modules/module/TemplateModule";
 import { TextModule } from "../modules/module/TextModule";
 import { TimeModule } from "../modules/module/TimeModule";
 import { TrainLengthModule } from "../modules/module/TrainLengthModule";
@@ -45,7 +47,6 @@ export class ModuleData {
             "Platform Number",
             (x, y, w, h) => {
                 return new PlatformNumberModule(x, y, w, h, "Platform Number");
-                return new PlatformNumberModule(x, y, w, h, "Platform Number");
             },
             assets.sprites.platformNumber
         ), editor);
@@ -56,6 +57,14 @@ export class ModuleData {
                 return new StopsAtModule(x, y, w, h, "Stops At", editor);
             },
             assets.sprites.stopsAt
+        ), editor);
+        controller.registerModuleType(new ModuleType(
+            "lineName",
+            "Line Name",
+            (x, y, w, h) => {
+                return new LineNameModule(x, y, w, h, "Line Name");
+            },
+            assets.sprites.lineName
         ), editor);
         controller.registerModuleType(new ModuleType(
             "time",
@@ -72,6 +81,14 @@ export class ModuleData {
                 return new TextModule(x, y, w, h, "Text");
             },
             assets.sprites.text
+        ), editor);
+        controller.registerModuleType(new ModuleType(
+            "template",
+            "Template",
+            (x, y, w, h) => {
+                return new TemplateModule(x, y, w, h, "Template");
+            },
+            assets.sprites.template
         ), editor);
         controller.registerModuleType(new ModuleType(
             "block",

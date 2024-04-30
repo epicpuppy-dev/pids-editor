@@ -11,6 +11,7 @@ export class EditorController {
     public placeModule = false;
     public time = 0;
     public ticks = 0;
+    public station = "Test Station";
     public moving: {[key in "l" | "r" | "t" | "b" | "a" | "pan"]: boolean} = {
         l: false,
         r: false,
@@ -331,7 +332,8 @@ export class EditorController {
         let properties = this.selected.getProperties();
 
         //loop through properties
-        for (let property of document.getElementsByClassName("property")) {
+        const propertiesElements = Array.from(document.getElementsByClassName("property"));
+        for (let property of propertiesElements) {
             let element = property as HTMLElement;
             let input = document.getElementById(element.id.replace("Container", "Input"))! as HTMLInputElement;
             if (element.id.replace("Container", "") in properties) {
@@ -375,6 +377,20 @@ export class EditorController {
                 }
             } else {
                 element.style.display = "none";
+            }
+        }
+
+        // Special case for identifiers
+        let identifiers = document.getElementsByClassName("identifiers");
+        if (Object.keys(properties).includes("identifiers")) {
+            for (let i = 0; i < identifiers.length; i++) {
+                let identifier = identifiers[i] as HTMLElement;
+                identifier.style.display = "table-row";
+            }
+        } else {
+            for (let i = 0; i < identifiers.length; i++) {
+                let identifier = identifiers[i] as HTMLElement;
+                identifier.style.display = "none";
             }
         }
     }

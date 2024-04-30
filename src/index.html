@@ -44,6 +44,52 @@
                 <th>Text: </th>
                 <td><input id="textInput" type="text" value="%s" /></td>
             </tr>
+            <tr class="identifiers">
+                <th colspan="2">Possible Identifiers</th>
+            </tr>
+            <tr class="identifiers">
+                <td>$s</td>
+                <td>Station Name</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$d</td>
+                <td>Destination</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$p</td>
+                <td>Platform Number</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$l</td>
+                <td>Train Length</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$n</td>
+                <td>Line Name</td>
+            </tr>
+            <tr class="identifiers">
+                <th colspan="2">Time Identifiers</th>
+            </tr>
+            <tr class="identifiers">
+                <td>$ts</td>
+                <td>Current Seconds</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$tm</td>
+                <td>Current Minutes</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$th2</td>
+                <td>Current Hours (12-Hour)</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$th4</td>
+                <td>Current Hours (24-Hour)</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$tap</td>
+                <td>Current AM/PM</td>
+            </tr>
             <tr id="timeTypeContainer" class="property">
                 <th>Time Display: </th>
                 <td>
@@ -185,7 +231,7 @@
                     </optgroup>
                 </select>
             </div>
-            <div class="inputContainer"><button id="newCancelButton">Cancel</button><button id="newButton">Export</button></div>
+            <div class="inputContainer"><button id="newCancelButton">Cancel</button><button id="newButton">Confirm</button></div>
         </div>
     </div>
     <canvas id="overlay" width="800" height="600"></canvas>

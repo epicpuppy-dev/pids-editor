@@ -1,4 +1,4 @@
-import { Arrival } from "../editor/Arrival";
+import { Arrival } from "../util/Arrival";
 
 export class ArrivalController {
     arrivals: Arrival[] = [];
@@ -33,7 +33,7 @@ export class ArrivalController {
             this.time, // arrival time
             (Math.floor(Math.random() * 15) + 1).toString(), // platform (1-16)
             0, // delay
-            "test", // line name
+            "Test Line", // line name
             "#ffff00", // line color
             stops, // stops
             (Math.floor(Math.random() * 14) + 2).toString() // cars (2-16)
@@ -94,3 +94,7 @@ const STATIONS = [
     // szandor
     "Hylkemare Wieringawijk"
 ];
+
+const LINES = [
+
+]

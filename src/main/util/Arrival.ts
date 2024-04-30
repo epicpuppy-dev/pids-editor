@@ -7,6 +7,7 @@ export class Arrival {
     lineName: string
     stops: {name: string, time: number}[]
     cars: string
+    station: string = "Test Station"
 
     constructor (
         destination: string, 
