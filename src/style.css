@@ -279,3 +279,28 @@ canvas {
 .layerActive {
     filter: brightness(1);
 }
+
+#warning {
+    display: none;
+    flex-direction: row;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: #333333;
+    border: solid 2px #444444;
+    padding: 2px;
+    justify-content: space-between;
+    border-width: 0 2px 2px 2px;
+    border-radius: 0 0 6px 6px;
+    text-align: center;
+    color: yellow;
+}
+
+#warningIcon {
+    margin: 2px;
+}
+
+#warningText {
+    margin: 0 6px;
+}

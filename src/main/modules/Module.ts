@@ -6,6 +6,7 @@ export abstract class Module {
     public width: number;
     public height: number;
     public name: string;
+    public collision: boolean = false;
     public abstract id: string;
     public abstract layer: number;
 
@@ -31,7 +32,7 @@ export abstract class Module {
 
         // draw module border
         if (!layout.showModuleBorders || !(edit.editingLayer == this.layer || edit.showAllLayers)) return;
-        ctx.fillStyle = editor.edit.selected === this ? "#ffaa00" : "#aaaaaa";
+        ctx.fillStyle = editor.edit.selected === this ? "#ffaa00" : this.collision ? "#ffff77" : "#aaaaaa";
         ctx.textAlign = "left";
         ctx.fillRect(scaledX, scaledY, scaledWidth, 1);
         ctx.fillRect(scaledX, scaledY + scaledHeight - 1, scaledWidth, 1);

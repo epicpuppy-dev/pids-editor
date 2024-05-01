@@ -255,6 +255,7 @@ export class EditorController {
         this.moving.b = false;
         this.moving.a = false;
         this.moving.pan = false;
+        this.checkCollisions(editor);
         //check for negative width/height
         if (this.selected) {
             if (this.selected.width < 0) {
@@ -425,6 +426,41 @@ export class EditorController {
                 element.classList.remove("layerActive");
                 element.src = element.src.replace("active", "layer");
             }
+        }
+    }
+
+    public checkCollisions (editor: PIDSEditor) {
+        let collision: {layer: number, typeA: string, typeB: string} | null = null;
+        let modules = editor.modules.modules;
+        for (let module of modules) {
+            module.collision = false;
+        }
+        //Check collision separately for each layer
+        for (let i = 0; i < 8; i++) {
+            let layer = i;
+            let layerModules = modules.filter((module) => module.layer == layer);
+            for (let j = 0; j < layerModules.length; j++) {
+                let moduleA = layerModules[j];
+                for (let k = j + 1; k < layerModules.length; k++) {
+                    let moduleB = layerModules[k];
+                    if (
+                        moduleA.x < moduleB.x + moduleB.width &&
+                        moduleA.x + moduleA.width > moduleB.x &&
+                        moduleA.y < moduleB.y + moduleB.height &&
+                        moduleA.y + moduleA.height > moduleB.y
+                    ) {
+                        collision = {layer: layer, typeA: moduleA.name, typeB: moduleB.name};
+                        moduleA.collision = true;
+                        moduleB.collision = true;
+                    }
+                }
+            }
+        }
+        if (collision) {
+            document.getElementById("warningText")!.innerText = `Between ${collision.typeA} and ${collision.typeB} on layer ${collision.layer}`;
+            document.getElementById("warning")!.style.display = "flex";
+        } else {
+            document.getElementById("warning")!.style.display = "none";
         }
     }
 }
