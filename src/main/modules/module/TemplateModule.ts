@@ -68,6 +68,7 @@ export class TemplateModule extends TextModule {
             data: {
                 align: this.align,
                 color: parseInt(this.color.slice(1), 16),
+                layer: this.layer,
                 arrival: this.arrival,
                 template: this.baseTemplate
             }
@@ -78,6 +79,7 @@ export class TemplateModule extends TextModule {
         if (["left", "right", "center"].includes(data.align)) this.align = data.align;
         if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
         if (typeof data.arrival == "number") this.arrival = data.arrival;
+        if (typeof data.layer == "number") this.layer = data.layer;
         if (typeof data.template == "string") this.baseTemplate = data.template;
     }
 
@@ -85,6 +87,7 @@ export class TemplateModule extends TextModule {
         let module = new (this.constructor as any)(this.x, this.y, this.width, this.height, this.name);
         module.align = this.align;
         module.color = this.color;
+        module.layer = this.layer;
         module.arrival = this.arrival;
         module.baseTemplate = this.baseTemplate;
         return module;

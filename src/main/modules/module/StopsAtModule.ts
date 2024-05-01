@@ -157,6 +157,7 @@ export class StopsAtModule extends TextModule {
             data: {
                 align: this.align,
                 color: parseInt(this.color.slice(1), 16),
+                layer: this.layer,
                 arrival: this.arrival,
                 mode: this.mode,
                 template: this.baseTemplate,
@@ -172,6 +173,7 @@ export class StopsAtModule extends TextModule {
         if (["left", "right", "center"].includes(data.align)) this.align = data.align;
         if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
         if (typeof data.arrival == "number") this.arrival = data.arrival;
+        if (typeof data.layer == "number") this.layer = data.layer;
         if (["s", "l"].includes(data.mode)) this.mode = data.mode;
         if (typeof data.template == "string") this.baseTemplate = data.template;
         if (typeof data.baseText == "string") this.baseTemplate = data.baseText;
@@ -185,6 +187,7 @@ export class StopsAtModule extends TextModule {
         let module = new (this.constructor as any)(this.x, this.y, this.width, this.height, this.name, this.editor);
         module.align = this.align;
         module.color = this.color;
+        module.layer = this.layer;
         module.arrival = this.arrival;
         module.mode = this.mode;
         module.hasPage = this.hasPage;

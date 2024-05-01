@@ -82,6 +82,7 @@ export class TimeModule extends TextModule {
             data: {
                 align: this.align,
                 color: parseInt(this.color.slice(1), 16),
+                layer: this.layer,
                 loc: this.loc,
                 template: this.baseTemplate,
                 show24Hour: this.show24Hour,
@@ -95,6 +96,7 @@ export class TimeModule extends TextModule {
     public import(data: { [key: string]: any; }): void {
         if (["left", "right", "center"].includes(data.align)) this.align = data.align;
         if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
+        if (typeof data.layer == "number") this.layer = data.layer;
         if (["s", "g"].includes(data.loc)) this.loc = data.loc;
         if (typeof data.template == "string") this.baseTemplate = data.template;
         if (typeof data.show24Hour == "boolean") this.show24Hour = data.show24Hour;
@@ -107,6 +109,7 @@ export class TimeModule extends TextModule {
         let module = new (this.constructor as any)(this.x, this.y, this.width, this.height, this.name);
         module.align = this.align;
         module.color = this.color;
+        module.layer = this.layer;
         module.loc = this.loc;
         module.template = this.template;
         module.show24Hour = this.show24Hour;

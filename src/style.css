@@ -241,12 +241,41 @@ canvas {
     color: #ffffff;
     font-family: 'Consolas','Courier New', monospace;
 }
-.overlayContent #exportButton {
-    background-color: #006600;
-}
-.overlayContent #cancelButton:hover {
+.overlayContent button:hover {
     background-color: #666666;
 }
-.overlayContent #exportButton:hover {
+#exportButton {
+    background-color: #006600;
+}
+#exportButton:hover {
     background-color: #009900;
+}
+
+#layerbar {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: #333333;
+    border: solid 2px #444444;
+    padding: 2px;
+    justify-content: space-between;
+    border-width: 2px 2px 0 2px;
+    border-radius: 6px 6px 0 0;
+}
+.layerIcon {
+    margin: 0 2px;
+    margin-top: 2px;
+    filter: brightness(0.5);
+}
+.layerIcon:not(.layerActive):hover {
+    background-color: #999999;
+}
+.layerIcon.layerActive:hover {
+    background-color: #666666;
+}
+.layerActive {
+    filter: brightness(1);
 }

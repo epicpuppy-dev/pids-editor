@@ -9,6 +9,16 @@
     <meta name="og:url" content="https://pids.epicpuppy.dev/">
     <meta name="og:type" content="website">
     <link rel="icon" href="https://cdn.epicpuppy.dev/assets/pids/icon.png" />
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-border-off.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-show.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-0.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-1.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-2.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-3.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-4.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-5.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-6.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-7.png" as="image">
 </head>
 
 <body oncontextmenu="return false;" style="background-color: black;">
@@ -185,6 +195,10 @@
                 <label>Toggle Border</label>
             </div>
             <div class="toolbarItem">
+                <img id="layerIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-hide.png" width="32" height="32" class="managementIcon" />
+                <label>Toggle Show All</label>
+            </div>
+            <div class="toolbarItem">
                 <img id="importIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-import.png" width="32" height="32" class="managementIcon" />
                 <label>Load / Import</label>
             </div>
@@ -193,6 +207,16 @@
                 <label>Save / Export</label>
             </div>
         </div>
+    </div>
+    <div id="layerbar">
+        <img id="layer0" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-0.png" width="32" height="32" class="layerIcon" />
+        <img id="layer1" src="https://cdn.epicpuppy.dev/assets/pids/sprite-active-1.png" width="32" height="32" class="layerIcon layerActive" />
+        <img id="layer2" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-2.png" width="32" height="32" class="layerIcon" />
+        <img id="layer3" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-3.png" width="32" height="32" class="layerIcon" />
+        <img id="layer4" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-4.png" width="32" height="32" class="layerIcon" />
+        <img id="layer5" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-5.png" width="32" height="32" class="layerIcon" />
+        <img id="layer6" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-6.png" width="32" height="32" class="layerIcon" />
+        <img id="layer7" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-7.png" width="32" height="32" class="layerIcon" />
     </div>
     <div id="exportMenu" class="overlayWindow">
         <div id="exportMenuContent" class="overlayContent">
