@@ -1,1 +1,1 @@
-export const version = '0.3.4-hotfix.1';
+export const version = '0.4.0';

@@ -8,6 +8,7 @@ export class ShortcutData {
             (editor) => {
                 editor.edit.menuOpen = false;
                 document.getElementById("exportMenu")!.style.display = "none";
+                document.getElementById("newMenu")!.style.display = "none";
             }, (e, editor) => editor.edit.menuOpen
         ));
 
@@ -51,5 +52,45 @@ export class ShortcutData {
                 }
             }, (e, editor) => editor.edit.selected !== null
         ));
+
+        controller.register(new Shortcut(
+            "nextLayer", ["KeyE"], false, false, false,
+            (editor) => {
+                editor.edit.changeLayer(editor.edit.editingLayer + 1);
+            }, (e, editor) => !editor.edit.menuOpen
+        ));
+
+        controller.register(new Shortcut(
+            "prevLayer", ["KeyQ"], false, false, false,
+            (editor) => {
+                editor.edit.changeLayer(editor.edit.editingLayer - 1);
+            }, (e, editor) => !editor.edit.menuOpen
+        ));
+
+        controller.register(new Shortcut(
+            "moveNextLayer", ["KeyE"], false, true, false,
+            (editor) => {
+                let selected = editor.edit.selected;
+                editor.edit.changeLayer(editor.edit.editingLayer + 1);
+                if (selected) {
+                    selected.layer = editor.edit.editingLayer;
+                    editor.edit.selected = selected;
+                    editor.edit.showProperties(editor);
+                }
+            }, (e, editor) => editor.edit.selected !== null && !editor.edit.menuOpen
+        ));
+
+        controller.register(new Shortcut(
+            "movePrevLayer", ["KeyQ"], false, true, false,
+            (editor) => {
+                let selected = editor.edit.selected;
+                editor.edit.changeLayer(editor.edit.editingLayer - 1);
+                if (selected) {
+                    selected.layer = editor.edit.editingLayer;
+                    editor.edit.selected = selected;
+                    editor.edit.showProperties(editor);
+                }
+            }, (e, editor) => editor.edit.selected !== null && !editor.edit.menuOpen
+        ));
     }
-}
+}   

@@ -9,6 +9,16 @@
     <meta name="og:url" content="https://pids.epicpuppy.dev/">
     <meta name="og:type" content="website">
     <link rel="icon" href="https://cdn.epicpuppy.dev/assets/pids/icon.png" />
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-border-off.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-show.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-0.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-1.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-2.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-3.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-4.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-5.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-6.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-7.png" as="image">
 </head>
 
 <body oncontextmenu="return false;" style="background-color: black;">
@@ -43,6 +53,52 @@
             <tr id="textContainer" class="property">
                 <th>Text: </th>
                 <td><input id="textInput" type="text" value="%s" /></td>
+            </tr>
+            <tr class="identifiers">
+                <th colspan="2">Possible Identifiers</th>
+            </tr>
+            <tr class="identifiers">
+                <td>$s</td>
+                <td>Station Name</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$d</td>
+                <td>Destination</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$p</td>
+                <td>Platform Number</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$l</td>
+                <td>Train Length</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$n</td>
+                <td>Line Name</td>
+            </tr>
+            <tr class="identifiers">
+                <th colspan="2">Time Identifiers</th>
+            </tr>
+            <tr class="identifiers">
+                <td>$ts</td>
+                <td>Current Seconds</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$tm</td>
+                <td>Current Minutes</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$th2</td>
+                <td>Current Hours (12-Hour)</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$th4</td>
+                <td>Current Hours (24-Hour)</td>
+            </tr>
+            <tr class="identifiers">
+                <td>$tap</td>
+                <td>Current AM/PM</td>
             </tr>
             <tr id="timeTypeContainer" class="property">
                 <th>Time Display: </th>
@@ -139,6 +195,10 @@
                 <label>Toggle Border</label>
             </div>
             <div class="toolbarItem">
+                <img id="layerIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-hide.png" width="32" height="32" class="managementIcon" />
+                <label>Toggle Show All</label>
+            </div>
+            <div class="toolbarItem">
                 <img id="importIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-import.png" width="32" height="32" class="managementIcon" />
                 <label>Load / Import</label>
             </div>
@@ -147,6 +207,24 @@
                 <label>Save / Export</label>
             </div>
         </div>
+    </div>
+    <div id="layerbar">
+        <img id="layer0" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-0.png" width="32" height="32" class="layerIcon" />
+        <img id="layer1" src="https://cdn.epicpuppy.dev/assets/pids/sprite-active-1.png" width="32" height="32" class="layerIcon layerActive" />
+        <img id="layer2" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-2.png" width="32" height="32" class="layerIcon" />
+        <img id="layer3" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-3.png" width="32" height="32" class="layerIcon" />
+        <img id="layer4" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-4.png" width="32" height="32" class="layerIcon" />
+        <img id="layer5" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-5.png" width="32" height="32" class="layerIcon" />
+        <img id="layer6" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-6.png" width="32" height="32" class="layerIcon" />
+        <img id="layer7" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-7.png" width="32" height="32" class="layerIcon" />
+    </div>
+    <div id="warning">
+        <img id="warningIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-warning.png" width="32" height="32" /> 
+        <div>
+            Z-Fighting Warning<br>
+            <span id="warningText">Between a and b on layer l</span>
+        </div>
+        <img id="warningIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-warning.png" width="32" height="32" /> 
     </div>
     <div id="exportMenu" class="overlayWindow">
         <div id="exportMenuContent" class="overlayContent">
@@ -185,7 +263,7 @@
                     </optgroup>
                 </select>
             </div>
-            <div class="inputContainer"><button id="newCancelButton">Cancel</button><button id="newButton">Export</button></div>
+            <div class="inputContainer"><button id="newCancelButton">Cancel</button><button id="newButton">Confirm</button></div>
         </div>
     </div>
     <canvas id="overlay" width="800" height="600"></canvas>

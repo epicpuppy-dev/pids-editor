@@ -1,8 +1,6 @@
 import { PIDSEditor } from "../PIDSEditor";
 
 export class Util {
-    public showBorder: boolean = true;
-
     public fontMono (ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, size: string) {
         ctx.textBaseline = "top";
         ctx.font = size + " 'Consolas','Courier New',monospace";

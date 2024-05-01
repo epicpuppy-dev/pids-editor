@@ -55,8 +55,20 @@ export class ModuleController {
                 ctx.fillRect(-editor.edit.offsetX, scaledY + scaledHeight - 1, editor.width, 1);
             }
         }
-        for (let module of this.modules) {
-            module.render(ctx, editor);
+        let currentLayer = 0;
+        let modulesRendered = 0;
+        while (modulesRendered < this.modules.length) {
+            //abort if layer gets too high
+            if (currentLayer > 25) {
+                break;
+            }
+            for (let module of this.modules) {
+                if (module.layer == currentLayer) {
+                    module.render(ctx, editor);
+                    modulesRendered++;
+                }
+            }
+            currentLayer++;
         }
     }
 

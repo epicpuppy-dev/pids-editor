@@ -6,11 +6,14 @@ export class EditorController {
     public selected: Module | null = null;
     public placing: ModuleType | null = null;
     public menuOpen = false;
+    public showAllLayers = false;
+    public editingLayer = 1;
     public offsetX = 0;
     public offsetY = 0;
     public placeModule = false;
     public time = 0;
     public ticks = 0;
+    public station = "Test Station";
     public moving: {[key in "l" | "r" | "t" | "b" | "a" | "pan"]: boolean} = {
         l: false,
         r: false,
@@ -66,6 +69,11 @@ export class EditorController {
             (document.getElementById("borderIcon")! as HTMLImageElement).src = editor.layout.showModuleBorders ? 
             "https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png" : "https://cdn.epicpuppy.dev/assets/pids/sprite-border-off.png"; 
         }
+        document.getElementById("layerIcon")!.onclick = () => {
+            editor.edit.showAllLayers = !editor.edit.showAllLayers;
+            (document.getElementById("layerIcon")! as HTMLImageElement).src = editor.edit.showAllLayers ?
+            "https://cdn.epicpuppy.dev/assets/pids/sprite-layer-show.png" : "https://cdn.epicpuppy.dev/assets/pids/sprite-layer-hide.png";
+        }
         document.getElementById("newIcon")!.onclick = () => {
             if (editor.edit.menuOpen) return;
             editor.edit.menuOpen = true;
@@ -99,6 +107,14 @@ export class EditorController {
             editor.json.export(editor);
             document.getElementById("exportMenu")!.style.display = "none";
         };
+
+        // layer buttons
+        for (let i = 0; i < 8; i++) {
+            let element = document.getElementById("layer" + i)! as HTMLImageElement;
+            element.onclick = () => {
+                this.changeLayer(i);
+            }
+        }
     }
 
     public render (editor: PIDSEditor, ctx: CanvasRenderingContext2D, octx: CanvasRenderingContext2D) {
@@ -239,6 +255,7 @@ export class EditorController {
         this.moving.b = false;
         this.moving.a = false;
         this.moving.pan = false;
+        this.checkCollisions(editor);
         //check for negative width/height
         if (this.selected) {
             if (this.selected.width < 0) {
@@ -269,6 +286,7 @@ export class EditorController {
             }
             if (width > 0.25 && height > 0.25) {
                 let module = this.placing.create(x1 / editor.layout.pixelSize, y1 / editor.layout.pixelSize, width / editor.layout.pixelSize, height / editor.layout.pixelSize);
+                module.layer = this.editingLayer;
                 editor.modules.modules.push(module);
                 this.selected = module;
                 this.placing = null;
@@ -279,6 +297,7 @@ export class EditorController {
             let modules = editor.modules.modules;
             for (let i = modules.length - 1; i >= 0; i--) {
                 let module = modules[i];
+                if (this.editingLayer != module.layer) continue;
                 let scaledX = module.x * editor.layout.pixelSize + editor.layout.x;
                 let scaledY = module.y * editor.layout.pixelSize + editor.layout.y;
                 let scaledWidth = module.width * editor.layout.pixelSize;
@@ -331,7 +350,8 @@ export class EditorController {
         let properties = this.selected.getProperties();
 
         //loop through properties
-        for (let property of document.getElementsByClassName("property")) {
+        const propertiesElements = Array.from(document.getElementsByClassName("property"));
+        for (let property of propertiesElements) {
             let element = property as HTMLElement;
             let input = document.getElementById(element.id.replace("Container", "Input"))! as HTMLInputElement;
             if (element.id.replace("Container", "") in properties) {
@@ -376,6 +396,71 @@ export class EditorController {
             } else {
                 element.style.display = "none";
             }
+        }
+
+        // Special case for identifiers
+        let identifiers = document.getElementsByClassName("identifiers");
+        if (Object.keys(properties).includes("identifiers")) {
+            for (let i = 0; i < identifiers.length; i++) {
+                let identifier = identifiers[i] as HTMLElement;
+                identifier.style.display = "table-row";
+            }
+        } else {
+            for (let i = 0; i < identifiers.length; i++) {
+                let identifier = identifiers[i] as HTMLElement;
+                identifier.style.display = "none";
+            }
+        }
+    }
+
+    public changeLayer (layer: number) {
+        this.editingLayer = Math.min(Math.max(layer, 0), 7);
+        this.selected = null;
+        document.getElementById("propertyEditor")!.style.display = "none";
+        for (let i = 0; i < 8; i++) {
+            let element = document.getElementById("layer" + i)! as HTMLImageElement;
+            if (this.editingLayer == i) {
+                element.classList.add("layerActive");
+                element.src = element.src.replace("layer", "active");
+            } else {
+                element.classList.remove("layerActive");
+                element.src = element.src.replace("active", "layer");
+            }
+        }
+    }
+
+    public checkCollisions (editor: PIDSEditor) {
+        let collision: {layer: number, typeA: string, typeB: string} | null = null;
+        let modules = editor.modules.modules;
+        for (let module of modules) {
+            module.collision = false;
+        }
+        //Check collision separately for each layer
+        for (let i = 0; i < 8; i++) {
+            let layer = i;
+            let layerModules = modules.filter((module) => module.layer == layer);
+            for (let j = 0; j < layerModules.length; j++) {
+                let moduleA = layerModules[j];
+                for (let k = j + 1; k < layerModules.length; k++) {
+                    let moduleB = layerModules[k];
+                    if (
+                        moduleA.x < moduleB.x + moduleB.width &&
+                        moduleA.x + moduleA.width > moduleB.x &&
+                        moduleA.y < moduleB.y + moduleB.height &&
+                        moduleA.y + moduleA.height > moduleB.y
+                    ) {
+                        collision = {layer: layer, typeA: moduleA.name, typeB: moduleB.name};
+                        moduleA.collision = true;
+                        moduleB.collision = true;
+                    }
+                }
+            }
+        }
+        if (collision) {
+            document.getElementById("warningText")!.innerText = `Between ${collision.typeA} and ${collision.typeB} on layer ${collision.layer}`;
+            document.getElementById("warning")!.style.display = "flex";
+        } else {
+            document.getElementById("warning")!.style.display = "none";
         }
     }
 }

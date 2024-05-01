@@ -1,4 +1,4 @@
-import { Arrival } from "../../editor/Arrival";
+import { Arrival } from "../../util/Arrival";
 import { TextModule } from "./TextModule";
 
 export class PlatformNumberModule extends TextModule {

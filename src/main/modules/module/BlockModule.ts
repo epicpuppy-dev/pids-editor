@@ -4,6 +4,7 @@ import { Module } from "../Module";
 export class BlockModule extends Module {
     public id: string = "block";
     public color: string = "#ffffff";
+    public layer: number = 0;
 
     public render(ctx: CanvasRenderingContext2D, editor: PIDSEditor): void {
         let layout = editor.layout;
@@ -47,18 +48,21 @@ export class BlockModule extends Module {
                 h: this.height
             },
             data: {
-                color: parseInt(this.color.slice(1), 16)
+                color: parseInt(this.color.slice(1), 16),
+                layer: this.layer
             }
         };
     }
 
     public import(data: { [key: string]: any; }): void {
         if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
+        if (typeof data.layer == "number") this.layer = data.layer;
     }
 
     public duplicate (): BlockModule {
         let module = new (this.constructor as any)(this.x, this.y, this.width, this.height, this.name);
         module.color = this.color;
+        module.layer = this.layer;
         return module;
     }
 }

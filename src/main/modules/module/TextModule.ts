@@ -1,5 +1,5 @@
 import { PIDSEditor } from "../../PIDSEditor";
-import { Arrival } from "../../editor/Arrival";
+import { Arrival } from "../../util/Arrival";
 import { Module } from "../Module";
 
 export class TextModule extends Module {
@@ -8,6 +8,7 @@ export class TextModule extends Module {
     public color: string = "#ffffff";
     public arrival: number = 0;
     public template: string = "Text";
+    public layer: number = 1;
 
     protected getText (arrivals: Arrival[]): string {return " "};
 
@@ -112,7 +113,8 @@ export class TextModule extends Module {
                 align: this.align,
                 color: parseInt(this.color.slice(1), 16),
                 arrival: this.arrival,
-                template: this.template
+                template: this.template,
+                layer: this.layer
             }
         };
     }
@@ -122,6 +124,7 @@ export class TextModule extends Module {
         if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
         if (typeof data.arrival == "number") this.arrival = data.arrival;
         if (typeof data.template == "string") this.template = data.template;
+        if (typeof data.layer == "number") this.layer = data.layer;
     }
 
     public duplicate (): TextModule {

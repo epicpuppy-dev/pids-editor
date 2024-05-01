@@ -1,5 +1,5 @@
 import { PIDSEditor } from "../../PIDSEditor";
-import { Arrival } from "../../editor/Arrival";
+import { Arrival } from "../../util/Arrival";
 import { TextModule } from "./TextModule";
 
 export class StopsAtModule extends TextModule {
@@ -34,7 +34,6 @@ export class StopsAtModule extends TextModule {
             let animationTime = width / scrollSpeed;
             let time = editor.edit.time % animationTime;
             let x = Math.floor(-(time / animationTime) * width + this.width * editor.layout.pixelSize);
-            console.log(x);
             this.ctx.fillStyle = this.color;
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.ctx.fillText(text, x, 0);
@@ -158,9 +157,10 @@ export class StopsAtModule extends TextModule {
             data: {
                 align: this.align,
                 color: parseInt(this.color.slice(1), 16),
+                layer: this.layer,
                 arrival: this.arrival,
                 mode: this.mode,
-                baseText: this.baseTemplate,
+                template: this.baseTemplate,
                 showPage: this.hasPage,
                 stop: this.stop,
                 stopIncrement: this.stopIncrement,
@@ -173,7 +173,9 @@ export class StopsAtModule extends TextModule {
         if (["left", "right", "center"].includes(data.align)) this.align = data.align;
         if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
         if (typeof data.arrival == "number") this.arrival = data.arrival;
+        if (typeof data.layer == "number") this.layer = data.layer;
         if (["s", "l"].includes(data.mode)) this.mode = data.mode;
+        if (typeof data.template == "string") this.baseTemplate = data.template;
         if (typeof data.baseText == "string") this.baseTemplate = data.baseText;
         if (typeof data.showPage == "boolean") this.hasPage = data.showPage;
         if (typeof data.stop == "number") this.stop = data.stop;
@@ -185,6 +187,7 @@ export class StopsAtModule extends TextModule {
         let module = new (this.constructor as any)(this.x, this.y, this.width, this.height, this.name, this.editor);
         module.align = this.align;
         module.color = this.color;
+        module.layer = this.layer;
         module.arrival = this.arrival;
         module.mode = this.mode;
         module.hasPage = this.hasPage;
