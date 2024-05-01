@@ -26,6 +26,7 @@ export class ShortcutData {
                 editor.modules.modules.splice(editor.modules.modules.indexOf(editor.edit.selected!), 1);
                 editor.edit.selected = null;
                 document.getElementById("propertyEditor")!.style.display = "none";
+                editor.edit.checkCollisions(editor);
             }, (e, editor) => editor.edit.selected !== null
         ));
 
@@ -49,26 +50,27 @@ export class ShortcutData {
                     editor.modules.modules.push(copy);
                     editor.edit.selected = copy;
                     editor.edit.showProperties(editor);
+                    editor.edit.checkCollisions(editor);
                 }
             }, (e, editor) => editor.edit.selected !== null
         ));
 
         controller.register(new Shortcut(
-            "nextLayer", ["KeyE"], false, false, false,
+            "nextLayer", ["KeyE"], false, false, true,
             (editor) => {
                 editor.edit.changeLayer(editor.edit.editingLayer + 1);
             }, (e, editor) => !editor.edit.menuOpen
         ));
 
         controller.register(new Shortcut(
-            "prevLayer", ["KeyQ"], false, false, false,
+            "prevLayer", ["KeyQ"], false, false, true,
             (editor) => {
                 editor.edit.changeLayer(editor.edit.editingLayer - 1);
             }, (e, editor) => !editor.edit.menuOpen
         ));
 
         controller.register(new Shortcut(
-            "moveNextLayer", ["KeyE"], false, true, false,
+            "moveNextLayer", ["KeyE"], false, true, true,
             (editor) => {
                 let selected = editor.edit.selected;
                 editor.edit.changeLayer(editor.edit.editingLayer + 1);
@@ -81,7 +83,7 @@ export class ShortcutData {
         ));
 
         controller.register(new Shortcut(
-            "movePrevLayer", ["KeyQ"], false, true, false,
+            "movePrevLayer", ["KeyQ"], false, true, true,
             (editor) => {
                 let selected = editor.edit.selected;
                 editor.edit.changeLayer(editor.edit.editingLayer - 1);
