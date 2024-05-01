@@ -29,6 +29,7 @@ export class ShortcutController {
                         module.y += dy;
                     }
                     editor.edit.showProperties(editor);
+                    editor.edit.checkCollisions(editor);
                 }
             }
 
@@ -39,11 +40,10 @@ export class ShortcutController {
                     continue;
                 }
 
-                e.preventDefault();
-
                 // check if active
                 if (shortcut.active(e, editor)) {
                     shortcut.action(editor);
+                    e.preventDefault();
                 }
             }
         });
