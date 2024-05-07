@@ -71,32 +71,19 @@ export class TimeModule extends TextModule {
     }
 
     public export () {
-        return {
-            typeID: this.id,
-            pos: {
-                x: this.x,
-                y: this.y,
-                w: this.width,
-                h: this.height
-            },
-            data: {
-                align: this.align,
-                color: parseInt(this.color.slice(1), 16),
-                layer: this.layer,
-                loc: this.loc,
-                template: this.baseTemplate,
-                show24Hour: this.show24Hour,
-                showHours: this.showHours,
-                showMinutes: this.showMinutes,
-                showSeconds: this.showSeconds
-            }
-        };
+        let toExport = super.export();
+        let data = toExport.data;
+        data.loc = this.loc;
+        data.template = this.baseTemplate;
+        data.show24Hour = this.show24Hour;
+        data.showHours = this.showHours;
+        data.showMinutes = this.showMinutes;
+        data.showSeconds = this.showSeconds;
+        return toExport;
     }
 
     public import(data: { [key: string]: any; }): void {
-        if (["left", "right", "center"].includes(data.align)) this.align = data.align;
-        if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
-        if (typeof data.layer == "number") this.layer = data.layer;
+        super.import(data);
         if (["s", "g"].includes(data.loc)) this.loc = data.loc;
         if (typeof data.template == "string") this.baseTemplate = data.template;
         if (typeof data.show24Hour == "boolean") this.show24Hour = data.show24Hour;

@@ -5,6 +5,7 @@ import { Module } from "../Module";
 export class TextModule extends Module {
     public id: string = "text";
     public align: ("left" | "right" | "center") = "left";
+    public colorMode: string = "basic";
     public color: string = "#ffffff";
     public arrival: number = 0;
     public template: string = "Text";
@@ -32,7 +33,11 @@ export class TextModule extends Module {
         let scaledY = (this.y + 0.125) * layout.pixelSize + layout.y;
         let scaledWidth = (this.width - 0.375) * layout.pixelSize;
 
-        ctx.fillStyle = this.color;
+        let color = "#ffffff";
+        if (this.colorMode == "line" && arrivals[this.arrival]) color = arrivals[this.arrival].lineColor;
+        else if (this.colorMode == "station") color = editor.edit.stationColor;
+        else if (this.colorMode == "basic") color = this.color;
+        ctx.fillStyle = color;
         ctx.textAlign = this.align;
         util.fontMC(ctx, ((this.height - 0.125) * layout.pixelSize) + "px");
 
@@ -60,7 +65,7 @@ export class TextModule extends Module {
         return {
             arrival: [(value: any) => this.setArrival(value), this.arrival + 1],
             align: [(value: any) => this.setAlign(value), this.align],
-            color: [(value: any) => this.setColor(value), this.color],
+            color: [(value: any) => this.setColor(value), this.colorMode == "basic" ? this.color : this.colorMode],
             text: [(value: any) => this.setTemplate(value), this.template]
         }
     }
@@ -84,7 +89,13 @@ export class TextModule extends Module {
     }
 
     public setColor (v: any): void {
-        if (typeof v == "string") this.color = v;
+        //if value is hex, set mode to basic
+        if (typeof v == "string" && /^#[0-9a-fA-F]{6}$/.test(v)) {
+            this.colorMode = "basic";
+            this.color = v;
+        } else if (["line", "station"].includes(v)) {
+            this.colorMode = v;
+        }
     }
 
     public setTemplate (v: any): void {
@@ -111,6 +122,7 @@ export class TextModule extends Module {
             },
             data: {
                 align: this.align,
+                colorMode: this.colorMode,
                 color: parseInt(this.color.slice(1), 16),
                 arrival: this.arrival,
                 template: this.template,
@@ -121,6 +133,7 @@ export class TextModule extends Module {
 
     public import(data: { [key: string]: any; }): void {
         if (["left", "right", "center"].includes(data.align)) this.align = data.align;
+        if (["basic", "line", "station"].includes(data.colorMode)) this.colorMode = data.colorMode;
         if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
         if (typeof data.arrival == "number") this.arrival = data.arrival;
         if (typeof data.template == "string") this.template = data.template;
@@ -130,6 +143,7 @@ export class TextModule extends Module {
     public duplicate (): TextModule {
         let module = new (this.constructor as any)(this.x, this.y, this.width, this.height, this.name);
         module.align = this.align;
+        module.colorMode = this.colorMode;
         module.color = this.color;
         module.arrival = this.arrival;
         module.template = this.template;

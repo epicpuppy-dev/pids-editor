@@ -73,32 +73,17 @@ export class ArrivalTimeModule extends TextModule {
     }
 
     public export () {
-        return {
-            typeID: this.id,
-            pos: {
-                x: this.x,
-                y: this.y,
-                w: this.width,
-                h: this.height
-            },
-            data: {
-                align: this.align,
-                color: parseInt(this.color.slice(1), 16),
-                layer: this.layer,
-                arrival: this.arrival,
-                mode: this.mode,
-                secText: this.secondTemplate,
-                minText: this.minuteTemplate,
-                mixText: this.mixedTemplate
-            }
-        };
+        let toExport = super.export();
+        let data = toExport.data;
+        data.mode = this.mode;
+        data.secText = this.secondTemplate;
+        data.minText = this.minuteTemplate;
+        data.mixText = this.mixedTemplate;
+        return toExport;
     }
 
     public import(data: { [key: string]: any; }): void {
-        if (["left", "right", "center"].includes(data.align)) this.align = data.align;
-        if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
-        if (typeof data.arrival == "number") this.arrival = data.arrival;
-        if (typeof data.layer == "number") this.layer = data.layer;
+        super.import(data);
         if (["b", "i"].includes(data.mode)) this.mode = data.mode;
         if (typeof data.secText == "string") this.secondTemplate = data.secText;
         if (typeof data.minText == "string") this.minuteTemplate = data.minText;

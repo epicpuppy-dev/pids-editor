@@ -4,20 +4,22 @@ import { Shortcut } from "./Shortcut";
 export class ShortcutData {
     public static registerShortcuts (controller: ShortcutController) {
         controller.register(new Shortcut(
+            "deselect", ["Escape"], false, false, false,
+            (editor) => {
+                if (editor.edit.menuOpen) return;
+                editor.edit.selected = null;
+                document.getElementById("propertyEditor")!.style.display = "none";
+            }, (e, editor) => editor.edit.selected !== null
+        ));
+
+        controller.register(new Shortcut(
             "closeMenu", ["Escape"], false, false, false,
             (editor) => {
                 editor.edit.menuOpen = false;
                 document.getElementById("exportMenu")!.style.display = "none";
                 document.getElementById("newMenu")!.style.display = "none";
+                document.getElementById("colorMenu")!.style.display = "none";
             }, (e, editor) => editor.edit.menuOpen
-        ));
-
-        controller.register(new Shortcut(
-            "deselect", ["Escape"], false, false, false,
-            (editor) => {
-                editor.edit.selected = null;
-                document.getElementById("propertyEditor")!.style.display = "none";
-            }, (e, editor) => editor.edit.selected !== null
         ));
 
         controller.register(new Shortcut(

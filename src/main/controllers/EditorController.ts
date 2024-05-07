@@ -14,6 +14,7 @@ export class EditorController {
     public time = 0;
     public ticks = 0;
     public station = "Test Station";
+    public stationColor = "#ffff00";
     public moving: {[key in "l" | "r" | "t" | "b" | "a" | "pan"]: boolean} = {
         l: false,
         r: false,
@@ -376,6 +377,60 @@ export class EditorController {
                     right.onclick = () => {
                         if ("align" in properties) properties.align[0]("right", editor);
                         this.showProperties(editor);
+                    }
+                    continue;
+                }
+                if (element.id == "colorContainer") {
+                    if (!("color" in this.selected)) return;
+
+                    let mode = document.getElementById("colorMode")! as HTMLSelectElement;
+                    let colorInput = document.getElementById("colorSelect")! as HTMLInputElement;
+
+                    let color = properties.color[1];
+                    let colorValue;
+                    if (/^#[0-9a-fA-F]{6}$/.test(color)) {
+                        mode.selectedIndex = 0;
+                        colorInput.value = color;
+                        colorValue = color;
+                        document.getElementById("colorInputContainer")!.style.display = "";
+                    } else {
+                        mode.selectedIndex = color == "line" ? 1 : 2;
+                        if (color == "line") {
+                            let arrival = properties.arrival ? properties.arrival[1] - 1 : 0;
+                            colorValue = editor.arrivals.arrivals[arrival].lineColor;
+                        } else if (color == "station") {
+                            colorValue = editor.edit.stationColor;
+                        }
+                        document.getElementById("colorInputContainer")!.style.display = "none";
+                    }
+                    let r = parseInt(colorValue.substring(1, 3), 16);
+                    let g = parseInt(colorValue.substring(3, 5), 16);
+                    let b = parseInt(colorValue.substring(5, 7), 16);
+                    let brightness = Math.sqrt(0.299 * r * r + 0.587 * g * g + 0.114 * b * b);
+                    input.style.backgroundColor = colorValue;
+                    input.style.color = brightness > 127.5 ? "#000000" : "#ffffff";
+
+                    mode.onchange = () => {
+                        if (mode.value == "basic") {
+                            document.getElementById("colorInputContainer")!.style.display = "";
+                        } else {
+                            document.getElementById("colorInputContainer")!.style.display = "none";
+                        }
+                    }
+                    input.onclick = () => {
+                        editor.edit.menuOpen = true;
+                        document.getElementById("colorMenu")!.style.display = "block";
+                    }
+                    document.getElementById("colorButton")!.onclick = () => {
+                        editor.edit.menuOpen = false;
+                        document.getElementById("colorMenu")!.style.display = "none";
+                        let newMode = mode.value;
+                        if (newMode == "basic") {
+                            properties.color[0](colorInput.value, editor);
+                        } else {
+                            properties.color[0](newMode, editor);
+                        }
+                        editor.edit.showProperties(editor);
                     }
                     continue;
                 }

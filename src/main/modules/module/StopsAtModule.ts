@@ -146,34 +146,19 @@ export class StopsAtModule extends TextModule {
     }
 
     public export () {
-        return {
-            typeID: this.id,
-            pos: {
-                x: this.x,
-                y: this.y,
-                w: this.width,
-                h: this.height
-            },
-            data: {
-                align: this.align,
-                color: parseInt(this.color.slice(1), 16),
-                layer: this.layer,
-                arrival: this.arrival,
-                mode: this.mode,
-                template: this.baseTemplate,
-                showPage: this.hasPage,
-                stop: this.stop,
-                stopIncrement: this.stopIncrement,
-                scrollSpeed: this.scrollSpeed
-            }
-        };
+        let toExport = super.export();
+        let data = toExport.data;
+        data.mode = this.mode;
+        data.template = this.baseTemplate;
+        data.showPage = this.hasPage;
+        data.stop = this.stop;
+        data.stopIncrement = this.stopIncrement;
+        data.scrollSpeed = this.scrollSpeed;
+        return toExport;
     }
 
     public import(data: { [key: string]: any; }): void {
-        if (["left", "right", "center"].includes(data.align)) this.align = data.align;
-        if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
-        if (typeof data.arrival == "number") this.arrival = data.arrival;
-        if (typeof data.layer == "number") this.layer = data.layer;
+        super.import(data);
         if (["s", "l"].includes(data.mode)) this.mode = data.mode;
         if (typeof data.template == "string") this.baseTemplate = data.template;
         if (typeof data.baseText == "string") this.baseTemplate = data.baseText;
