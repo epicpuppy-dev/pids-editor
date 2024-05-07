@@ -47,39 +47,15 @@ export class TemplateModule extends TextModule {
         if (typeof template == "string") this.baseTemplate = template;
     }
 
-    public export (): {
-        typeID: string,
-        pos: {
-            x: number,
-            y: number,
-            w: number,
-            h: number
-        },
-        data: {[key: string]: any}
-    } {
-        return {
-            typeID: this.id,
-            pos: {
-                x: this.x,
-                y: this.y,
-                w: this.width,
-                h: this.height
-            },
-            data: {
-                align: this.align,
-                color: parseInt(this.color.slice(1), 16),
-                layer: this.layer,
-                arrival: this.arrival,
-                template: this.baseTemplate
-            }
-        };
+    public export () {
+        let toExport = super.export();
+        let data = toExport.data;
+        data.template = this.baseTemplate;
+        return toExport;
     }
 
     public import(data: { [key: string]: any; }): void {
-        if (["left", "right", "center"].includes(data.align)) this.align = data.align;
-        if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
-        if (typeof data.arrival == "number") this.arrival = data.arrival;
-        if (typeof data.layer == "number") this.layer = data.layer;
+        super.import(data);
         if (typeof data.template == "string") this.baseTemplate = data.template;
     }
 

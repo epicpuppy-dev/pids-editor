@@ -122,6 +122,7 @@ export class TextModule extends Module {
             },
             data: {
                 align: this.align,
+                colorMode: this.colorMode,
                 color: parseInt(this.color.slice(1), 16),
                 arrival: this.arrival,
                 template: this.template,
@@ -132,6 +133,7 @@ export class TextModule extends Module {
 
     public import(data: { [key: string]: any; }): void {
         if (["left", "right", "center"].includes(data.align)) this.align = data.align;
+        if (["basic", "line", "station"].includes(data.colorMode)) this.colorMode = data.colorMode;
         if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
         if (typeof data.arrival == "number") this.arrival = data.arrival;
         if (typeof data.template == "string") this.template = data.template;
@@ -141,6 +143,7 @@ export class TextModule extends Module {
     public duplicate (): TextModule {
         let module = new (this.constructor as any)(this.x, this.y, this.width, this.height, this.name);
         module.align = this.align;
+        module.colorMode = this.colorMode;
         module.color = this.color;
         module.arrival = this.arrival;
         module.template = this.template;

@@ -77,6 +77,7 @@ export class BlockModule extends Module {
                 h: this.height
             },
             data: {
+                colorMode: this.colorMode,
                 color: parseInt(this.color.slice(1), 16),
                 layer: this.layer,
                 arrival: this.arrival
@@ -85,6 +86,7 @@ export class BlockModule extends Module {
     }
 
     public import(data: { [key: string]: any; }): void {
+        if (["basic", "line", "station"].includes(data.colorMode)) this.colorMode = data.colorMode;
         if (typeof data.color == "number") this.color = "#" + data.color.toString(16).padStart(6, "0");
         if (typeof data.layer == "number") this.layer = data.layer;
         if (typeof data.arrival == "number") this.arrival = data.arrival;
@@ -92,6 +94,7 @@ export class BlockModule extends Module {
 
     public duplicate (): BlockModule {
         let module = new (this.constructor as any)(this.x, this.y, this.width, this.height, this.name);
+        module.colorMode = this.colorMode;
         module.color = this.color;
         module.layer = this.layer;
         module.arrival = this.arrival;
