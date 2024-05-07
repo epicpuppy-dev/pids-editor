@@ -34,7 +34,7 @@ export class ArrivalController {
             (Math.floor(Math.random() * 15) + 1).toString(), // platform (1-16)
             0, // delay
             "Test Line", // line name
-            "#ffff00", // line color
+            "#" + Math.floor(Math.random() * 16777216).toString(16).padStart(6, "0"), // line color
             stops, // stops
             (Math.floor(Math.random() * 14) + 2).toString() // cars (2-16)
         ));

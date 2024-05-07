@@ -48,7 +48,7 @@
             </tr>
             <tr id="colorContainer" class="property">
                 <th>Color: </th>
-                <td><input id="colorInput" type="color" value="#ffffff" /></td>
+                <td><button id="colorInput">Edit</td>
             </tr>
             <tr id="textContainer" class="property">
                 <th>Text: </th>
@@ -264,6 +264,24 @@
                 </select>
             </div>
             <div class="inputContainer"><button id="newCancelButton">Cancel</button><button id="newButton">Confirm</button></div>
+        </div>
+    </div>
+    <div id="colorMenu" class="overlayWindow">
+        <div id="colorMenuContent" class="overlayContent">
+            <h2>Color Picker</h2>
+            <div class="inputContainer">
+                <label>Mode: </label>
+                <select id="colorMode">
+                    <option value="basic">Basic</option>
+                    <option value="line">Line Color</option>
+                    <option value="station">Station Color</option>
+                </select>
+            </div>
+            <div id="colorInputContainer" class="inputContainer">
+                <label>Color: </label>
+                <input type="color" id="colorSelect" value="#ffffff" />
+            </div>
+            <div class="inputContainer"><button id="colorButton">Confirm</button></div>
         </div>
     </div>
     <canvas id="overlay" width="800" height="600"></canvas>
