@@ -15,6 +15,7 @@ export class EditorController {
     public ticks = 0;
     public station = "Test Station";
     public stationColor = "#ffff00";
+    public lineName = "Test Line";
     public moving: {[key in "l" | "r" | "t" | "b" | "a" | "pan"]: boolean} = {
         l: false,
         r: false,
@@ -80,6 +81,14 @@ export class EditorController {
             editor.edit.menuOpen = true;
             document.getElementById("newMenu")!.style.display = "block";
         }
+        document.getElementById("settingsIcon")!.onclick = () => {
+            if (editor.edit.menuOpen) return;
+            editor.edit.menuOpen = true;
+            document.getElementById("settingsMenu")!.style.display = "block";
+            (document.getElementById("stationName")! as HTMLInputElement).value = editor.edit.station;
+            (document.getElementById("stationColor")! as HTMLInputElement).value = editor.edit.stationColor;
+            (document.getElementById("lineName")! as HTMLInputElement).value = editor.edit.lineName;
+        }
 
         // new menu buttons
         document.getElementById("newCancelButton")!.onclick = () => {
@@ -107,6 +116,20 @@ export class EditorController {
             editor.edit.menuOpen = false;
             editor.json.export(editor);
             document.getElementById("exportMenu")!.style.display = "none";
+        };
+
+        // settings menu buttons
+        document.getElementById("settingsCancelButton")!.onclick = () => {
+            editor.edit.menuOpen = false;
+            document.getElementById("settingsMenu")!.style.display = "none";
+        };
+        document.getElementById("settingsButton")!.onclick = () => {
+            editor.edit.menuOpen = false;
+            document.getElementById("settingsMenu")!.style.display = "none";
+            editor.edit.station = (document.getElementById("stationName")! as HTMLInputElement).value;
+            editor.edit.stationColor = (document.getElementById("stationColor")! as HTMLInputElement).value;
+            editor.edit.lineName = (document.getElementById("lineName")! as HTMLInputElement).value;
+            editor.arrivals.regenerate(editor);
         };
 
         // layer buttons

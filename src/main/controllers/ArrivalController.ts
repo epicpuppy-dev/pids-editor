@@ -1,3 +1,4 @@
+import { PIDSEditor } from "../PIDSEditor";
 import { Arrival } from "../util/Arrival";
 
 export class ArrivalController {
@@ -5,14 +6,14 @@ export class ArrivalController {
     time: number = Date.now();
     NUM_TRAINS: number = 50
 
-    constructor () {
+    constructor (editor: PIDSEditor) {
         // generate trains
         for (let i = 0; i < this.NUM_TRAINS; i++) {
-            this.generateTrain();
+            this.generateTrain(editor);
         }
     }
 
-    public generateTrain () {
+    public generateTrain (editor: PIDSEditor) {
         let stops = [];
         this.time += Math.floor((Math.random() + 0.5) * 120 * 1000);
         let trainTime = this.time;
@@ -33,18 +34,27 @@ export class ArrivalController {
             this.time, // arrival time
             (Math.floor(Math.random() * 15) + 1).toString(), // platform (1-16)
             0, // delay
-            "Test Line", // line name
+            editor.edit.lineName, // line name
             "#" + Math.floor(Math.random() * 16777216).toString(16).padStart(6, "0"), // line color
             stops, // stops
-            (Math.floor(Math.random() * 14) + 2).toString() // cars (2-16)
+            (Math.floor(Math.random() * 14) + 2).toString(), // cars (2-16)
+            editor.edit.station // station
         ));
     }
 
-    public update () {
+    public update (editor: PIDSEditor) {
         this.time = Date.now();
         this.arrivals = this.arrivals.filter(arrival => arrival.time > this.time);
         while (this.arrivals.length < this.NUM_TRAINS) {
-            this.generateTrain();
+            this.generateTrain(editor);
+        }
+    }
+
+    public regenerate (editor: PIDSEditor) {
+        this.time = Date.now();
+        this.arrivals = [];
+        for (let i = 0; i < this.NUM_TRAINS; i++) {
+            this.generateTrain(editor);
         }
     }
 }

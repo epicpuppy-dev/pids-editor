@@ -48,10 +48,10 @@ export class PIDSEditor {
 
         //intialize controllers
         this.mouse = new MouseController(this);
-        this.arrivals = new ArrivalController();
+        this.edit = new EditorController(this);
+        this.arrivals = new ArrivalController(this);
         this.modules = new ModuleController();
         this.layout = new LayoutController(32, 9, 1, this.width, this.height);
-        this.edit = new EditorController(this);
         this.assets = new AssetController();
         this.json = new JSONController();
         this.shortcuts = new ShortcutController(this);
@@ -93,7 +93,7 @@ export class PIDSEditor {
         this.octx.clearRect(0, 0, this.width, this.height);
         this.ctx.fillStyle = "#ffffff";
         //check arrivals
-        this.arrivals.update();
+        this.arrivals.update(this);
 
         //apply offset  
         this.ctx.save();
