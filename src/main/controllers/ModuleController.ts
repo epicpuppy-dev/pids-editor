@@ -6,7 +6,7 @@ export class ModuleController {
     public modules: Module[] = [];
     public moduleTypes: {[key: string]: ModuleType} = {};
 
-    public registerModuleType (moduleType: ModuleType, editor: PIDSEditor) {
+    public registerModuleType (moduleType: ModuleType, editor: PIDSEditor, hide: boolean = false) {
         if (this.moduleTypes[moduleType.id]) {
             throw new Error("module id \"" + moduleType.id + "\" is registered twice");
         }
@@ -31,7 +31,7 @@ export class ModuleController {
         label.textContent = moduleType.name;
         item.appendChild(label);
 
-        document.getElementById("moduleTypes")!.appendChild(item);
+        if (!hide) document.getElementById("moduleTypes")!.appendChild(item);
     }
 
     public render (ctx: CanvasRenderingContext2D, editor: PIDSEditor) {

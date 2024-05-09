@@ -11,24 +11,48 @@ export class TemplateModule extends TextModule {
         let arrival = arrivals[this.arrival];
         if (!arrival) return "";
 
-        let time = new Date();
-        let hours = time.getHours();
-        let hours12 = hours % 12;
-        hours12 = hours12 ? hours12 : 12;
-        let ampm = hours >= 12 ? "PM" : "AM";
-
         this.template = this.baseTemplate
             .replaceAll("$s", arrival.station)
             .replaceAll("$d", arrival.destination)
             .replaceAll("$p", arrival.platform)
             .replaceAll("$l", arrival.cars)
-            .replaceAll("$n", arrival.lineName)
-            //Time Identifiers
-            .replaceAll("$ts", time.getSeconds().toString().padStart(2, "0"))
-            .replaceAll("$tm", time.getMinutes().toString().padStart(2, "0"))
-            .replaceAll("$th2", hours12.toString())
-            .replaceAll("$th4", hours.toString())
-            .replaceAll("$tap", ampm);
+            .replaceAll("$n", arrival.lineName);
+
+        if (this.baseTemplate.includes("$t")) {
+            let time = new Date();
+            let hours = 0;
+            let hours12 = 0;
+            let ampm = "";
+            hours = time.getHours();
+            hours12 = hours % 12;
+            hours12 = hours12 ? hours12 : 12;
+            ampm = hours >= 12 ? "PM" : "AM";
+
+            this.template = this.template
+                .replaceAll("$ts", time.getSeconds().toString().padStart(2, "0"))
+                .replaceAll("$tm", time.getMinutes().toString().padStart(2, "0"))
+                .replaceAll("$th2", hours12.toString())
+                .replaceAll("$th4", hours.toString())
+                .replaceAll("$tap", ampm);
+        }
+
+        if (this.baseTemplate.includes("$tg")) {
+            let gtime = new Date(new Date().getTime() * 72 % (20 * 60 * 1000));
+            let ghours = 0;
+            let ghours12 = 0;
+            let gapm = "";
+            ghours = gtime.getHours();
+            ghours12 = ghours % 12;
+            ghours12 = ghours12 ? ghours12 : 12;
+            gapm = ghours >= 12 ? "PM" : "AM";
+            
+            this.template = this.template
+                .replaceAll("$tgs", gtime.getSeconds().toString().padStart(2, "0"))
+                .replaceAll("$tgm", gtime.getMinutes().toString().padStart(2, "0"))
+                .replaceAll("$tgh2", ghours12.toString())
+                .replaceAll("$tgh4", ghours.toString())
+                .replaceAll("$tgap", gapm);
+        }
 
         return " ";
     }

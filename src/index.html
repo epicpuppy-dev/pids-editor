@@ -78,27 +78,58 @@
                 <td>Line Name</td>
             </tr>
             <tr class="identifiers">
-                <th colspan="2">Time Identifiers</th>
+                <th colspan="2">
+                    <div class="dropdownHeader" id="timeDropdownHeader">
+                        <span class="dropdownTitle">Time Identifiers</span><span id="timeDropdown" class="dropdown">[-]</span>
+                    </div>
+                </th>
             </tr>
-            <tr class="identifiers">
+            <tr class="identifiers timeDropdownElement">
                 <td>$ts</td>
                 <td>Current Seconds</td>
             </tr>
-            <tr class="identifiers">
+            <tr class="identifiers timeDropdownElement">
                 <td>$tm</td>
                 <td>Current Minutes</td>
             </tr>
-            <tr class="identifiers">
+            <tr class="identifiers timeDropdownElement">
                 <td>$th2</td>
-                <td>Current Hours (12-Hour)</td>
+                <td>Current Hours (12-hr)</td>
             </tr>
-            <tr class="identifiers">
+            <tr class="identifiers timeDropdownElement">
                 <td>$th4</td>
-                <td>Current Hours (24-Hour)</td>
+                <td>Current Hours (24-hr)</td>
             </tr>
-            <tr class="identifiers">
+            <tr class="identifiers timeDropdownElement">
                 <td>$tap</td>
                 <td>Current AM/PM</td>
+            </tr>
+            <tr class="identifiers">
+                <th colspan="2">
+                    <div class="dropdownHeader" id="gameTimeDropdownHeader">
+                        <span class="dropdownTitle">Game Time Identifiers</span><span id="gameTimeDropdown" class="dropdown">[-]</span>
+                    </div>
+                </th>
+            </tr>
+            <tr class="identifiers gameTimeDropdownElement">
+                <td>$tgs</td>
+                <td>In-game Seconds</td>
+            </tr>
+            <tr class="identifiers gameTimeDropdownElement">
+                <td>$tgm</td>
+                <td>In-game Minutes</td>
+            </tr>
+            <tr class="identifiers gameTimeDropdownElement">
+                <td>$tgh2</td>
+                <td>In-game Hours (12hr)</td>
+            </tr>
+            <tr class="identifiers gameTimeDropdownElement">
+                <td>$tgh4</td>
+                <td>In-game Hours (24hr)</td>
+            </tr>
+            <tr class="identifiers gameTimeDropdownElement">
+                <td>$tgap</td>
+                <td>In-game AM/PM</td>
             </tr>
             <tr id="timeTypeContainer" class="property">
                 <th>Time Display: </th>
@@ -186,6 +217,10 @@
             
         </div>
         <div id="management">
+            <div class="toolbarItem">
+                <img id="settingsIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-settings.png" width="32" height="32" class="managementIcon" />
+                <label>Settings</label>
+            </div>
             <div class="toolbarItem">
                 <img id="newIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-new.png" width="32" height="32" class="managementIcon" />
                 <label>Create New</label>
@@ -282,6 +317,24 @@
                 <input type="color" id="colorSelect" value="#ffffff" />
             </div>
             <div class="inputContainer"><button id="colorButton">Confirm</button></div>
+        </div>
+    </div>
+    <div id="settingsMenu" class="overlayWindow">
+        <div id="settingsMenuContent" class="overlayContent">
+            <h1>Settings</h1>
+            <div class="inputContainer">
+                <label>Station Name: </label>
+                <input type="text" id="stationName" value="Test Station" />
+            </div>
+            <div class="inputContainer">
+                <label>Station Color: </label>
+                <input type="color" id="stationColor" value="#ffff00" />
+            </div>
+            <div class="inputContainer">
+                <label>Line Name: </label>
+                <input type="text" id="lineName" value="Test Line" />
+            </div>
+            <div class="inputContainer"><button id="settingsCancelButton">Cancel</button><button id="settingsButton">Confirm</button></div>
         </div>
     </div>
     <canvas id="overlay" width="800" height="600"></canvas>

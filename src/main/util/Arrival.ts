@@ -7,7 +7,7 @@ export class Arrival {
     lineName: string
     stops: {name: string, time: number}[]
     cars: string
-    station: string = "Test Station"
+    station: string
 
     constructor (
         destination: string, 
@@ -17,7 +17,8 @@ export class Arrival {
         lineName: string, 
         lineColor: string, 
         stops: {name: string, time: number}[], 
-        cars: string
+        cars: string,
+        station: string
     ) {
         this.destination = destination;
         this.time = time;
@@ -27,5 +28,6 @@ export class Arrival {
         this.lineColor = lineColor;
         this.stops = stops;
         this.cars = cars;
+        this.station = station;
     }
 }

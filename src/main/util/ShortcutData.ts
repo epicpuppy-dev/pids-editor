@@ -19,6 +19,7 @@ export class ShortcutData {
                 document.getElementById("exportMenu")!.style.display = "none";
                 document.getElementById("newMenu")!.style.display = "none";
                 document.getElementById("colorMenu")!.style.display = "none";
+                document.getElementById("settingsMenu")!.style.display = "none";
             }, (e, editor) => editor.edit.menuOpen
         ));
 
