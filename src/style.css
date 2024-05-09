@@ -315,3 +315,12 @@ canvas {
 #warningText {
     margin: 0 6px;
 }
+
+.dropdownHeader {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+}
+.dropdownTitle {
+    flex-grow: 1;
+}

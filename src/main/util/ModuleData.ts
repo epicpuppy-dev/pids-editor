@@ -73,7 +73,7 @@ export class ModuleData {
                 return new TimeModule(x, y, w, h, "Time");
             },
             assets.sprites.time
-        ), editor);
+        ), editor, true);
         controller.registerModuleType(new ModuleType(
             "text",
             "Text",

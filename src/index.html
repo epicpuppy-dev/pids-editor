@@ -78,27 +78,58 @@
                 <td>Line Name</td>
             </tr>
             <tr class="identifiers">
-                <th colspan="2">Time Identifiers</th>
+                <th colspan="2">
+                    <div class="dropdownHeader" id="timeDropdownHeader">
+                        <span class="dropdownTitle">Time Identifiers</span><span id="timeDropdown" class="dropdown">[-]</span>
+                    </div>
+                </th>
             </tr>
-            <tr class="identifiers">
+            <tr class="identifiers timeDropdownElement">
                 <td>$ts</td>
                 <td>Current Seconds</td>
             </tr>
-            <tr class="identifiers">
+            <tr class="identifiers timeDropdownElement">
                 <td>$tm</td>
                 <td>Current Minutes</td>
             </tr>
-            <tr class="identifiers">
+            <tr class="identifiers timeDropdownElement">
                 <td>$th2</td>
-                <td>Current Hours (12-Hour)</td>
+                <td>Current Hours (12-hr)</td>
             </tr>
-            <tr class="identifiers">
+            <tr class="identifiers timeDropdownElement">
                 <td>$th4</td>
-                <td>Current Hours (24-Hour)</td>
+                <td>Current Hours (24-hr)</td>
             </tr>
-            <tr class="identifiers">
+            <tr class="identifiers timeDropdownElement">
                 <td>$tap</td>
                 <td>Current AM/PM</td>
+            </tr>
+            <tr class="identifiers">
+                <th colspan="2">
+                    <div class="dropdownHeader" id="gameTimeDropdownHeader">
+                        <span class="dropdownTitle">Game Time Identifiers</span><span id="gameTimeDropdown" class="dropdown">[-]</span>
+                    </div>
+                </th>
+            </tr>
+            <tr class="identifiers gameTimeDropdownElement">
+                <td>$tgs</td>
+                <td>In-game Seconds</td>
+            </tr>
+            <tr class="identifiers gameTimeDropdownElement">
+                <td>$tgm</td>
+                <td>In-game Minutes</td>
+            </tr>
+            <tr class="identifiers gameTimeDropdownElement">
+                <td>$tgh2</td>
+                <td>In-game Hours (12hr)</td>
+            </tr>
+            <tr class="identifiers gameTimeDropdownElement">
+                <td>$tgh4</td>
+                <td>In-game Hours (24hr)</td>
+            </tr>
+            <tr class="identifiers gameTimeDropdownElement">
+                <td>$tgap</td>
+                <td>In-game AM/PM</td>
             </tr>
             <tr id="timeTypeContainer" class="property">
                 <th>Time Display: </th>

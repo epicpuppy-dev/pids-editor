@@ -104,7 +104,3 @@ const STATIONS = [
     // szandor
     "Hylkemare Wieringawijk"
 ];
-
-const LINES = [
-
-]

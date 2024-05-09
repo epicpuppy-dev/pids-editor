@@ -3,6 +3,8 @@ import { Module } from "../modules/Module";
 import { ArrivalTimeModule } from "../modules/module/ArrivalTimeModule";
 import { DestinationModule } from "../modules/module/DestinationModule";
 import { PlatformNumberModule } from "../modules/module/PlatformNumberModule";
+import { TemplateModule } from "../modules/module/TemplateModule";
+import { TimeModule } from "../modules/module/TimeModule";
 import { TrainLengthModule } from "../modules/module/TrainLengthModule";
 
 export class JSONController {
@@ -38,6 +40,27 @@ export class JSONController {
                 return;
             }
             for (const entry of json.modules) {
+                //migrate time module
+                if (entry.typeID == "time") {
+                    let oldModule = editor.modules.moduleTypes.time.create(entry.pos.x, entry.pos.y, entry.pos.w, entry.pos.h) as TimeModule;
+                    oldModule.import(entry.data);
+                    let module = editor.modules.moduleTypes.template.create(entry.pos.x, entry.pos.y, entry.pos.w, entry.pos.h) as TemplateModule;
+                    module.import(entry.data);
+                    let timePrefix = oldModule.loc == "g" ? "$tg" : "$t";
+                    for (const key of ["Hours", "Minutes", "Seconds"]) {
+                        //@ts-expect-error
+                        if (oldModule["show" + key]) {
+                            module.baseTemplate = module.baseTemplate.replace("%s", timePrefix + key[0].toLowerCase() + (key == "Hours" ? oldModule.show24Hour ? "4" : "2" : ""));
+                        }
+                    }
+
+                    if (!oldModule.show24Hour) {
+                        module.baseTemplate = module.baseTemplate.replace("%s", "$tap");
+                    }
+
+                    editor.modules.modules.push(module);
+                    continue;
+                }
                 let module = editor.modules.moduleTypes[entry.typeID].create(entry.pos.x, entry.pos.y, entry.pos.w, entry.pos.h);
                 module.import(entry.data);
                 editor.modules.modules.push(module);
