@@ -6,6 +6,7 @@ import { ArrivalTimeModule } from "../modules/module/ArrivalTimeModule";
 import { BlockModule } from "../modules/module/BlockModule";
 import { DestinationModule } from "../modules/module/DestinationModule";
 import { LineNameModule } from "../modules/module/LineNameModule";
+import { LineNumberModule } from "../modules/module/LineNumberModule";
 import { PlatformNumberModule } from "../modules/module/PlatformNumberModule";
 import { StopsAtModule } from "../modules/module/StopsAtModule";
 import { TemplateModule } from "../modules/module/TemplateModule";
@@ -65,6 +66,14 @@ export class ModuleData {
                 return new LineNameModule(x, y, w, h, "Line Name");
             },
             assets.sprites.lineName
+        ), editor);
+        controller.registerModuleType(new ModuleType(
+            "lineNumber",
+            "Line Number",
+            (x, y, w, h) => {
+                return new LineNumberModule(x, y, w, h, "Line Number");
+            },
+            assets.sprites.lineNumber
         ), editor);
         controller.registerModuleType(new ModuleType(
             "time",

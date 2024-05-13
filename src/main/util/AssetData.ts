@@ -9,6 +9,7 @@ export class AssetData {
             "platformNumber": "https://cdn.epicpuppy.dev/assets/pids/sprite-platform-number.png",
             "stopsAt": "https://cdn.epicpuppy.dev/assets/pids/sprite-stops-at.png",
             "lineName": "https://cdn.epicpuppy.dev/assets/pids/sprite-line-name.png",
+            "lineNumber": "https://cdn.epicpuppy.dev/assets/pids/sprite-line-number.png",
             "time": "https://cdn.epicpuppy.dev/assets/pids/sprite-time.png",
             "text": "https://cdn.epicpuppy.dev/assets/pids/sprite-text.png",
             "template": "https://cdn.epicpuppy.dev/assets/pids/sprite-template.png",

@@ -5,6 +5,7 @@ export class Arrival {
     delay: number
     lineColor: string
     lineName: string
+    lineNumber: string
     stops: {name: string, time: number}[]
     cars: string
     station: string
@@ -16,6 +17,7 @@ export class Arrival {
         delay: number, 
         lineName: string, 
         lineColor: string, 
+        lineNumber: string,
         stops: {name: string, time: number}[], 
         cars: string,
         station: string
@@ -26,6 +28,7 @@ export class Arrival {
         this.delay = delay;
         this.lineName = lineName;
         this.lineColor = lineColor;
+        this.lineNumber = lineNumber;
         this.stops = stops;
         this.cars = cars;
         this.station = station;

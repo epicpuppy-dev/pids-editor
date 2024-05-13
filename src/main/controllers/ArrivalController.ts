@@ -17,7 +17,7 @@ export class ArrivalController {
         let stops = [];
         this.time += Math.floor((Math.random() + 0.5) * 120 * 1000);
         let trainTime = this.time;
-        for (let j = 0; j < Math.floor(Math.random() * 24) + 8; j++) {
+        for (let j = 0; j < Math.floor(Math.random() * 24) + 4; j++) {
             trainTime += Math.floor((Math.random() + 0.25) * 120 * 1000);
             stops.push({
                 name: STATIONS[Math.floor(Math.random() * STATIONS.length)],
@@ -36,6 +36,7 @@ export class ArrivalController {
             0, // delay
             editor.edit.lineName, // line name
             "#" + Math.floor(Math.random() * 16777216).toString(16).padStart(6, "0"), // line color
+            (Math.floor(Math.random() * 900) + 100).toString(), // line number
             stops, // stops
             (Math.floor(Math.random() * 14) + 2).toString(), // cars (2-16)
             editor.edit.station // station
