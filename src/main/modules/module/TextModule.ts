@@ -11,6 +11,8 @@ export class TextModule extends Module {
     public template: string = "Text";
     public layer: number = 1;
 
+    public static SWITCH_TICKS: number = 60;
+
     protected getText (arrivals: Arrival[]): string {return " "};
 
     public render(ctx: CanvasRenderingContext2D, editor: PIDSEditor, render: boolean = true): void {
@@ -22,12 +24,18 @@ export class TextModule extends Module {
         let util = editor.util;
         let layout = editor.layout;
 
-        let text = this.getText(arrivals);
+        let text = this.getText(arrivals).split("||")[0];
         if (text.length == 0) {
             super.render(ctx, editor);
             return;
         }
-        text = this.template.replace("%s", text);
+        //translations
+        let texts = text.replaceAll("\\|", "^TEMP^").split("|");
+        let tx = Math.floor(editor.edit.ticks / TextModule.SWITCH_TICKS) % texts.length;
+        text = texts[tx].replaceAll("^TEMP^", "|");
+        let templates = this.template.replaceAll("\\|", "^TEMP^").split("|");
+        let tp = Math.floor(editor.edit.ticks / TextModule.SWITCH_TICKS) % templates.length;
+        text = templates[tp].replaceAll("^TEMP^", "|").replace("%s", text);
 
         let scaledX = (this.x + 0.25) * layout.pixelSize + layout.x;
         let scaledY = (this.y + 0.125) * layout.pixelSize + layout.y;
