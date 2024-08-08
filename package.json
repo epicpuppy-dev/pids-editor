@@ -11,7 +11,7 @@
     "build-dev": "npm run clean&&webpack --mode development",
     "build-prod": "npm run clean&&webpack --mode production",
     "preversion": "npm run build-prod",
-    "version": "echo \"export const version = '$npm_package_version';\" > src/version.ts&&git stage src/version.ts"
+    "version": "node script/setversion&&git stage src/version.ts"
   },
   "repository": {
     "type": "git",
