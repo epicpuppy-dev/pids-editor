@@ -9,6 +9,7 @@ export class AssetData {
             "platformNumber": "https://cdn.epicpuppy.dev/assets/pids/sprite-platform-number.png",
             "stopsAt": "https://cdn.epicpuppy.dev/assets/pids/sprite-stops-at.png",
             "lineName": "https://cdn.epicpuppy.dev/assets/pids/sprite-line-name.png",
+            "lineNumber": "https://cdn.epicpuppy.dev/assets/pids/sprite-line-number.png",
             "time": "https://cdn.epicpuppy.dev/assets/pids/sprite-time.png",
             "text": "https://cdn.epicpuppy.dev/assets/pids/sprite-text.png",
             "template": "https://cdn.epicpuppy.dev/assets/pids/sprite-template.png",
@@ -18,6 +19,8 @@ export class AssetData {
             "export": "https://cdn.epicpuppy.dev/assets/pids/sprite-export.png",
             "borderOn": "https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png",
             "borderOff": "https://cdn.epicpuppy.dev/assets/pids/sprite-border-off.png",
+            "moveOn": "https://cdn.epicpuppy.dev/assets/pids/sprite-move-on.png",
+            "moveOff": "https://cdn.epicpuppy.dev/assets/pids/sprite-move-off.png",
             "new": "https://cdn.epicpuppy.dev/assets/pids/sprite-new.png",
 
             "alignLeft": "https://cdn.epicpuppy.dev/assets/pids/sprite-align-left.png",

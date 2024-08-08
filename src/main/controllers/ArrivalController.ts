@@ -4,9 +4,18 @@ import { Arrival } from "../util/Arrival";
 export class ArrivalController {
     arrivals: Arrival[] = [];
     time: number = Date.now();
-    NUM_TRAINS: number = 50
+    stations: string[] = [];
+    NUM_TRAINS: number = 50;
 
     constructor (editor: PIDSEditor) {
+        // prepare station list
+        let list = "";
+        for (let i = 0; i < STATIONS.length; i++) {
+            this.stations.push(STATIONS[i]);
+            if (i > 0) list += "\n";
+            list += STATIONS[i];
+        }
+        (document.getElementById("destinationList") as HTMLTextAreaElement).value = list;
         // generate trains
         for (let i = 0; i < this.NUM_TRAINS; i++) {
             this.generateTrain(editor);
@@ -17,14 +26,14 @@ export class ArrivalController {
         let stops = [];
         this.time += Math.floor((Math.random() + 0.5) * 120 * 1000);
         let trainTime = this.time;
-        for (let j = 0; j < Math.floor(Math.random() * 24) + 8; j++) {
+        for (let j = 0; j < Math.floor(Math.random() * 24) + 4; j++) {
             trainTime += Math.floor((Math.random() + 0.25) * 120 * 1000);
             stops.push({
-                name: STATIONS[Math.floor(Math.random() * STATIONS.length)],
+                name: this.stations[Math.floor(Math.random() * this.stations.length)],
                 time: trainTime
             });
         }
-        let destination = STATIONS[Math.floor(Math.random() * STATIONS.length)];
+        let destination = this.stations[Math.floor(Math.random() * this.stations.length)];
         stops.push({
             name: destination,
             time: trainTime + Math.floor((Math.random() + 0.25) * 120 * 1000)
@@ -36,6 +45,7 @@ export class ArrivalController {
             0, // delay
             editor.edit.lineName, // line name
             "#" + Math.floor(Math.random() * 16777216).toString(16).padStart(6, "0"), // line color
+            (Math.floor(Math.random() * 900) + 100).toString(), // line number
             stops, // stops
             (Math.floor(Math.random() * 14) + 2).toString(), // cars (2-16)
             editor.edit.station // station

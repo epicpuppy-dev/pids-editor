@@ -43,6 +43,15 @@ export class ShortcutData {
         ));
 
         controller.register(new Shortcut(
+            "toggleMove", ["KeyA"], false, false, true,
+            (editor) => {
+                editor.edit.arrowKeyMove = !editor.edit.arrowKeyMove;
+                (document.getElementById("moveIcon")! as HTMLImageElement).src = editor.edit.arrowKeyMove ? 
+                "https://cdn.epicpuppy.dev/assets/pids/sprite-move-on.png" : "https://cdn.epicpuppy.dev/assets/pids/sprite-move-off.png"; 
+            }, (e, editor) => true
+        ));
+
+        controller.register(new Shortcut(
             "duplicate", ["KeyD"], true, false, false,
             (editor) => {
                 if (editor.edit.selected) {

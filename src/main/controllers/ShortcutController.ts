@@ -7,7 +7,7 @@ export class ShortcutController {
     constructor (editor: PIDSEditor) {
         window.addEventListener("keydown", (e) => {
             //special move logic
-            if (/Arrow(Left|Right|Up|Down)/.test(e.code) && !editor.edit.menuOpen) {
+            if (/Arrow(Left|Right|Up|Down)/.test(e.code) && !editor.edit.menuOpen && editor.edit.arrowKeyMove) {
                 e.preventDefault();
                 if (editor.edit.selected) {
                     let module = editor.edit.selected;

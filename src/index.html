@@ -10,6 +10,7 @@
     <meta name="og:type" content="website">
     <link rel="icon" href="https://cdn.epicpuppy.dev/assets/pids/icon.png" />
     <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-border-off.png" as="image">
+    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-move-off.png" as="image">
     <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-show.png" as="image">
     <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-0.png" as="image">
     <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-1.png" as="image">
@@ -208,6 +209,10 @@
                 <th>Stop Number: </th>
                 <td><input id="stopInput" type="number" value="1" /></td>
             </tr>
+            <tr id="lineNumberContainer" class="property">
+                <th>Show Line Number: </th>
+                <td><input id="lineNumberInput" type="checkbox" /></td>
+            </tr>
         </table>
         <button id="duplicateButton">Duplicate</button>
         <button id="deleteButton">Delete</button>
@@ -232,6 +237,10 @@
             <div class="toolbarItem">
                 <img id="layerIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-hide.png" width="32" height="32" class="managementIcon" />
                 <label>Toggle Show All</label>
+            </div>
+            <div class="toolbarItem">
+                <img id="moveIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-move-on.png" width="32" height="32" class="managementIcon" />
+                <label>Toggle Arrow Key Moving</label>
             </div>
             <div class="toolbarItem">
                 <img id="importIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-import.png" width="32" height="32" class="managementIcon" />
@@ -334,6 +343,9 @@
                 <label>Line Name: </label>
                 <input type="text" id="lineName" value="Test Line" />
             </div>
+            <h2>Arrival Information</h2>
+            <label>Station List:</label><br>
+            <textarea id="destinationList" placeholder="1 Destination Per Line">Test Destination</textarea>
             <div class="inputContainer"><button id="settingsCancelButton">Cancel</button><button id="settingsButton">Confirm</button></div>
         </div>
     </div>
