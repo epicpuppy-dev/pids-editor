@@ -4,13 +4,18 @@ import { TextModule } from "./TextModule";
 
 export class DestinationModule extends TextModule {
     public template: string = "%s";
+    public baseTemplate: string = "%s";
     public id = "destination";
     public showLineNumber = true;
 
     protected getText(arrivals: Arrival[]): string {
         let arrival = arrivals[this.arrival];
         if (!arrival) return "";
-        return (this.showLineNumber ? arrival.lineNumber + " " : "") + arrival.destination;
+        this.template = this.baseTemplate
+        if (this.showLineNumber) {
+            this.template = arrival.lineNumber + " " + this.template;
+        }
+        return arrival.destination;
     }
     
     public getProperties(): { [key: string]: [(value: any, editor: PIDSEditor) => void, any]; } {
@@ -18,7 +23,7 @@ export class DestinationModule extends TextModule {
             arrival: [(value: any) => this.setArrival(value), this.arrival + 1],
             align: [(value: any) => this.setAlign(value), this.align],
             color: [(value: any) => this.setColor(value), this.color],
-            text: [(value: any) => this.setTemplate(value), this.template],
+            text: [(value: any) => this.setTemplate(value), this.baseTemplate],
             lineNumber: [(value: any) => this.setShowLineNumber(value), this.showLineNumber]
         };
         return properties;
@@ -32,12 +37,14 @@ export class DestinationModule extends TextModule {
         let toExport = super.export();
         let data = toExport.data;
         data.showLineNumber = this.showLineNumber;
+        data.text = this.baseTemplate;
         return toExport;
     }
 
     public import(data: { [key: string]: any; }): void {
         super.import(data);
         if (typeof data.showLineNumber == "boolean") this.showLineNumber = data.showLineNumber;
+        if (typeof data.text == "string") this.baseTemplate = data.text;
     }
 
     public duplicate() {
@@ -48,5 +55,9 @@ export class DestinationModule extends TextModule {
         module.arrival = this.arrival;
         module.showLineNumber = this.showLineNumber;
         return module;
+    }
+
+    public setBaseTemplate (template: any): void {
+        if (typeof template == "string") this.baseTemplate = template;
     }
 }

@@ -4,9 +4,18 @@ import { Arrival } from "../util/Arrival";
 export class ArrivalController {
     arrivals: Arrival[] = [];
     time: number = Date.now();
-    NUM_TRAINS: number = 50
+    stations: string[] = [];
+    NUM_TRAINS: number = 50;
 
     constructor (editor: PIDSEditor) {
+        // prepare station list
+        let list = "";
+        for (let i = 0; i < STATIONS.length; i++) {
+            this.stations.push(STATIONS[i]);
+            if (i > 0) list += "\n";
+            list += STATIONS[i];
+        }
+        (document.getElementById("destinationList") as HTMLTextAreaElement).value = list;
         // generate trains
         for (let i = 0; i < this.NUM_TRAINS; i++) {
             this.generateTrain(editor);
@@ -20,11 +29,11 @@ export class ArrivalController {
         for (let j = 0; j < Math.floor(Math.random() * 24) + 4; j++) {
             trainTime += Math.floor((Math.random() + 0.25) * 120 * 1000);
             stops.push({
-                name: STATIONS[Math.floor(Math.random() * STATIONS.length)],
+                name: this.stations[Math.floor(Math.random() * this.stations.length)],
                 time: trainTime
             });
         }
-        let destination = STATIONS[Math.floor(Math.random() * STATIONS.length)];
+        let destination = this.stations[Math.floor(Math.random() * this.stations.length)];
         stops.push({
             name: destination,
             time: trainTime + Math.floor((Math.random() + 0.25) * 120 * 1000)

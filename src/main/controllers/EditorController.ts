@@ -137,6 +137,8 @@ export class EditorController {
             editor.edit.station = (document.getElementById("stationName")! as HTMLInputElement).value;
             editor.edit.stationColor = (document.getElementById("stationColor")! as HTMLInputElement).value;
             editor.edit.lineName = (document.getElementById("lineName")! as HTMLInputElement).value;
+            let stationList = (document.getElementById("destinationList") as HTMLTextAreaElement).value.split("\n");
+            editor.arrivals.stations = stationList;
             editor.arrivals.regenerate(editor);
         };
 
