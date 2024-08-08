@@ -19,6 +19,8 @@ export class AssetData {
             "export": "https://cdn.epicpuppy.dev/assets/pids/sprite-export.png",
             "borderOn": "https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png",
             "borderOff": "https://cdn.epicpuppy.dev/assets/pids/sprite-border-off.png",
+            "moveOn": "https://cdn.epicpuppy.dev/assets/pids/sprite-move-on.png",
+            "moveOff": "https://cdn.epicpuppy.dev/assets/pids/sprite-move-off.png",
             "new": "https://cdn.epicpuppy.dev/assets/pids/sprite-new.png",
 
             "alignLeft": "https://cdn.epicpuppy.dev/assets/pids/sprite-align-left.png",

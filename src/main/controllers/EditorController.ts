@@ -6,6 +6,7 @@ import { MinimizableDropdown } from "../util/MinimizableDropdown";
 export class EditorController {
     public selected: Module | null = null;
     public placing: ModuleType | null = null;
+    public arrowKeyMove: boolean = true;
     public menuOpen = false;
     public showAllLayers = false;
     public editingLayer = 1;
@@ -77,6 +78,11 @@ export class EditorController {
             editor.edit.showAllLayers = !editor.edit.showAllLayers;
             (document.getElementById("layerIcon")! as HTMLImageElement).src = editor.edit.showAllLayers ?
             "https://cdn.epicpuppy.dev/assets/pids/sprite-layer-show.png" : "https://cdn.epicpuppy.dev/assets/pids/sprite-layer-hide.png";
+        }
+        document.getElementById("moveIcon")!.onclick = () => {
+            editor.edit.arrowKeyMove = !editor.edit.arrowKeyMove;
+            (document.getElementById("moveIcon")! as HTMLImageElement).src = editor.edit.arrowKeyMove ?
+            "https://cdn.epicpuppy.dev/assets/pids/sprite-move-on.png" : "https://cdn.epicpuppy.dev/assets/pids/sprite-move-off.png";
         }
         document.getElementById("newIcon")!.onclick = () => {
             if (editor.edit.menuOpen) return;
