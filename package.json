@@ -4,7 +4,9 @@
   "description": "",
   "main": "js/index.js",
   "scripts": {
-    "clean": "rm dist -f -R&&mkdir dist",
+    "clean": "run-script-os",
+    "clean:windows": "rmdir dist /s&&mkdir dist",
+    "clean:linux": "rm dist -f -R&&mkdir dist",
     "start": "webpack serve --mode development --open",
     "build-dev": "npm run clean&&webpack --mode development",
     "build-prod": "npm run clean&&webpack --mode production",
@@ -28,6 +30,7 @@
     "html-webpack-plugin": "^5.5.1",
     "mini-css-extract-plugin": "^2.8.1",
     "postcss-loader": "^8.1.1",
+    "run-script-os": "^1.1.6",
     "sass-loader": "^14.1.1",
     "style-loader": "^3.3.4",
     "ts-loader": "^9.4.3",
