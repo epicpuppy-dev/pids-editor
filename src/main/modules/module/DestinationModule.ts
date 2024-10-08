@@ -37,14 +37,14 @@ export class DestinationModule extends TextModule {
         let toExport = super.export();
         let data = toExport.data;
         data.showLineNumber = this.showLineNumber;
-        data.text = this.baseTemplate;
+        data.template = this.baseTemplate;
         return toExport;
     }
 
     public import(data: { [key: string]: any; }): void {
         super.import(data);
         if (typeof data.showLineNumber == "boolean") this.showLineNumber = data.showLineNumber;
-        if (typeof data.text == "string") this.baseTemplate = data.text;
+        if (typeof data.template == "string") this.baseTemplate = data.template;
     }
 
     public duplicate() {
