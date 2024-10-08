@@ -23,7 +23,7 @@ export class DestinationModule extends TextModule {
             arrival: [(value: any) => this.setArrival(value), this.arrival + 1],
             align: [(value: any) => this.setAlign(value), this.align],
             color: [(value: any) => this.setColor(value), this.color],
-            text: [(value: any) => this.setTemplate(value), this.baseTemplate],
+            text: [(value: any) => this.setBaseTemplate(value), this.baseTemplate],
             lineNumber: [(value: any) => this.setShowLineNumber(value), this.showLineNumber]
         };
         return properties;
