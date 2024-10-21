@@ -82,7 +82,7 @@ export class ShortcutData {
         ));
 
         controller.register(new Shortcut(
-            "moveNextLayer", ["KeyE"], false, true, true,
+            "moveNextLayer", ["KeyE"], true, false, true,
             (editor) => {
                 let selected = editor.edit.selected;
                 editor.edit.changeLayer(editor.edit.editingLayer + 1);
@@ -95,7 +95,7 @@ export class ShortcutData {
         ));
 
         controller.register(new Shortcut(
-            "movePrevLayer", ["KeyQ"], false, true, true,
+            "movePrevLayer", ["KeyQ"], true, false, true,
             (editor) => {
                 let selected = editor.edit.selected;
                 editor.edit.changeLayer(editor.edit.editingLayer - 1);

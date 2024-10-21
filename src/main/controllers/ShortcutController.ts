@@ -39,6 +39,7 @@ export class ShortcutController {
                 if (!shortcut.key.includes(e.code) || e.ctrlKey != shortcut.ctrl || e.shiftKey != shortcut.shift || e.altKey != shortcut.alt) {
                     continue;
                 }
+                console.log(e.ctrlKey, e.shiftKey, e.altKey, e.code);
 
                 // check if active
                 if (shortcut.active(e, editor)) {
