@@ -1,6 +1,4 @@
 import { PIDSEditor } from "../PIDSEditor";
-import { AssetController } from "../controllers/AssetController";
-import { ModuleController } from "../controllers/ModuleController";
 import { ModuleType } from "../modules/ModuleType";
 import { ArrivalTimeModule } from "../modules/module/ArrivalTimeModule";
 import { BlockModule } from "../modules/module/BlockModule";
@@ -21,57 +19,57 @@ export class ModuleData {
         //define modules below
         controller.registerModuleType(new ModuleType(
             "destination",
-            "Destination",
+            "{{module.destination}}",
             (x, y, w, h) => {
-                return new DestinationModule(x, y, w, h, "Destination");
+                return new DestinationModule(x, y, w, h, "{{module.destination}}");
             },
             assets.sprites.destination
         ), editor);
         controller.registerModuleType(new ModuleType(
             "arrivalTime",
-            "Arrival Time",
+            "{{module.arrivalTime}}",
             (x, y, w, h) => {
-                return new ArrivalTimeModule(x, y, w, h, "Arrival Time");
+                return new ArrivalTimeModule(x, y, w, h, "{{module.arrivalTime}}");
             },
             assets.sprites.arrivalTime
         ), editor);
         controller.registerModuleType(new ModuleType(
             "trainLength",
-            "Train Length",
+            "{{module.trainLength}}",
             (x, y, w, h) => {
-                return new TrainLengthModule(x, y, w, h, "Train Length");
+                return new TrainLengthModule(x, y, w, h, "{{module.trainLength}}");
             },
             assets.sprites.trainLength
         ), editor);
         controller.registerModuleType(new ModuleType(
             "platformNumber",
-            "Platform Number",
+            "{{module.platformNum}}",
             (x, y, w, h) => {
-                return new PlatformNumberModule(x, y, w, h, "Platform Number");
+                return new PlatformNumberModule(x, y, w, h, "{{module.platformNum}}");
             },
             assets.sprites.platformNumber
         ), editor);
         controller.registerModuleType(new ModuleType(
             "stopsAt",
-            "Stops At",
+            "{{module.stopsAt}}",
             (x, y, w, h) => {
-                return new StopsAtModule(x, y, w, h, "Stops At", editor);
+                return new StopsAtModule(x, y, w, h, "{{module.stopsAt}}", editor);
             },
             assets.sprites.stopsAt
         ), editor);
         controller.registerModuleType(new ModuleType(
             "lineName",
-            "Line Name",
+            "{{module.lineName}}",
             (x, y, w, h) => {
-                return new LineNameModule(x, y, w, h, "Line Name");
+                return new LineNameModule(x, y, w, h, "{{module.lineName}}");
             },
             assets.sprites.lineName
         ), editor);
         controller.registerModuleType(new ModuleType(
             "lineNumber",
-            "Line Number",
+            "{{module.lineNum}}",
             (x, y, w, h) => {
-                return new LineNumberModule(x, y, w, h, "Line Number");
+                return new LineNumberModule(x, y, w, h, "{{module.lineNum}}");
             },
             assets.sprites.lineNumber
         ), editor);
@@ -85,25 +83,25 @@ export class ModuleData {
         ), editor, true);
         controller.registerModuleType(new ModuleType(
             "text",
-            "Text",
+            "{{module.text}}",
             (x, y, w, h) => {
-                return new TextModule(x, y, w, h, "Text");
+                return new TextModule(x, y, w, h, "{{module.text}}");
             },
             assets.sprites.text
         ), editor);
         controller.registerModuleType(new ModuleType(
             "template",
-            "Template",
+            "{{module.template}}",
             (x, y, w, h) => {
-                return new TemplateModule(x, y, w, h, "Template");
+                return new TemplateModule(x, y, w, h, "{{module.template}}");
             },
             assets.sprites.template
         ), editor);
         controller.registerModuleType(new ModuleType(
             "block",
-            "Block",
+            "{{module.block}}",
             (x, y, w, h) => {
-                return new BlockModule(x, y, w, h, "Block");
+                return new BlockModule(x, y, w, h, "{{module.block}}");
             },
             assets.sprites.block
         ), editor);

@@ -8,6 +8,7 @@
 }
 html {
     color: #ffffff;
+    background-color: gray;
     font-family: 'Consolas','Courier New', monospace;
 }
 canvas {
@@ -169,6 +170,28 @@ canvas {
 #moduleTypes .toolbarItem label {
     margin-top: 8px;
 }
+#display {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 0;
+    left: 15%;
+    background-color: #333333;
+    border: solid #444444;
+    border-width: 2px 2px 0 2px;
+    border-radius: 6px 6px 0 0;
+    padding: 4px;
+}
+#display .toolbarItem label {
+    margin-top: 12px;
+}
+#display:hover {
+    flex-direction: column;
+    width: fit-content;
+}
+#display:hover .toolbarItem {
+    width: fit-content;
+}
 
 .overlayWindow {
     width: 100%;
@@ -188,6 +211,8 @@ canvas {
     left: 50%;
     transform: translate(-50%, -50%);
     display: block;
+    max-height: 80%;
+    overflow-y: auto;
 }
 .overlayContent h1 {
     margin: 0;
@@ -264,7 +289,7 @@ canvas {
 
 #layerbar {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -275,6 +300,17 @@ canvas {
     justify-content: space-between;
     border-width: 2px 2px 0 2px;
     border-radius: 6px 6px 0 0;
+}
+#layerbar label {
+    color: white;
+    font-size: 0.75em;
+    margin: auto;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+#layers {
+    display: flex;
+    flex-direction: row;
 }
 .layerIcon {
     margin: 0 2px;

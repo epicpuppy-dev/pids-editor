@@ -2,9 +2,9 @@
 <html>
 
 <head>
-    <title>PIDS Layout Editor</title>
-    <meta name="og:title" content="PIDS Layout Editor">
-    <meta name="og:description" content="An all-in-one tool for creating PIDS layouts for the MTR mod">
+    <title>{{meta.title}}</title>
+    <meta name="og:title" content="{{meta.title}}">
+    <meta name="og:description" content="{{meta.desc}}">
     <meta name="og:image" content="https://pids.epicpuppy.dev/icon.png">
     <meta name="og:url" content="https://pids.epicpuppy.dev/">
     <meta name="og:type" content="website">
@@ -25,7 +25,7 @@
 <body oncontextmenu="return false;" style="background-color: black;">
     <canvas id="canvas" width="800" height="600"></canvas>
     <div id="propertyEditor">
-        <h3 id="moduleName">Destination Module</h3>
+        <h3 id="moduleName">Module</h3>
         <div id="posContainer">
             <strong>X:</strong> <span id="posX">1.000</span><br>
             <strong>Y:</strong> <span id="posY">1.000</span><br>
@@ -34,11 +34,11 @@
         </div>
         <table id="propertyTable" class="propertyContainer">
             <tr id="arrivalContainer" class="property">
-                <th>Arrival Num:</th>
+                <th>{{property.arrivalNum}}</th>
                 <td><input id="arrivalInput" type="number" value="1" min="1" /></td>
             </tr>
             <tr id="alignContainer" class="property">
-                <th>Text Align:</th>
+                <th>{{property.textAlign}}</th>
                 <td>
                     <div id="alignIcons">
                         <img id="alignLeft" src="https://cdn.epicpuppy.dev/assets/pids/sprite-align-left.png" width="32" height="32" />
@@ -48,174 +48,141 @@
                 </td>
             </tr>
             <tr id="colorContainer" class="property">
-                <th>Color: </th>
+                <th>{{property.color}}</th>
                 <td><button id="colorInput">Edit</td>
             </tr>
             <tr id="textContainer" class="property">
-                <th>Text: </th>
+                <th>{{property.text}}</th>
                 <td><input id="textInput" type="text" value="%s" /></td>
             </tr>
             <tr class="identifiers">
-                <th colspan="2">Possible Identifiers</th>
+                <th colspan="2">{{property.ids}}</th>
             </tr>
             <tr class="identifiers">
                 <td>$s</td>
-                <td>Station Name</td>
+                <td>{{identifier.station}}</td>
             </tr>
             <tr class="identifiers">
                 <td>$d</td>
-                <td>Destination</td>
+                <td>{{identifier.dest}}</td>
             </tr>
             <tr class="identifiers">
                 <td>$p</td>
-                <td>Platform Number</td>
+                <td>{{identifier.platformNum}}</td>
             </tr>
             <tr class="identifiers">
                 <td>$l</td>
-                <td>Train Length</td>
+                <td>{{identifier.length}}</td>
             </tr>
             <tr class="identifiers">
                 <td>$n</td>
-                <td>Line Name</td>
+                <td>{{identifier.lineName}}</td>
             </tr>
             <tr class="identifiers">
                 <th colspan="2">
                     <div class="dropdownHeader" id="timeDropdownHeader">
-                        <span class="dropdownTitle">Time Identifiers</span><span id="timeDropdown" class="dropdown">[-]</span>
+                        <span class="dropdownTitle">{{identifier.time}}</span><span id="timeDropdown" class="dropdown">[-]</span>
                     </div>
                 </th>
             </tr>
             <tr class="identifiers timeDropdownElement">
                 <td>$ts</td>
-                <td>Current Seconds</td>
+                <td>{{identifier.time.s}}</td>
             </tr>
             <tr class="identifiers timeDropdownElement">
                 <td>$tm</td>
-                <td>Current Minutes</td>
+                <td>{{identifier.time.m}}</td>
             </tr>
             <tr class="identifiers timeDropdownElement">
                 <td>$th2</td>
-                <td>Current Hours (12-hr)</td>
+                <td>{{identifier.time.h2}}</td>
             </tr>
             <tr class="identifiers timeDropdownElement">
                 <td>$th4</td>
-                <td>Current Hours (24-hr)</td>
+                <td>{{identifier.time.h4}}</td>
             </tr>
             <tr class="identifiers timeDropdownElement">
                 <td>$tap</td>
-                <td>Current AM/PM</td>
+                <td>{{identifier.time.ap}}</td>
             </tr>
             <tr class="identifiers">
                 <th colspan="2">
                     <div class="dropdownHeader" id="gameTimeDropdownHeader">
-                        <span class="dropdownTitle">Game Time Identifiers</span><span id="gameTimeDropdown" class="dropdown">[-]</span>
+                        <span class="dropdownTitle">{{identifier.gameTime}}</span><span id="gameTimeDropdown" class="dropdown">[-]</span>
                     </div>
                 </th>
             </tr>
             <tr class="identifiers gameTimeDropdownElement">
                 <td>$tgs</td>
-                <td>In-game Seconds</td>
+                <td>{{identifier.gameTime.s}}</td>
             </tr>
             <tr class="identifiers gameTimeDropdownElement">
                 <td>$tgm</td>
-                <td>In-game Minutes</td>
+                <td>{{identifier.gameTime.m}}</td>
             </tr>
             <tr class="identifiers gameTimeDropdownElement">
                 <td>$tgh2</td>
-                <td>In-game Hours (12hr)</td>
+                <td>{{identifier.gameTime.h2}}</td>
             </tr>
             <tr class="identifiers gameTimeDropdownElement">
                 <td>$tgh4</td>
-                <td>In-game Hours (24hr)</td>
+                <td>{{identifier.gameTime.h4}}</td>
             </tr>
             <tr class="identifiers gameTimeDropdownElement">
                 <td>$tgap</td>
-                <td>In-game AM/PM</td>
+                <td>{{identifier.gameTime.ap}}</td>
             </tr>
             <tr id="timeTypeContainer" class="property">
-                <th>Time Display: </th>
+                <th>{{property.displayMode}}</th>
                 <td>
                     <select id="timeTypeInput">
-                        <option value="i">Individual</option>
-                        <option value="b">Both</option>
+                        <option value="i">{{property.timeDisplay.i}}</option>
+                        <option value="b">{{property.timeDisplay.i}}</option>
                     </select>
                 </td>
             </tr>
             <tr id="secTextContainer" class="property">
-                <th>Seconds Text: </th>
+                <th>{{property.secText}}</th>
                 <td><input id="secTextInput" type="text" value="%s sec" /></td>
             </tr>
             <tr id="minTextContainer" class="property">
-                <th>Minutes Text: </th>
+                <th>{{property.minText}}</th>
                 <td><input id="minTextInput" type="text" value="%s min" /></td>
             </tr>
             <tr id="mixTextContainer" class="property">
-                <th>Text: </th>
+                <th>{{property.text}}</th>
                 <td><input id="mixTextInput" type="text" value="%s:%s" /></td>
             </tr>
-            <tr id="timeLocContainer" class="property">
-                <th>Time Display: </th>
-                <td>
-                    <select id="timeLocInput">
-                        <option value="g">In-Game</option>
-                        <option value="s">Real Life</option>
-                    </select>
-                </td>
-            </tr>
-            <tr id="show24HourContainer" class="property">
-                <th>24-Hour Time: </th>
-                <td>
-                    <input id="show24HourInput" type="checkbox" />
-                </td>
-            </tr>
-            <tr id="showHoursContainer" class="property">
-                <th>Show Hours: </th>
-                <td>
-                    <input id="showHoursInput" type="checkbox" />
-                </td>
-            </tr>
-            <tr id="showMinutesContainer" class="property">
-                <th>Show Minutes: </th>
-                <td>
-                    <input id="showMinutesInput" type="checkbox" />
-                </td>
-            </tr>
-            <tr id="showSecondsContainer" class="property">
-                <th>Show Seconds: </th>
-                <td>
-                    <input id="showSecondsInput" type="checkbox" />
-                </td>
-            </tr>
             <tr id="stopsTypeContainer" class="property">
-                <th>Display Mode: </th>
+                <th>{{property.displayMode}}</th>
                 <td>
                     <select id="stopsTypeInput">
-                        <option value="l">List</option>
-                        <option value="s">Scrolling</option>
+                        <option value="l">{{property.stops.list}}</option>
+                        <option value="s">{{property.stops.scroll}}</option>
                     </select>
                 </td>
             </tr>
             <tr id="scrollSpeedContainer" class="property">
-                <th>Scroll Speed: </th>
+                <th>{{property.scrollSpeed}}</th>
                 <td><input id="scrollSpeedInput" type="number" value="5" /></td>
             </tr>
             <tr id="hasPageContainer" class="property">
-                <th>Show Page: </th>
+                <th>{{property.showPage}}</th>
                 <td>
                     <input id="hasPageInput" type="checkbox" />
                 </td>
             </tr>
             <tr id="stopContainer" class="property">
-                <th>Stop Number: </th>
+                <th>{{property.stopNum}}</th>
                 <td><input id="stopInput" type="number" value="1" /></td>
             </tr>
             <tr id="lineNumberContainer" class="property">
-                <th>Show Line Number: </th>
+                <th>{{property.showLineNum}}</th>
                 <td><input id="lineNumberInput" type="checkbox" /></td>
             </tr>
         </table>
-        <button id="duplicateButton">Duplicate</button>
-        <button id="deleteButton">Delete</button>
+        <button id="duplicateButton">{{action.duplicate}}</button>
+        <button id="deleteButton">{{action.delete}}</button>
     </div>
     <div id="toolbar">
         <div id="moduleTypes">
@@ -223,130 +190,169 @@
         </div>
         <div id="management">
             <div class="toolbarItem">
+                <img id="infoIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-info.png" width="32" height="32" class="managementIcon" />
+                <label>{{ui.shortcuts}}</label>
+            </div>
+            <div class="toolbarItem">
                 <img id="settingsIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-settings.png" width="32" height="32" class="managementIcon" />
-                <label>Settings</label>
+                <label>{{ui.settings}}</label>
             </div>
             <div class="toolbarItem">
                 <img id="newIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-new.png" width="32" height="32" class="managementIcon" />
-                <label>Create New</label>
-            </div>
-            <div class="toolbarItem">
-                <img id="borderIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png" width="32" height="32" class="managementIcon" />
-                <label>Toggle Border</label>
-            </div>
-            <div class="toolbarItem">
-                <img id="layerIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-hide.png" width="32" height="32" class="managementIcon" />
-                <label>Toggle Show All</label>
-            </div>
-            <div class="toolbarItem">
-                <img id="moveIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-move-on.png" width="32" height="32" class="managementIcon" />
-                <label>Toggle Arrow Key Moving</label>
+                <label>{{action.createNew}}</label>
             </div>
             <div class="toolbarItem">
                 <img id="importIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-import.png" width="32" height="32" class="managementIcon" />
-                <label>Load / Import</label>
+                <label>{{action.load}}</label>
             </div>
             <div class="toolbarItem">
                 <img id="exportIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-export.png" width="32" height="32" class="managementIcon" />
-                <label>Save / Export</label>
+                <label>{{action.save}}</label>
             </div>
         </div>
     </div>
     <div id="layerbar">
-        <img id="layer0" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-0.png" width="32" height="32" class="layerIcon" />
-        <img id="layer1" src="https://cdn.epicpuppy.dev/assets/pids/sprite-active-1.png" width="32" height="32" class="layerIcon layerActive" />
-        <img id="layer2" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-2.png" width="32" height="32" class="layerIcon" />
-        <img id="layer3" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-3.png" width="32" height="32" class="layerIcon" />
-        <img id="layer4" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-4.png" width="32" height="32" class="layerIcon" />
-        <img id="layer5" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-5.png" width="32" height="32" class="layerIcon" />
-        <img id="layer6" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-6.png" width="32" height="32" class="layerIcon" />
-        <img id="layer7" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-7.png" width="32" height="32" class="layerIcon" />
+        <label>{{ui.layer}}</label>
+        <div id="layers">
+            <img id="layer0" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-0.png" width="32" height="32" class="layerIcon" />
+            <img id="layer1" src="https://cdn.epicpuppy.dev/assets/pids/sprite-active-1.png" width="32" height="32" class="layerIcon layerActive" />
+            <img id="layer2" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-2.png" width="32" height="32" class="layerIcon" />
+            <img id="layer3" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-3.png" width="32" height="32" class="layerIcon" />
+            <img id="layer4" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-4.png" width="32" height="32" class="layerIcon" />
+            <img id="layer5" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-5.png" width="32" height="32" class="layerIcon" />
+            <img id="layer6" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-6.png" width="32" height="32" class="layerIcon" />
+            <img id="layer7" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-7.png" width="32" height="32" class="layerIcon" />
+        </div>
     </div>
     <div id="warning">
         <img id="warningIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-warning.png" width="32" height="32" /> 
         <div>
-            Z-Fighting Warning<br>
-            <span id="warningText">Between a and b on layer l</span>
+            {{ui.zFight}}<br>
+            <span id="warningText">a</span>
         </div>
         <img id="warningIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-warning.png" width="32" height="32" /> 
     </div>
+    <div id="display">
+        <div class="toolbarItem">
+            <img id="borderIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png" width="32" height="32" class="managementIcon" />
+            <label>{{action.toggleBorder}}</label>
+        </div>
+        <div class="toolbarItem">
+            <img id="moveIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-move-on.png" width="32" height="32" class="managementIcon" />
+            <label>{{action.toggleArrowMove}}</label>
+        </div>
+        <div class="toolbarItem">
+            <img id="layerIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-hide.png" width="32" height="32" class="managementIcon" />
+            <label>{{action.toggleShowLayers}}</label>
+        </div>
+    </div>
     <div id="exportMenu" class="overlayWindow">
         <div id="exportMenuContent" class="overlayContent">
-            <h1>Save / Export</h1>
-            <div class="inputContainer"><label>ID*: </label> <input type="text" id="exportID" placeholder="example_id" maxlength="48" /><br></div>
-            <div class="inputContainer"><label>Name: </label> <input type="text" id="exportName" placeholder="Example PIDS" maxlength="64" /><br></div>
-            <div class="inputContainer"><label>Author: </label> <input type="text" id="exportAuthor" placeholder="You" maxlength="64" /><br></div>
-            <label>Desription: </label><br>
+            <h1>{{action.save}}</h1>
+            <div style="text-align:center; font-size: 0.8em;">{{field.required}}</div>
+            <div class="inputContainer"><label>{{field.id}}</label> <input type="text" id="exportID" placeholder="example_id" maxlength="48" /><br></div>
+            <div class="inputContainer"><label>{{field.name}}</label> <input type="text" id="exportName" placeholder="Example PIDS" maxlength="64" /><br></div>
+            <div class="inputContainer"><label>{{field.author}}</label> <input type="text" id="exportAuthor" placeholder="You" maxlength="64" /><br></div>
+            <label>{{field.desc}}</label><br>
             <textarea id="exportDescription"></textarea><br>
-            <div class="inputContainer"><button id="cancelButton">Cancel</button><button id="exportButton">Export</button></div>
+            <div class="inputContainer"><button id="cancelButton">{{action.cancel}}</button><button id="exportButton">{{action.export}}</button></div>
         </div>
     </div>
     <div id="newMenu" class="overlayWindow">
         <div id="newMenuContent" class="overlayContent">
-            <h1>Create New Layout</h1>
+            <h1>{{action.createNew}}</h1>
             <div class="inputContainer">
-                <label>Template: </label>
+                <label>{{field.template}}</label>
                 <select id="sizeInput">
-                    <optgroup label="Horizontal A (32x11)">
-                        <option value="ha">Default Horizontal A</option>
+                    <optgroup label="{{template.horizontalA}}">
+                        <option value="ha">{{template.horizontalADefault}}</option>
                     </optgroup>
-                    <optgroup label="Horizontal B (32x9)">
-                        <option value="hb" selected>Default Horizontal B</option>
+                    <optgroup label="{{template.horizontalB}}">
+                        <option value="hb" selected>{{template.horizontalBDefault}}</option>
                     </optgroup>
-                    <optgroup label="Horizontal C (32x10)">
-                        <option value="hc">Default Horizontal C</option>
+                    <optgroup label="{{template.horizontalC}}">
+                        <option value="hc">{{template.horizontalCDefault}}</option>
                     </optgroup>
-                    <optgroup label="Vertical (16x32)">
-                        <option value="va">Default Vertical</option>
-                        <option value="vsa">Single Arrival Vertical</option>
+                    <optgroup label="{{template.vertical}}">
+                        <option value="va">{{template.verticalDefault}}</option>
+                        <option value="vsa">{{template.verticalSingle}}</option>
                     </optgroup>
-                    <optgroup label="Projector">
-                        <option value="ps">Small Projector (16x16)</option>
-                        <option value="pm">Medium Projector (48x32)</option>
-                        <option value="pl">Large Projector (48x48)</option>
+                    <optgroup label="{{template.projector}}">
+                        <option value="ps">{{template.projectorSmall}}</option>
+                        <option value="pm">{{template.projectorMedium}}</option>
+                        <option value="pl">{{template.projectorLarge}}</option>
                     </optgroup>
                 </select>
             </div>
-            <div class="inputContainer"><button id="newCancelButton">Cancel</button><button id="newButton">Confirm</button></div>
+            <div class="inputContainer"><button id="newCancelButton">{{action.cancel}}</button><button id="newButton">{{action.confirm}}</button></div>
         </div>
     </div>
     <div id="colorMenu" class="overlayWindow">
         <div id="colorMenuContent" class="overlayContent">
-            <h2>Color Picker</h2>
+            <h2>{{ui.colorPicker}}</h2>
             <div class="inputContainer">
-                <label>Mode: </label>
+                <label>{{ui.mode}}</label>
                 <select id="colorMode">
-                    <option value="basic">Basic</option>
-                    <option value="line">Line Color</option>
-                    <option value="station">Station Color</option>
+                    <option value="basic">{{ui.colorMode.basic}}</option>
+                    <option value="line">{{ui.colorMode.line}}</option>
+                    <option value="station">{{ui.colorMode.station}}</option>
                 </select>
             </div>
             <div id="colorInputContainer" class="inputContainer">
-                <label>Color: </label>
+                <label>{{ui.color}}</label>
                 <input type="color" id="colorSelect" value="#ffffff" />
             </div>
-            <div class="inputContainer"><button id="colorButton">Confirm</button></div>
+            <div class="inputContainer"><button id="colorButton">{{action.confirm}}</button></div>
         </div>
     </div>
     <div id="settingsMenu" class="overlayWindow">
         <div id="settingsMenuContent" class="overlayContent">
-            <h1>Settings</h1>
+            <h1>{{ui.settings}}</h1>
             <div class="inputContainer">
-                <label>Station Name: </label>
+                <label>{{field.station}}</label>
                 <input type="text" id="stationName" value="Test Station" />
             </div>
             <div class="inputContainer">
-                <label>Station Color: </label>
+                <label>{{field.stationColor}}</label>
                 <input type="color" id="stationColor" value="#ffff00" />
             </div>
             <div class="inputContainer">
-                <label>Line Name: </label>
+                <label>{{field.line}}</label>
                 <input type="text" id="lineName" value="Test Line" />
             </div>
-            <h2>Arrival Information</h2>
-            <label>Station List:</label><br>
-            <textarea id="destinationList" placeholder="1 Destination Per Line">Test Destination</textarea>
-            <div class="inputContainer"><button id="settingsCancelButton">Cancel</button><button id="settingsButton">Confirm</button></div>
+            <h2>{{ui.arrivals}}</h2>
+            <label>{{field.stations}}</label><br>
+            <textarea id="destinationList" placeholder="{{ui.1PerLine}}">Test Destination</textarea>
+            <div class="inputContainer">
+                <label>{{field.stops}}</label>
+                <input type="number" id="averageStops" value="12" />
+            </div>
+            <div class="inputContainer"><button id="settingsCancelButton">{{action.cancel}}</button><button id="settingsButton">{{action.confirm}}</button></div>
+        </div>
+    </div>
+    <div id="helpMenu" class="overlayWindow">
+        <div id="helpMenuContent" class="overlayContent">
+            <h1>{{ui.shortcuts}}</h1>
+            <h2>{{shortcut.general}}</h2>
+            <strong>Esc</strong> - {{shortcut.deselect}}<br>
+            <strong>Del</strong> - {{shortcut.delete}}<br>
+            <strong>Ctrl + D</strong> - {{shortcut.duplicate}}<br>
+            <strong>Ctrl + B</strong> - {{shortcut.toggleBorder}}<br>
+            <strong>Alt + A</strong> - {{shortcut.toggleArrow}}
+            <h2>{{shortcut.layers}}</h2>
+            <strong>Alt + E</strong> - {{shortcut.nextLayer}}<br>
+            <strong>Alt + Q</strong> - {{shortcut.prevLayer}}<br>
+            <strong>Ctrl + Alt + E</strong> - {{shortcut.moveNextLayer}}<br>
+            <strong>Ctrl + Alt + Q</strong> - {{shortcut.movePrevLayer}}<br>
+            <h2>{{shortcut.movement}}</h2>
+            <strong>Left</strong> - {{shortcut.moveLeft}}<br>
+            <strong>Right</strong> - {{shortcut.moveRight}}<br>
+            <strong>Up</strong> - {{shortcut.moveUp}}<br>
+            <strong>Down</strong> - {{shortcut.moveDown}}<br>
+            <strong>Shift</strong> {{shortcut.keyHeld}} - {{shortcut.moveMore}}<br>
+            <strong>Ctrl</strong> {{shortcut.keyHeld}} - {{shortcut.moveTopLeft}}<br>
+            <strong>Alt</strong> {{shortcut.keyHeld}} - {{shortcut.moveBottomRight}}<br>
+            <div class="inputContainer"><button id="infoCloseButton" style="width: 100%">{{action.confirm}}</button></div>
         </div>
     </div>
     <canvas id="overlay" width="800" height="600"></canvas>

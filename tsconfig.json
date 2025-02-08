@@ -16,6 +16,6 @@
     },
     "include": [
         "./src/**/*",
-        "src/webpack.d.ts"    
+        "src/webpack.d.ts"
     ]
 }

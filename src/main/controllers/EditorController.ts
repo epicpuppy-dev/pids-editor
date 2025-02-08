@@ -97,6 +97,11 @@ export class EditorController {
             (document.getElementById("stationColor")! as HTMLInputElement).value = editor.edit.stationColor;
             (document.getElementById("lineName")! as HTMLInputElement).value = editor.edit.lineName;
         }
+        document.getElementById("infoIcon")!.onclick = () => {
+            if (editor.edit.menuOpen) return;
+            editor.edit.menuOpen = true;
+            document.getElementById("helpMenu")!.style.display = "block";
+        }
 
         // new menu buttons
         document.getElementById("newCancelButton")!.onclick = () => {
@@ -109,7 +114,7 @@ export class EditorController {
             if (editor.assets.files["layout" + type.toUpperCase()].complete) {
                 editor.json.import(editor.assets.files["layout" + type.toUpperCase()].data!, editor);
             } else {
-                alert("Assets still loading! Please wait...");
+                alert("{{ui.assetsLoading}}");
             }
             editor.edit.menuOpen = false;
             document.getElementById("newMenu")!.style.display = "none";
@@ -139,7 +144,13 @@ export class EditorController {
             editor.edit.lineName = (document.getElementById("lineName")! as HTMLInputElement).value;
             let stationList = (document.getElementById("destinationList") as HTMLTextAreaElement).value.split("\n");
             editor.arrivals.stations = stationList;
+            editor.arrivals.avgStops = parseInt((document.getElementById("averageStops") as HTMLInputElement).value);
             editor.arrivals.regenerate(editor);
+        };
+
+        document.getElementById("infoCloseButton")!.onclick = () => {
+            editor.edit.menuOpen = false;
+            document.getElementById("helpMenu")!.style.display = "none";
         };
 
         // layer buttons
@@ -562,7 +573,7 @@ export class EditorController {
             }
         }
         if (collision) {
-            document.getElementById("warningText")!.innerText = `Between ${collision.typeA} and ${collision.typeB} on layer ${collision.layer}`;
+            document.getElementById("warningText")!.innerText = `{{ui.collision}}`;
             document.getElementById("warning")!.style.display = "flex";
         } else {
             document.getElementById("warning")!.style.display = "none";

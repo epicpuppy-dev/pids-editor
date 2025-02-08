@@ -5,6 +5,7 @@ export class ArrivalController {
     arrivals: Arrival[] = [];
     time: number = Date.now();
     stations: string[] = [];
+    avgStops: number = 12;
     NUM_TRAINS: number = 50;
 
     constructor (editor: PIDSEditor) {
@@ -26,7 +27,10 @@ export class ArrivalController {
         let stops = [];
         this.time += Math.floor((Math.random() + 0.5) * 120 * 1000);
         let trainTime = this.time;
-        for (let j = 0; j < Math.floor(Math.random() * 24) + 4; j++) {
+        let stopMin = Math.ceil(this.avgStops * 0.75);
+        let stopRange = Math.ceil(this.avgStops * 0.5);
+        let stopCount = Math.floor(Math.random() * stopRange) + stopMin;
+        for (let j = 0; j < stopCount; j++) {
             trainTime += Math.floor((Math.random() + 0.25) * 120 * 1000);
             stops.push({
                 name: this.stations[Math.floor(Math.random() * this.stations.length)],

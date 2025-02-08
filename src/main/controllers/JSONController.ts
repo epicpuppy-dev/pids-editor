@@ -66,7 +66,7 @@ export class JSONController {
                 editor.modules.modules.push(module);
             }
         } catch (e: any) {
-            alert("Invalid Layout Format!");
+            alert("{{ui.invalidJSON}}");
             console.error(e);
         }
     }
