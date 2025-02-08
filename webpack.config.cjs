@@ -16,7 +16,8 @@ if (!devMode) {
 }
 
 const langs = {
-  'en_us': 'src/lang/en_us.json'
+  'en_us': 'src/lang/en_us.json',
+  'zh_tw': 'src/lang/zh_tw.json'
 }
 
 const configs = [{
