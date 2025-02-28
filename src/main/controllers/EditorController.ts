@@ -102,6 +102,11 @@ export class EditorController {
             editor.edit.menuOpen = true;
             document.getElementById("helpMenu")!.style.display = "block";
         }
+        document.getElementById("languageIcon")!.onclick = () => {
+            if (editor.edit.menuOpen) return;
+            editor.edit.menuOpen = true;
+            document.getElementById("languageMenu")!.style.display = "block";
+        }
 
         // new menu buttons
         document.getElementById("newCancelButton")!.onclick = () => {
@@ -151,6 +156,11 @@ export class EditorController {
         document.getElementById("infoCloseButton")!.onclick = () => {
             editor.edit.menuOpen = false;
             document.getElementById("helpMenu")!.style.display = "none";
+        };
+
+        document.getElementById("languageCloseButton")!.onclick = () => {
+            editor.edit.menuOpen = false;
+            document.getElementById("languageMenu")!.style.display = "none";
         };
 
         // layer buttons
@@ -374,7 +384,7 @@ export class EditorController {
         document.getElementById("propertyEditor")!.style.display = "flex";
         
         //set name
-        document.getElementById("moduleName")!.innerText = this.selected.name + " Module";
+        document.getElementById("moduleName")!.innerText = this.selected.name;
 
         //set position
         document.getElementById("posX")!.innerText = this.selected.x.toFixed(3);

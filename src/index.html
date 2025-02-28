@@ -20,6 +20,12 @@
     <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-5.png" as="image">
     <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-6.png" as="image">
     <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-7.png" as="image">
+
+    <link rel="alternate" hreflang="x-default" href="https://pids.epicpuppy.dev" />
+    <link rel="alternate" hreflang="en" href="https://pids.epicpuppy.dev/en-us" />
+    <link rel="alternate" hreflang="en-us" href="https://pids.epicpuppy.dev/en-us" />
+    <link rel="alternate" hreflang="zh" href="https://pids.epicpuppy.dev/zh-tw" />
+    <link rel="alternate" hreflang="zh-tw" href="https://pids.epicpuppy.dev/zh-tw" />
 </head>
 
 <body oncontextmenu="return false;" style="background-color: black;">
@@ -49,7 +55,7 @@
             </tr>
             <tr id="colorContainer" class="property">
                 <th>{{property.color}}</th>
-                <td><button id="colorInput">Edit</td>
+                <td><button id="colorInput">{{action.edit}}</td>
             </tr>
             <tr id="textContainer" class="property">
                 <th>{{property.text}}</th>
@@ -353,6 +359,19 @@
             <strong>Ctrl</strong> {{shortcut.keyHeld}} - {{shortcut.moveTopLeft}}<br>
             <strong>Alt</strong> {{shortcut.keyHeld}} - {{shortcut.moveBottomRight}}<br>
             <div class="inputContainer"><button id="infoCloseButton" style="width: 100%">{{action.confirm}}</button></div>
+        </div>
+    </div>
+    <div id="language">
+        <label>{{_language}}</label>
+        <img id="languageIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-globe.png" width="32" height="32" />
+    </div>
+    <div id="languageMenu" class="overlayWindow">
+        <div id="languageMenuContent" class="overlayContent">
+            <div id="languageSelectContainer">
+                <a href="/en-us">English</a>
+                <a href="/zh-tw">繁體中文</a>
+            </div>
+            <div class="inputContainer"><button id="languageCloseButton" style="width: 100%">{{action.cancel}}</button></div>
         </div>
     </div>
     <canvas id="overlay" width="800" height="600"></canvas>
