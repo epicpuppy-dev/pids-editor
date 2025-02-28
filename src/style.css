@@ -67,7 +67,7 @@ canvas {
     border-width: 2px 0 2px 2px;
     border-radius: 6px 0 0 6px;
     flex-direction: column;
-    max-height: 90%;
+    max-height: calc(100% - 100px);
     overflow-y: auto;
     text-align: center;
 }
@@ -359,4 +359,40 @@ canvas {
 }
 .dropdownTitle {
     flex-grow: 1;
+}
+#language {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: flex;
+    flex-direction: row;
+}
+#language label {
+    padding: 8px 6px;
+}
+
+#languageIcon:hover {
+    background-color: #666666;
+}
+#languageSelectContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+#languageSelectContainer a {
+    width: 100%;
+    min-width: 200px;
+    box-sizing: border-box;
+    padding: 6px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 14px;
+    line-height: 14px;
+    dominant-baseline: center;
+    border: solid 1px #666666;
+    color: #ffffff;
+    font-family: 'Consolas','Courier New', monospace;
+}
+#languageSelectContainer a:hover {
+    background-color: #666666;
 }

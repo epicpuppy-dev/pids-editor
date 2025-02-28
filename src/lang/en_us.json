@@ -1,9 +1,12 @@
 {
+    "_language": "English",
+    
     "action.cancel": "Cancel",
     "action.confirm": "Confirm",
     "action.createNew": "Create New",
     "action.delete": "Delete",
     "action.duplicate": "Duplicate",
+    "action.edit": "Edit",
     "action.export": "Export",
     "action.load": "Load / Import",
     "action.save": "Save / Export",

@@ -1,9 +1,12 @@
 {
+    "_language": "繁體中文",
+
     "action.cancel": "取消",
     "action.confirm": "確定",
     "action.createNew": "創建",
     "action.delete": "刪除",
     "action.duplicate": "複製",
+    "action.edit": "編輯",
     "action.export": "匯出",
     "action.load": "載入 / 匯入",
     "action.save": "儲存 / 匯出",
