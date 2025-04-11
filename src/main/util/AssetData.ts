@@ -1,31 +1,51 @@
 import { AssetController } from "../controllers/AssetController";
+import destination from "../../res/sprite-destination.png";
+import arrivalTime from "../../res/sprite-arrival-time.png";
+import trainLength from "../../res/sprite-train-length.png";
+import platformNumber from "../../res/sprite-platform-number.png";
+import stopsAt from "../../res/sprite-stops-at.png";
+import lineName from "../../res/sprite-line-name.png";
+import lineNumber from "../../res/sprite-line-number.png";
+import time from "../../res/sprite-time.png";
+import text from "../../res/sprite-text.png";
+import template from "../../res/sprite-template.png";
+import block from "../../res/sprite-block.png";
+import borderOn from "../../res/sprite-border-on.png";
+import borderOff from "../../res/sprite-border-off.png";
+import moveOn from "../../res/sprite-move-on.png";
+import moveOff from "../../res/sprite-move-off.png";
+import layerShow from "../../res/sprite-layer-show.png";
+import layerHide from "../../res/sprite-layer-hide.png";
+import layoutHA from "../../res/base_horizontal_a.json";
+import layoutHB from "../../res/base_horizontal_b.json";
+import layoutHC from "../../res/base_horizontal_c.json";
+import layoutVA from "../../res/base_vertical_a.json";
+import layoutVSA from "../../res/base_vertical_single_a.json";
+import layoutPS from "../../res/base_projector_small.json";
+import layoutPM from "../../res/base_projector_medium.json";
+import layoutPL from "../../res/base_projector_large.json";
 
 export class AssetData {
     public static registerAssets (assets: AssetController) {
         let sprites: {[key: string]: string} = {
-            "destination": "https://cdn.epicpuppy.dev/assets/pids/sprite-destination.png",
-            "arrivalTime": "https://cdn.epicpuppy.dev/assets/pids/sprite-arrival-time.png",
-            "trainLength": "https://cdn.epicpuppy.dev/assets/pids/sprite-train-length.png",
-            "platformNumber": "https://cdn.epicpuppy.dev/assets/pids/sprite-platform-number.png",
-            "stopsAt": "https://cdn.epicpuppy.dev/assets/pids/sprite-stops-at.png",
-            "lineName": "https://cdn.epicpuppy.dev/assets/pids/sprite-line-name.png",
-            "lineNumber": "https://cdn.epicpuppy.dev/assets/pids/sprite-line-number.png",
-            "time": "https://cdn.epicpuppy.dev/assets/pids/sprite-time.png",
-            "text": "https://cdn.epicpuppy.dev/assets/pids/sprite-text.png",
-            "template": "https://cdn.epicpuppy.dev/assets/pids/sprite-template.png",
-            "block": "https://cdn.epicpuppy.dev/assets/pids/sprite-block.png",
+            "destination": destination,
+            "arrivalTime": arrivalTime,
+            "trainLength": trainLength,
+            "platformNumber": platformNumber,
+            "stopsAt": stopsAt,
+            "lineName": lineName,
+            "lineNumber": lineNumber,
+            "time": time,
+            "text": text,
+            "template": template,
+            "block": block,
 
-            "import": "https://cdn.epicpuppy.dev/assets/pids/sprite-import.png",
-            "export": "https://cdn.epicpuppy.dev/assets/pids/sprite-export.png",
-            "borderOn": "https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png",
-            "borderOff": "https://cdn.epicpuppy.dev/assets/pids/sprite-border-off.png",
-            "moveOn": "https://cdn.epicpuppy.dev/assets/pids/sprite-move-on.png",
-            "moveOff": "https://cdn.epicpuppy.dev/assets/pids/sprite-move-off.png",
-            "new": "https://cdn.epicpuppy.dev/assets/pids/sprite-new.png",
-
-            "alignLeft": "https://cdn.epicpuppy.dev/assets/pids/sprite-align-left.png",
-            "alignCenter": "https://cdn.epicpuppy.dev/assets/pids/sprite-align-center.png",
-            "alignRight": "https://cdn.epicpuppy.dev/assets/pids/sprite-align-right.png",
+            "borderOn": borderOn,
+            "borderOff": borderOff,
+            "moveOn": moveOn,
+            "moveOff": moveOff,
+            "layerShow": layerShow,
+            "layerHide": layerHide,
         }
 
         for (let sprite of Object.keys(sprites)) {
@@ -33,18 +53,18 @@ export class AssetData {
         }
 
         let layouts: {[key: string]: string} = {
-            "ha": "https://cdn.epicpuppy.dev/assets/pids/base_horizontal_a.json",
-            "hb": "https://cdn.epicpuppy.dev/assets/pids/base_horizontal_b.json",
-            "hc": "https://cdn.epicpuppy.dev/assets/pids/base_horizontal_c.json",
-            "va": "https://cdn.epicpuppy.dev/assets/pids/base_vertical_a.json",
-            "vsa": "https://cdn.epicpuppy.dev/assets/pids/base_vertical_single_a.json",
-            "ps": "https://cdn.epicpuppy.dev/assets/pids/base_projector_small.json",
-            "pm": "https://cdn.epicpuppy.dev/assets/pids/base_projector_medium.json",
-            "pl": "https://cdn.epicpuppy.dev/assets/pids/base_projector_large.json"
+            "ha": JSON.stringify(layoutHA),
+            "hb": JSON.stringify(layoutHB),
+            "hc": JSON.stringify(layoutHC),
+            "va": JSON.stringify(layoutVA),
+            "vsa": JSON.stringify(layoutVSA),
+            "ps": JSON.stringify(layoutPS),
+            "pm": JSON.stringify(layoutPM),
+            "pl": JSON.stringify(layoutPL)
         }
 
         for (let layout of Object.keys(layouts)) {
-            assets.loadFile("layout" + layout.toUpperCase(), layouts[layout]);
+            assets.loadLiteral("layout" + layout.toUpperCase(), layouts[layout]);
         }
     }
 }

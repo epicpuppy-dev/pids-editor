@@ -35,16 +35,5 @@ export default function (source) {
     source = source.replace(new RegExp(`{{${key}}}`, 'g'), `${lang[key]}`);
   }
 
-  if (/\.html$/.test(this.resourcePath)) {
-    const template = _.template(source, { interpolate: /<%=([\s\S]+?)%>/g, variable: 'data', ...options });
-    // Use `eval("require")("lodash")` to enforce using the native nodejs require
-    // during template execution
-    return 'var _ = eval("require")(' + JSON.stringify(require.resolve('lodash')) + ');' +
-      'module.exports = function (templateParams) { with(templateParams) {' +
-        // Execute the lodash template
-        'return (' + template.source + ')();' +
-      '}}';
-  }
-
   return source;
 }

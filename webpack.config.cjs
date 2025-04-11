@@ -39,12 +39,12 @@ const configs = [{
     rules: [
       {
         test: /\.html$/,
-        use: {
+        use: [{
           loader: path.resolve('script/localizationloader.cjs'),
           options: {
             langFile: 'src/lang/en_us.json',
           }
-        }
+        }, 'html-loader']
       },
       {
         test: /\.ts(x)?$/,
@@ -69,30 +69,15 @@ const configs = [{
         }
       },
       {
-        test: /\.json$/,
-        type: 'asset/resource',
-        generator: {
-          filename: 'assets/[hash][ext][query]'
-        }
-      },
-      {
         test: /\.css$/,
-        use: [
-          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'fonts/'
-            }
-          }
-        ]
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name].[ext]'
+        }
       }
     ]
   },
@@ -127,12 +112,12 @@ for (const lang in langs) {
       rules: [
         {
           test: /\.html$/,
-          use: {
+          use: [{
             loader: path.resolve('script/localizationloader.cjs'),
             options: {
               langFile: langs[lang],
             }
-          }
+          }, 'html-loader']
         },
         {
           test: /\.ts(x)?$/,
@@ -157,30 +142,15 @@ for (const lang in langs) {
           }
         },
         {
-          test: /\.json$/,
-          type: 'asset/resource',
-          generator: {
-            filename: 'assets/[hash][ext][query]'
-          }
-        },
-        {
           test: /\.css$/,
-          use: [
-            devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-            'css-loader'
-          ]
+          use: ['style-loader', 'css-loader']
         },
         {
           test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: '[name].[ext]',
-                outputPath: 'fonts/'
-              }
-            }
-          ]
+          type: 'asset/resource',
+          generator: {
+            filename: 'fonts/[name].[ext]'
+          }
         }
       ]
     },

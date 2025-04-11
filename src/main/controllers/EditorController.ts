@@ -2,8 +2,10 @@ import { PIDSEditor } from "../PIDSEditor";
 import { Module } from "../modules/Module";
 import { ModuleType } from "../modules/ModuleType";
 import { MinimizableDropdown } from "../util/MinimizableDropdown";
+import { AssetController } from "./AssetController";
 
 export class EditorController {
+    private assets: AssetController;
     public selected: Module | null = null;
     public placing: ModuleType | null = null;
     public arrowKeyMove: boolean = true;
@@ -41,6 +43,8 @@ export class EditorController {
     }
 
     constructor (editor: PIDSEditor) {
+        this.assets = editor.assets;
+
         // toolbar buttons
         document.getElementById("exportIcon")!.onclick = () => {
             if (editor.edit.menuOpen) return;
@@ -72,17 +76,17 @@ export class EditorController {
         document.getElementById("borderIcon")!.onclick = () => {
             editor.layout.showModuleBorders = !editor.layout.showModuleBorders;
             (document.getElementById("borderIcon")! as HTMLImageElement).src = editor.layout.showModuleBorders ? 
-            "https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png" : "https://cdn.epicpuppy.dev/assets/pids/sprite-border-off.png"; 
+            this.assets.sprites.borderOn.src : this.assets.sprites.borderOff.src; 
         }
         document.getElementById("layerIcon")!.onclick = () => {
             editor.edit.showAllLayers = !editor.edit.showAllLayers;
             (document.getElementById("layerIcon")! as HTMLImageElement).src = editor.edit.showAllLayers ?
-            "https://cdn.epicpuppy.dev/assets/pids/sprite-layer-show.png" : "https://cdn.epicpuppy.dev/assets/pids/sprite-layer-hide.png";
+            this.assets.sprites.layerShow.src : this.assets.sprites.layerHide.src;
         }
         document.getElementById("moveIcon")!.onclick = () => {
             editor.edit.arrowKeyMove = !editor.edit.arrowKeyMove;
             (document.getElementById("moveIcon")! as HTMLImageElement).src = editor.edit.arrowKeyMove ?
-            "https://cdn.epicpuppy.dev/assets/pids/sprite-move-on.png" : "https://cdn.epicpuppy.dev/assets/pids/sprite-move-off.png";
+            this.assets.sprites.moveOn.src : this.assets.sprites.moveOff.src;
         }
         document.getElementById("newIcon")!.onclick = () => {
             if (editor.edit.menuOpen) return;

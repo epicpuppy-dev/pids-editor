@@ -5,21 +5,21 @@
     <title>{{meta.title}}</title>
     <meta name="og:title" content="{{meta.title}}">
     <meta name="og:description" content="{{meta.desc}}">
-    <meta name="og:image" content="https://pids.epicpuppy.dev/icon.png">
+    <meta name="og:image" content="https://pids.epicpuppy.dev/res/icon.png">
     <meta name="og:url" content="https://pids.epicpuppy.dev/">
     <meta name="og:type" content="website">
-    <link rel="icon" href="https://cdn.epicpuppy.dev/assets/pids/icon.png" />
-    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-border-off.png" as="image">
-    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-move-off.png" as="image">
-    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-show.png" as="image">
-    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-0.png" as="image">
-    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-1.png" as="image">
-    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-2.png" as="image">
-    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-3.png" as="image">
-    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-4.png" as="image">
-    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-5.png" as="image">
-    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-6.png" as="image">
-    <link rel="preload" href="https://cdn.epicpuppy.dev/assets/pids/sprite-active-7.png" as="image">
+    <link rel="icon" href="./res/icon.png" />
+    <link rel="preload" href="./res/sprite-border-off.png" as="image">
+    <link rel="preload" href="./res/sprite-move-off.png" as="image">
+    <link rel="preload" href="./res/sprite-layer-show.png" as="image">
+    <link rel="preload" href="./res/sprite-active-0.png" as="image">
+    <link rel="preload" href="./res/sprite-layer-1.png" as="image">
+    <link rel="preload" href="./res/sprite-active-2.png" as="image">
+    <link rel="preload" href="./res/sprite-active-3.png" as="image">
+    <link rel="preload" href="./res/sprite-active-4.png" as="image">
+    <link rel="preload" href="./res/sprite-active-5.png" as="image">
+    <link rel="preload" href="./res/sprite-active-6.png" as="image">
+    <link rel="preload" href="./res/sprite-active-7.png" as="image">
 
     <link rel="alternate" hreflang="x-default" href="https://pids.epicpuppy.dev" />
     <link rel="alternate" hreflang="en" href="https://pids.epicpuppy.dev/en-us" />
@@ -47,9 +47,9 @@
                 <th>{{property.textAlign}}</th>
                 <td>
                     <div id="alignIcons">
-                        <img id="alignLeft" src="https://cdn.epicpuppy.dev/assets/pids/sprite-align-left.png" width="32" height="32" />
-                        <img id="alignCenter" src="https://cdn.epicpuppy.dev/assets/pids/sprite-align-center.png" width="32" height="32" />
-                        <img id="alignRight" src="https://cdn.epicpuppy.dev/assets/pids/sprite-align-right.png" width="32" height="32" />
+                        <img id="alignLeft" src="./res/sprite-align-left.png" width="32" height="32" />
+                        <img id="alignCenter" src="./res/sprite-align-center.png" width="32" height="32" />
+                        <img id="alignRight" src="./res/sprite-align-right.png" width="32" height="32" />
                     </div>
                 </td>
             </tr>
@@ -196,23 +196,23 @@
         </div>
         <div id="management">
             <div class="toolbarItem">
-                <img id="infoIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-info.png" width="32" height="32" class="managementIcon" />
+                <img id="infoIcon" src="./res/sprite-info.png" width="32" height="32" class="managementIcon" />
                 <label>{{ui.shortcuts}}</label>
             </div>
             <div class="toolbarItem">
-                <img id="settingsIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-settings.png" width="32" height="32" class="managementIcon" />
+                <img id="settingsIcon" src="./res/sprite-settings.png" width="32" height="32" class="managementIcon" />
                 <label>{{ui.settings}}</label>
             </div>
             <div class="toolbarItem">
-                <img id="newIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-new.png" width="32" height="32" class="managementIcon" />
+                <img id="newIcon" src="./res/sprite-new.png" width="32" height="32" class="managementIcon" />
                 <label>{{action.createNew}}</label>
             </div>
             <div class="toolbarItem">
-                <img id="importIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-import.png" width="32" height="32" class="managementIcon" />
+                <img id="importIcon" src="./res/sprite-import.png" width="32" height="32" class="managementIcon" />
                 <label>{{action.load}}</label>
             </div>
             <div class="toolbarItem">
-                <img id="exportIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-export.png" width="32" height="32" class="managementIcon" />
+                <img id="exportIcon" src="./res/sprite-export.png" width="32" height="32" class="managementIcon" />
                 <label>{{action.save}}</label>
             </div>
         </div>
@@ -220,35 +220,35 @@
     <div id="layerbar">
         <label>{{ui.layer}}</label>
         <div id="layers">
-            <img id="layer0" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-0.png" width="32" height="32" class="layerIcon" />
-            <img id="layer1" src="https://cdn.epicpuppy.dev/assets/pids/sprite-active-1.png" width="32" height="32" class="layerIcon layerActive" />
-            <img id="layer2" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-2.png" width="32" height="32" class="layerIcon" />
-            <img id="layer3" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-3.png" width="32" height="32" class="layerIcon" />
-            <img id="layer4" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-4.png" width="32" height="32" class="layerIcon" />
-            <img id="layer5" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-5.png" width="32" height="32" class="layerIcon" />
-            <img id="layer6" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-6.png" width="32" height="32" class="layerIcon" />
-            <img id="layer7" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-7.png" width="32" height="32" class="layerIcon" />
+            <img id="layer0" src="./res/sprite-layer-0.png" width="32" height="32" class="layerIcon" />
+            <img id="layer1" src="./res/sprite-active-1.png" width="32" height="32" class="layerIcon layerActive" />
+            <img id="layer2" src="./res/sprite-layer-2.png" width="32" height="32" class="layerIcon" />
+            <img id="layer3" src="./res/sprite-layer-3.png" width="32" height="32" class="layerIcon" />
+            <img id="layer4" src="./res/sprite-layer-4.png" width="32" height="32" class="layerIcon" />
+            <img id="layer5" src="./res/sprite-layer-5.png" width="32" height="32" class="layerIcon" />
+            <img id="layer6" src="./res/sprite-layer-6.png" width="32" height="32" class="layerIcon" />
+            <img id="layer7" src="./res/sprite-layer-7.png" width="32" height="32" class="layerIcon" />
         </div>
     </div>
     <div id="warning">
-        <img id="warningIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-warning.png" width="32" height="32" /> 
+        <img id="warningIcon" src="./res/sprite-warning.png" width="32" height="32" /> 
         <div>
             {{ui.zFight}}<br>
             <span id="warningText">a</span>
         </div>
-        <img id="warningIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-warning.png" width="32" height="32" /> 
+        <img id="warningIcon" src="./res/sprite-warning.png" width="32" height="32" /> 
     </div>
     <div id="display">
         <div class="toolbarItem">
-            <img id="borderIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png" width="32" height="32" class="managementIcon" />
+            <img id="borderIcon" src="./res/sprite-border-on.png" width="32" height="32" class="managementIcon" />
             <label>{{action.toggleBorder}}</label>
         </div>
         <div class="toolbarItem">
-            <img id="moveIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-move-on.png" width="32" height="32" class="managementIcon" />
+            <img id="moveIcon" src="./res/sprite-move-on.png" width="32" height="32" class="managementIcon" />
             <label>{{action.toggleArrowMove}}</label>
         </div>
         <div class="toolbarItem">
-            <img id="layerIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-layer-hide.png" width="32" height="32" class="managementIcon" />
+            <img id="layerIcon" src="./res/sprite-layer-hide.png" width="32" height="32" class="managementIcon" />
             <label>{{action.toggleShowLayers}}</label>
         </div>
     </div>
@@ -363,7 +363,7 @@
     </div>
     <div id="language">
         <label>{{_language}}</label>
-        <img id="languageIcon" src="https://cdn.epicpuppy.dev/assets/pids/sprite-globe.png" width="32" height="32" />
+        <img id="languageIcon" src="./res/sprite-globe.png" width="32" height="32" />
     </div>
     <div id="languageMenu" class="overlayWindow">
         <div id="languageMenuContent" class="overlayContent">

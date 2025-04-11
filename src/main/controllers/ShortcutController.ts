@@ -1,10 +1,14 @@
 import { PIDSEditor } from "../PIDSEditor";
 import { Shortcut } from "../util/Shortcut";
+import { AssetController } from "./AssetController";
 
 export class ShortcutController {
+    public assets: AssetController;
     private shortcuts: {[key: string]: Shortcut} = {};
 
     constructor (editor: PIDSEditor) {
+        this.assets = editor.assets;
+        
         window.addEventListener("keydown", (e) => {
             //special move logic
             if (/Arrow(Left|Right|Up|Down)/.test(e.code) && !editor.edit.menuOpen && editor.edit.arrowKeyMove) {

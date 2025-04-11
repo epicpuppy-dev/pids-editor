@@ -38,7 +38,7 @@ export class ShortcutData {
             (editor) => {
                 editor.layout.showModuleBorders = !editor.layout.showModuleBorders;
                 (document.getElementById("borderIcon")! as HTMLImageElement).src = editor.layout.showModuleBorders ? 
-                "https://cdn.epicpuppy.dev/assets/pids/sprite-border-on.png" : "https://cdn.epicpuppy.dev/assets/pids/sprite-border-off.png"; 
+                controller.assets.sprites.borderOn.src : controller.assets.sprites.borderOff.src; 
             }, (e, editor) => true
         ));
 
@@ -47,7 +47,7 @@ export class ShortcutData {
             (editor) => {
                 editor.edit.arrowKeyMove = !editor.edit.arrowKeyMove;
                 (document.getElementById("moveIcon")! as HTMLImageElement).src = editor.edit.arrowKeyMove ? 
-                "https://cdn.epicpuppy.dev/assets/pids/sprite-move-on.png" : "https://cdn.epicpuppy.dev/assets/pids/sprite-move-off.png"; 
+                controller.assets.sprites.moveOn.src : controller.assets.sprites.moveOff.src; 
             }, (e, editor) => true
         ));
 
