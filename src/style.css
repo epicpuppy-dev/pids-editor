@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'Minecraft';
-    src: url("https://cdn.epicpuppy.dev/assets/fonts/Minecraft/Minecraft-Regular.woff2") format('woff2'),
-        url("https://cdn.epicpuppy.dev/assets/fonts/Minecraft/Minecraft-Regular.woff") format('woff');
+    src: url("./res/Minecraft-Regular.woff2") format('woff2'),
+        url("./res/Minecraft-Regular.woff") format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;

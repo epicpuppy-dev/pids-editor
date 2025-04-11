@@ -1,4 +1,5 @@
 import { FileAsset } from "../util/FileAsset";
+import { LiteralAsset } from "../util/LiteralAsset";
 import { SpriteAsset } from "../util/SpriteAsset";
 
 export class AssetController {
@@ -7,12 +8,18 @@ export class AssetController {
     public loading: string = "";
 
     public loadSprite (id: string, src: string) {
+        console.log(src);
         let sprite = new SpriteAsset(src);
         this.sprites[id] = sprite;
     }
 
     public loadFile (id: string, src: string) {
         let file = new FileAsset(src);
+        this.files[id] = file;
+    }
+
+    public loadLiteral (id: string, data: string) {
+        let file = new LiteralAsset("", data);
         this.files[id] = file;
     }
 
